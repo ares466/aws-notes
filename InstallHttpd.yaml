@@ -1,0 +1,18 @@
+---
+schemaVersion: "2.2"
+description: "Command Document Example JSON Template"
+parameters:
+  Message:
+    type: "String"
+    description: "Example"
+    default: "Hello World"
+mainSteps:
+- action: "aws:runShellScript"
+  name: "configureApache"
+  inputs:
+    runCommand:
+    - "sudo yum update -y"
+    - "sudo yum install -y httpd"
+    - "sudo systemctl start httpd.service"
+    - "sudo systemctl enable httpd.service"
+    - 'echo "{{Message}} from $(hostname -f)" > /var/www/html/index.html'
