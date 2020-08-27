@@ -7,3 +7,7 @@ Use the sh script in the EC2 UserData or through ssh to create and start an http
 ## ssmdoc-install-httpd.yaml
 
 This is an example SSM document that can be used to install and start httpd on a fleet of EC2 instances.
+
+## ec2-cfinit.yaml
+
+CloudFormation template example of starting an EC2 server using AWS::CloudFormation:Init.
