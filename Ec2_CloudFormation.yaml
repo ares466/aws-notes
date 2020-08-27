@@ -1,0 +1,15 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Mappings:
+  RegionMap:
+    us-east-1:
+      "32": "ami-12345678"
+      "64": "ami-23456789"
+    us-west-1:
+      "32": "ami-42345678"
+      "64": "ami-43456789"
+Resources:
+  myEc2Instance:
+    Type: "AWS::EC2::Instance"
+    Properties:
+      ImageId: !FindInMap [RegionMap, !Ref "AWS::Region", 32]
+      InstanceType:  "m1.small"
