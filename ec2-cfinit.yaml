@@ -1,0 +1,82 @@
+AWSTemplateFormatVersion: 2010-09-09
+Parameters:
+    EnvType:
+        Description: The env type
+        Type: String
+    SSHKey:
+        Type: AWS::EC2::KeyPair::KeyName
+        Description: Name of an existing EC2 KeyPair to enable SSH access to the instance
+Mappings:
+    RegionMap:
+        us-east-1:
+            "v1": "ami-0761dd91277e34178"
+            "v2": "ami-02354e95b39ca8dec"
+        us-west-1:
+            "32": "ami-42345678"
+            "64": "ami-43456789"
+Conditions:
+    CreateProdResources: !Equals [ !Ref EnvType, prod ]
+Resources:
+    Ec2Instance:
+        Type: "AWS::EC2::Instance"
+        Properties:
+            ImageId: !FindInMap [RegionMap, !Ref "AWS::Region","v2"]
+            InstanceType:  "t2.micro"
+            KeyName: !Ref SSHKey
+            SecurityGroups:
+                - !Ref SSHSecurityGroup
+            UserData:
+              Fn::Base64:
+                !Sub |
+                  #!\bin\base -xe
+                  # Get the latest CloudFormation package
+                  yum update -y aws-cfn-bootstrap
+                  # Start cfn-init
+                  /opt/aws/bin/cfn-init -s ${AWS::StackId} -r MyInstance --region ${AWS::Region} ||
+                  error_exit 'Failed to run cfn-init'
+        Metadata:
+          Comment: Install a simple Apache HTTP page
+          AWS::CloudFormation::Init:
+            config:
+              packages:
+                yum:
+                  httpd: []
+              files:
+                "/var/www/html/index.html":
+                  content: |
+                    <h1>Hello World from EC2 Instance!</h1>
+                  mode: '000644'
+              commands:
+                hello:
+                  command: "Echo 'hello world'"
+              services:
+                sysvint:
+                  httpd:
+                    enabled: 'true'
+                    ensureRunning: 'true'
+    MountPoint:
+        Type: "AWS::EC2::Volume"
+        Condition: CreateProdResources
+        Properties:
+            Size: 100
+            AvailabilityZone:
+                !GetAtt Ec2Instance.AvailabilityZone
+    SSHSecurityGroup:
+        Type: AWS::EC2::SecurityGroup
+        Properties:
+            GroupDescription: Used to allow SSH and HTTP access
+            SecurityGroupIngress:
+                - CidrIp: 0.0.0.0/0
+                  FromPort: 22
+                  IpProtocol: tcp
+                  ToPort: 22
+                - CidrIp: 0.0.0.0/0
+                  FromPort: 80
+                  IpProtocol: tcp
+                  ToPort: 80
+Outputs:
+    Ec2InstanceIp:
+        Description: The EC2 instance that was created.
+        Value: !GetAtt Ec2Instance.PublicIp
+        Export:
+            Name: Ec2InstanceIp
