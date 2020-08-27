@@ -56,6 +56,6 @@ Resources:
 Outputs:
     Ec2InstanceIp:
         Description: The EC2 instance that was created.
-        Value: !GetAttr Ec2Instance.PublicIp
+        Value: !GetAtt Ec2Instance.PublicIp
         Export:
-            Name: Ec2InstanceName
+            Name: Ec2InstanceIp
