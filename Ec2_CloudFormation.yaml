@@ -1,4 +1,8 @@
 AWSTemplateFormatVersion: "2010-09-09"
+Parameters:
+  EnvType:
+    Description: The env type
+    Type: String
 Mappings:
   RegionMap:
     us-east-1:
@@ -7,12 +11,17 @@ Mappings:
     us-west-1:
       "32": "ami-42345678"
       "64": "ami-43456789"
+Conditions:
+  CreateProdResources: !Equals [ !Ref EnvType, prod ]
 Resources:
   myEc2Instance:
     Type: "AWS::EC2::Instance"
     Properties:
       ImageId: !FindInMap [RegionMap, !Ref "AWS::Region", 32]
       InstanceType:  "m1.small"
+  MountPoint:
+    Type: "AWS::EC2::VolumeAttachment"
+    Condition: CreateProdResources
 Outputs:
   Ec2Instance:
     Description: The EC2 instance that was created.
