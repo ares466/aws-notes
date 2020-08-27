@@ -3,6 +3,9 @@ Parameters:
   EnvType:
     Description: The env type
     Type: String
+  SSHKey:
+    Type: AWS::EC2::KeyPair::KeyName
+    Description: Name of an existing EC2 KeyPair to enable SSH access to the instance
 Mappings:
   RegionMap:
     us-east-1:
@@ -18,7 +21,18 @@ Resources:
     Type: "AWS::EC2::Instance"
     Properties:
       ImageId: !FindInMap [RegionMap, !Ref "AWS::Region", 32]
-      InstanceType:  "m1.small"
+      InstanceType:  "t2.micro"
+      KeyName: !Ref SSHKey
+      SecurityGroups:
+        - !Ref: SSHSecurityGroup
+      UserData:
+        Fn::Base64: |
+          #!/bin/bash -xe
+          yum update -y
+          yum install -y httpd
+          systemctl start httpd
+          systemctl enable httpd
+          echo "Hello world from user data" > /var/www/html/index.html
   MountPoint:
     Type: "AWS::EC2::Volume"
     Condition: CreateProdResources
@@ -26,6 +40,20 @@ Resources:
       Size: 100
       AvailabilityZone:
         !GetAtt EC2Instance.AvailabilityZone
+  SSHSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Used to allow SSH and HTTP access
+       SecurityGroupIngress:
+        - CidrIp: 0.0.0.0/0
+          FromPort: 22
+          IpProtocol: tcp
+          ToPort: 22
+        - CidrIp: 0.0.0.0/0
+          FromPort: 80
+          IpProtocol: tcp
+          ToPort: 80
+        
 Outputs:
   Ec2Instance:
     Description: The EC2 instance that was created.
