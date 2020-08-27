@@ -54,8 +54,8 @@ Resources:
                   IpProtocol: tcp
                   ToPort: 80
 Outputs:
-    Ec2Instance:
+    Ec2InstanceIp:
         Description: The EC2 instance that was created.
-        Value: !Ref Ec2Instance
+        Value: !GetAttr Ec2Instance.PublicIpAddress
         Export:
             Name: Ec2InstanceName
