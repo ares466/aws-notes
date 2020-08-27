@@ -9,8 +9,8 @@ Parameters:
 Mappings:
     RegionMap:
         us-east-1:
-            "32": "ami-12345678"
-            "64": "ami-02354e95b39ca8dec"
+            "v1": "ami-0761dd91277e34178"
+            "v2": "ami-02354e95b39ca8dec"
         us-west-1:
             "32": "ami-42345678"
             "64": "ami-43456789"
@@ -20,7 +20,7 @@ Resources:
     Ec2Instance:
         Type: "AWS::EC2::Instance"
         Properties:
-            ImageId: !FindInMap [RegionMap, !Ref "AWS::Region", 64]
+            ImageId: !FindInMap [RegionMap, !Ref "AWS::Region","v2"]
             InstanceType:  "t2.micro"
             KeyName: !Ref SSHKey
             SecurityGroups:
