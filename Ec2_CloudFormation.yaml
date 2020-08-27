@@ -14,17 +14,21 @@ Mappings:
 Conditions:
   CreateProdResources: !Equals [ !Ref EnvType, prod ]
 Resources:
-  myEc2Instance:
+  Ec2Instance:
     Type: "AWS::EC2::Instance"
     Properties:
       ImageId: !FindInMap [RegionMap, !Ref "AWS::Region", 32]
       InstanceType:  "m1.small"
   MountPoint:
-    Type: "AWS::EC2::VolumeAttachment"
+    Type: "AWS::EC2::Volume"
     Condition: CreateProdResources
+    Properties:
+      Size: 100
+      AvailabilityZone:
+        !GetAtt EC2Instance.AvailabilityZone
 Outputs:
   Ec2Instance:
     Description: The EC2 instance that was created.
-    Value: !Ref myEc2Instance
+    Value: !Ref Ec2Instance
     Export:
       Name: Ec2InstanceName
