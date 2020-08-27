@@ -13,3 +13,9 @@ Resources:
     Properties:
       ImageId: !FindInMap [RegionMap, !Ref "AWS::Region", 32]
       InstanceType:  "m1.small"
+Outputs:
+  Ec2Instance:
+    Description: The EC2 instance that was created.
+    Value: !Ref myEc2Instance
+    Export:
+      Name: Ec2InstanceName
