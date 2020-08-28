@@ -35,6 +35,7 @@ Resources:
                     echo "Hello world from user data" > /var/www/html/index.html
     MountPoint:
         Type: "AWS::EC2::Volume"
+        DeletionPolicy: Snapshot
         Condition: CreateProdResources
         Properties:
             Size: 100
