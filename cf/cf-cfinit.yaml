@@ -35,7 +35,7 @@ Resources:
                   # Get the latest CloudFormation package
                   yum update -y aws-cfn-bootstrap
                   # Start cfn-init
-                  /opt/aws/bin/cfn-init -s ${AWS::StackId} -r MyInstance --region ${AWS::Region} ||
+                  /opt/aws/bin/cfn-init -s ${AWS::StackId} -r MyInstance --region ${AWS::Region}
                   # Start cfn-signal to the wait condition
                   /opt/aws/bin/cfn-signal -e $? --stack ${AWS::StackId} --resource SampleWaitCondition --region ${AWS::Region}
         Metadata:
