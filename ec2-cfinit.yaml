@@ -16,6 +16,9 @@ Mappings:
             "64": "ami-43456789"
 Conditions:
     CreateProdResources: !Equals [ !Ref EnvType, prod ]
+    
+# Uses a cfn-init to intiate the EC2 instance
+# Uses a cfn-signal to indicate that the CloudFormation can continue
 Resources:
     Ec2Instance:
         Type: "AWS::EC2::Instance"
@@ -33,7 +36,8 @@ Resources:
                   yum update -y aws-cfn-bootstrap
                   # Start cfn-init
                   /opt/aws/bin/cfn-init -s ${AWS::StackId} -r MyInstance --region ${AWS::Region} ||
-                  error_exit 'Failed to run cfn-init'
+                  # Start cfn-signal to the wait condition
+                  /opt/aws/bin/cfn-signal -e $? --stack ${AWS::StackId} --resource SampleWaitCondition --region ${AWS::Region}
         Metadata:
           Comment: Install a simple Apache HTTP page
           AWS::CloudFormation::Init:
@@ -54,6 +58,12 @@ Resources:
                   httpd:
                     enabled: 'true'
                     ensureRunning: 'true'
+    SampleWaitCondition:
+        CreationPolicy:
+            ResourceSignal:
+                # Wait 2 minutes
+                Timeout: PT2M
+        Type: AWS::CloudFormation::WaitCondition
     MountPoint:
         Type: "AWS::EC2::Volume"
         Condition: CreateProdResources
