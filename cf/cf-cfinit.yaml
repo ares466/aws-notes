@@ -52,19 +52,19 @@ Resources:
                   mode: '000644'
               commands:
                 hello:
-                  command: "Echo 'hello world'"
+                  command: "echo 'hello world'"
               services:
-                sysvint:
+                sysvinit:
                   httpd:
                     enabled: 'true'
                     ensureRunning: 'true'
     SampleWaitCondition:
+        Type: AWS::CloudFormation::WaitCondition
         CreationPolicy:
             ResourceSignal:
-                # Wait 1 minutes
+                # Wait 2 minutes
                 Timeout: PT2M
-                Count: 1
-        Type: AWS::CloudFormation::WaitCondition
+                Count: 1    
     MountPoint:
         Type: "AWS::EC2::Volume"
         Condition: CreateProdResources
