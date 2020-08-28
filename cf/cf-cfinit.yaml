@@ -62,7 +62,7 @@ Resources:
         CreationPolicy:
             ResourceSignal:
                 # Wait 1 minutes
-                Timeout: PT1M
+                Timeout: PT2M
                 Count: 1
         Type: AWS::CloudFormation::WaitCondition
     MountPoint:
