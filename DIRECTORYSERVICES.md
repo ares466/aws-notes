@@ -72,7 +72,7 @@ Simple AD does not support:
 
 | | Simple AD | AWS-Managed Microsoft AD | AD Connector |
 | --- | --- | --- | --- |
-| Short Desc | | Fully managed Microsoft AD on AWS | |
+| Short Desc | Simple AD instance with basic features | Fully managed Microsoft AD on AWS | Connects to an existing on-prem directory |
 | Type | Samba 4 | Microsoft AD | N/A |
 | Full-fledged AD | Yes | No | Yes | 
 | Supports trust relationships | No | Supports one-way, two-way, and forest trust relationships | No |
