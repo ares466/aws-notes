@@ -1,4 +1,18 @@
-# aws-notes
+# Notes on AWS
+
+## Notes
+
+- [Amazon Cognito](./COGNITO.md)
+- [Directory Services](./DIRECTORYSERVICES.md)
+- [Identity Federation](./IDENTITYFEDERATION.md)
+- [Quotas](./QUOTAS.md)
+- [Resource Access Manager](./RESOURCEACCESSMANAGER.md)
+- [S3 - Cross Account Access](./S3_CROSSACCOUNTACCESS.md)
+
+## Resources
+
+- [Cantrill](https://learn.cantrill.io/)
+- [Cantrill Github](https://github.com/acantril)
 
 ## httpd_config.sh
 
