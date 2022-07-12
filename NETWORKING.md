@@ -1,6 +1,6 @@
 # Networking
 
-## Public and Private AWS Services
+## Public vs Private AWS Services
 
 - **Public services** are accessed via public endpoints (e.g., S3).  
 - **Private services** run in a private VPC and can only be accessed by devices that have been specifically allowed (e.g., EC2).
@@ -52,6 +52,34 @@
 > 3. [RESPONSE] The server responds using the source port of tcp/443 and the destination ephemeral port picked by the client.
 > ![TCP](./static/images/networking_tcp.png)
 
-
 - The **directionality** of TCP connection depends on the perspective of the sender or receiver. Traffic can either be *inbound* traffic or *outbound* traffic.
 - A stateful firewall is intelligent enough to identify the request and response components as being related. As a result, you only need to explicitly allow traffic in one direction.
+
+### NACLs
+
+- **Network ACLs** are *stateless* firewalls that operate at the subnet level. NACLs will filter traffic crossing the subnet boundary, but will not evaluate traffic within the subnet.
+- NACLs consist of *INBOUND* and *OUTBOUND* rules. INBOUND rules match traffic entering the subnet and OUTBOUND rules match traffic leaving the subnet.
+- NACLs support explicit ALLOW and explicit DENY actions.
+- NACL rules are processed in order based on the rule number in ascending order (lowest number first). Once a match occurs, processing stops.
+- Since NACLs are stateless, you must allow traffic in both directions (INBOUND and OUTBOUND).
+- VPCS are created with a default NACL with two *INBOUND* rules and two *OUTBOUND* rules. The result is that all traffic is ALLOWED (the NACL has no effect).
+
+![Default NACL](./static/images/networking_nacldefault.png)
+
+- When you create a NACL manually, it is created with a single `DENY ALL` rule. NACLs are not automatically associated with VPCs.
+- NACLs can be used to block traffic based on IPs/CIDR, port, and protocol. They cannot be used to block logical resources.
+- Each subnet can only be associated to a single NACL, but a NACL can be associated wtih multiple subnets.
+
+### Security Groups
+
+- **Security groups** are *stateful* firewalls that detect response traffic automatically.
+- Security groups support an explicit ALLOW or an implicit DENY (not explicitly allowing traffic), but do not support explicit DENY. As a result, you cannot block specific bad actors.
+- Security groups support IP/CIDRs and logical resources, including other security groups.
+- Security groups are attached to ENIs (not the instance).
+
+## Border Gateway Protocol (BGP)
+
+
+
+> BEST PRACTICE: In workload will well defined traffic patterns, reference security groups within the rules rather than an IP CIDR. Security groups are also able to reference themselves.
+
