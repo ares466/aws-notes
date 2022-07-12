@@ -77,9 +77,18 @@
 - Security groups support IP/CIDRs and logical resources, including other security groups.
 - Security groups are attached to ENIs (not the instance).
 
-## Border Gateway Protocol (BGP)
-
-
-
 > BEST PRACTICE: In workload will well defined traffic patterns, reference security groups within the rules rather than an IP CIDR. Security groups are also able to reference themselves.
 
+## Border Gateway Protocol (BGP)
+
+- BGP consists of a number of networks called autonomous systems (AS) that is controlled by a single router (called the BGP router).
+- Each AS is assigned an ASN (Autonomous System Number) by IANA. ASNs range from 0 - 65,535. 
+  - 0 - 64511 are public ASNs that must be assigned by IANA to be used.
+  - 64512 - 65534 are private and can be used within private peering arrangements that can be used without official assignment.
+- BGP operates on port `tcp/179`.
+- BGP connections are not automatic - peering must be manually configured.
+- BGP is a *path-vector* protocol which means it exchanges the best path to a destination between peers. The path is called the **ASPATH** (Autonomous System Path).
+- iBGP (internal BGP) focuses on routing within an AS. eBGP (external BGP) focuses on routing among different AS.
+- BGP advertises the shortest ASPATH between peers, regardless of the latency characteristics of the path. **ASPATH prepending** can be used to artificially make a path seem longer. With ASPATH prepending, you can configure BGP routers to advertise certain paths.
+
+![BGP Example](./static/images/networking_bgp.png)
