@@ -50,6 +50,8 @@
 > 1. The client picks a temporary (ephemeral) source port 1024-65535 (depends on OS).
 > 2. [REQUEST] The client initiates a connection to the server on a well-known destination port (e.g., HTTPS tcp/443).
 > 3. [RESPONSE] The server responds using the source port of tcp/443 and the destination ephemeral port picked by the client.
+> ![TCP](./static/images/networking_tcp.png)
+
 
 - The **directionality** of TCP connection depends on the perspective of the sender or receiver. Traffic can either be *inbound* traffic or *outbound* traffic.
 - A stateful firewall is intelligent enough to identify the request and response components as being related. As a result, you only need to explicitly allow traffic in one direction.
