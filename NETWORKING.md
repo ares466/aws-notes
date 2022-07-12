@@ -27,3 +27,18 @@
 
 - To use a custom domain, you must use custom DNS servers.
 
+## Route Tables
+
+- The VPC Router is an implicit virtual router within a VPC.
+- VPC Routers are always highly available across all AZs in the region. It is also scalable so no performance management is required.
+- The VPC Router is responsible for routing traffic between subnets, traffic from external networks into the VPC, and traffic from the VPC to external networks.
+- The VPC Router has an interface in every subnet (subnet + 1 addresses) e.g., The `10.16.48.1` address in the `10.16.48.0/20` network.
+- VPC routing logic is controlled via Route Tables.
+- Every VPC is created with a main route table (RT), which is the default route table for every subnet in the VPC.
+- Custom route tables can be created and associated with subnets (which removes the main route table).
+- Subnets are associated with a single route table only.
+- Best practice: Do not add routes to the main route table. Instead, create a custom route table.
+- Route tables attempts to pick the most specific route first.
+- Route tables can be associated with gateways.
+
+![VPC Route Table](./static/images/networking_routetable.png)
