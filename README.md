@@ -8,6 +8,8 @@
 - [Quotas](./QUOTAS.md)
 - [Resource Access Manager](./RESOURCEACCESSMANAGER.md)
 - [S3 - Cross Account Access](./S3_CROSSACCOUNTACCESS.md)
+- [S2S VPN Connections](./S2SVPN.md)
+- [AWS Global Accelerator](./GLOBALACCELERATOR.md)
 
 ## Resources
 

@@ -92,3 +92,4 @@
 - BGP advertises the shortest ASPATH between peers, regardless of the latency characteristics of the path. **ASPATH prepending** can be used to artificially make a path seem longer. With ASPATH prepending, you can configure BGP routers to advertise certain paths.
 
 ![BGP Example](./static/images/networking_bgp.png)
+
