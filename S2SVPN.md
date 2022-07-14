@@ -44,5 +44,23 @@ VPN Considerations:
 - VPNs are very quick to setup compared to other connection technologies.
 - VPNs can be used as a backup for Direct Connect (DX), or used initially until DX is established.
 
+## IPSEC VPN
 
+- IPSEC is a protocol suite used to setup secure tunnels across insecure networks between two peers, usually the public internet.
+    - One of the protocols within IPSEC is Internet Key Exchange (IKE) which is used to select the encryption algorithm and generate secure keys for encrypting data.
+- IPSEC tunnels are created on the fly when *interesting traffic* is detected. If tunnels area idle for some amount of time, they are torn down.
+    - *Interesting traffic* may be defined by the destination network, or a set of rules.
+
+IPSEC consists of two phases: IKE phase 1 & IKE phase 2.
+
+**IKE Phase 1**:
+- Authenticate via a pre-shared key or certificate
+- Diffie-Hellmen is used to generate asymmetric keys
+- Using asymmetric encryption to agree on and create a shared symmetic key
+- Phase one tunnel created
+
+**IKE Phase 2**:
+- Uses the keys agreed to in phase 1
+- Agree on an encryption method and the keys used for bulk data transfer
+- Phase 2 tunnel created
 

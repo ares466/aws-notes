@@ -43,6 +43,38 @@
 
 ![VPC Route Table](./static/images/networking_routetable.png)
 
+- Route tables can contain two different types of routes: static and dynamic.
+  - *Static* routes are added manually.
+  - *Dynamic* routes are added automatically by a virtual private gateway. 
+    - *Dynamic* routes are also called *propagated* routes. 
+    - *Route propagation* must be enabled on the route table.
+
+The following characteristics are preferred when selecting routes for traffic:
+1. Longest prefix (e.g., a /32 route takes priority over a /28 route)
+2. Static routes
+3. Propagated routes
+  - DX
+  - VPN Static
+  - VPN BGP
+  - Shorter ASPATH
+
+Public subnets have a default route with the IGW as a target.
+
+`0.0.0.0/0 -> IGW`
+
+Private subnets have a default route to a NAT gateway.
+
+`0.0.0.0/0 -> NAT`
+
+VPNs will have a route for traffic to the on-prem network via a virtual private gateway.
+
+`192.168.10.0/24 -> VGW`
+
+**Gateway Route Tables** can be used to direct a gateway (e.g., IGW) to take actions to *inbound traffic* - such as forwarding it to a security appliance.
+  - This is also called an **ingress route table**.
+
+
+
 ## Firewalls
 
 - Every connection has two parts: (1) REQUEST and (2) RESPONSE.
@@ -92,4 +124,3 @@
 - BGP advertises the shortest ASPATH between peers, regardless of the latency characteristics of the path. **ASPATH prepending** can be used to artificially make a path seem longer. With ASPATH prepending, you can configure BGP routers to advertise certain paths.
 
 ![BGP Example](./static/images/networking_bgp.png)
-
