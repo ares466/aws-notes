@@ -64,3 +64,22 @@ IPSEC consists of two phases: IKE phase 1 & IKE phase 2.
 - Agree on an encryption method and the keys used for bulk data transfer
 - Phase 2 tunnel created
 
+## S2S VPN with a Transit Gateway (TGW)
+
+S2S VPNs can be established with a transit gateway which greatly simplifies the network complexity of connecting multiple VPCs together.
+
+![S2S VPN with a Transit Gateway](./static/images/networking_s2svpn_tgw.png)
+
+## Accelerator Site-to-Site VPN
+
+Traditionally, S2S VPNs run over the public internet between the VGW and CGW which results in variable performance, latency, and consistency.
+
+Alternatively, S2S VPN can be run over Direct Connect (DX), but this can be very costly for businesses and takes a long time to setup.
+
+With *Accelerated S2S VPN*, VPN Tunnel IPs are global. Connections are routed to the closest global accelerator edge location. From there, the traffic flows over the AWS network.
+
+The result of using *Accelerated S2S VPN* is lower latency, less jitter, and higher throughputs.
+
+*Accelerated S2S VPN* can be enabled when creating a TGW VPN attachment. It is not compatible with VPNS using a VGW.
+
+*Accelererated S2S VPN* has a fixed cost plus a transfer fee.
