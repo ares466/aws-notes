@@ -3,13 +3,18 @@
 ## Notes
 
 - [Amazon Cognito](./COGNITO.md)
+- [Direct Connect (DX)](./DIRECTCONNECT.md)
 - [Directory Services](./DIRECTORYSERVICES.md)
+- [Global Accelerator](./GLOBALACCELERATOR.md)
 - [Identity Federation](./IDENTITYFEDERATION.md)
+- [Networking Foundations](./NETWORKING.md)
 - [Quotas](./QUOTAS.md)
 - [Resource Access Manager](./RESOURCEACCESSMANAGER.md)
 - [S3 - Cross Account Access](./S3_CROSSACCOUNTACCESS.md)
-- [VPNs in AWS](./sVPN.md)
-- [AWS Global Accelerator](./GLOBALACCELERATOR.md)
+- [Transit Gateway](./TRANSITGATEWAY.md)
+- [VPNs in AWS](./VPN.md)
+- [WorkSpaces](./WORKSPACES.md)
+
 
 ## Resources
 
