@@ -1,4 +1,4 @@
-# S2S VPN
+# Site-to-Site VPNs
 
 By default, instances that you launch into an Amazon VPC can't communicate with your own (remote) network. You can enable access to your remote network from your VPC by creating an AWS Site-to-Site VPN (S2S VPN) connection, and configuring routing to pass traffic through the connection.
 
@@ -83,3 +83,28 @@ The result of using *Accelerated S2S VPN* is lower latency, less jitter, and hig
 *Accelerated S2S VPN* can be enabled when creating a TGW VPN attachment. It is not compatible with VPNS using a VGW.
 
 *Accelererated S2S VPN* has a fixed cost plus a transfer fee.
+
+# ClientVPN
+
+ClientVPN is a managed implementation of *"OpenVPN"*. Any client device with OpenVPN software is supported. 
+
+Clients connect to a **client VPN endpoint** which is associated with one or more subnets in a single VPC. The Client VPN Endpoint deploys an ENI in one of the private subnets.
+
+Billing is based on network associations plus hourly charges for each VPN connection.
+
+Connection logs and metrics are stored in CloudWatch.
+
+*ClientVPN* supports authorization through certificates, federated identities, or AWS directory services.
+
+By *default*, the VPN route table replaces any local routes and public internet routes on the clients. This means that the client devices cannot access any resources on the local network or on the internet without first going through the VPN. This is not optimal.
+
+![ClientVPN - default mode](./static/images/networking_clientvpndefault.png)
+*Caption: ClientVPN in default mode: all routes from client devices must go through the VPN, including routes to other local devices or the public internet.*
+
+To work around this inefficiency, the ClientVPN can be configured to run in **split tunnel** mode. Split tunnel mode means that ClientVPN routes are added to existing routes (does not replace existing routes).
+
+This results in a situation where the client devices uses local routes to access other devices and the public internet, but uses the ClientVPN to access the private network.
+
+![ClientVPN - Split Tunnel](./static/images/networking_clientvpnsplittunnel.png)
+*Caption: In split tunnel mode, only specified traffic goes through the ClientVPN. Other traffic, such as traffic to the public internet, or traffic between local devices, does not go through the ClientVPN.*
+
