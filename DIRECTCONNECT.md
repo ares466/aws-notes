@@ -243,6 +243,8 @@ By duplicating the DX connections in each customer premises, extreme resilience 
 
 Each LAG supports a maximum of four connections of the same speed and that terminate at the same location. 
 
+By having two 100 Gbps connections in a LAG, the speed of the connection is increased to 200 Gbps.
+
 > [Exam Tip]  
 >  
 > Although LAGs do offer some resiliency benefits, it is primary advertised as a way to improve speed over a connection.  
