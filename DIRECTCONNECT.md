@@ -152,3 +152,100 @@ VPNs over DX use a public VIF and VGW/TGW public endpoints.
 ![VPN over DX](./static/images/dx_vpn.png)
 
 Customers may choose to use a VPN over DX, or a VPN as a backup to the DX connection, or both.
+
+## Direct Connect Gateway
+
+Problem statement: Thus far, a private VIF over a DX connection terminates at a VGW. This type of connection only allows access to private AWS services within the same region as the DX connection.
+
+**Direct Connect Gateway** is a global device that is accessible from every region. Instead of terminating at a VGW, a DX connection can terminate at a DX Gateway to provide access to multiple VPCs across many regions.
+
+The DX Gateway is attached to one or more VGWs that are attached to VPCs. This allows traffic to flow from on-premise to these VPCs and vice versa. 
+
+A DX gateway does not support VPC to VPC traffic.
+
+![DX Gateway Architecture](./static/images/dx_dxgateway.png)
+
+DX Gateway has no additional costs.
+
+Limitations:
+- 1 Private VIF => One DX Gateway => 10 VGW associations (VPCs)
+- 50 Private VIFs => 50 DX Gateways => 500 VGW associations (VPCs)
+
+## DX, Transit VIFs, & Transit Gateways
+
+Problem statement: DX Gateways are great for establishing a connection to multiple VPCs in many regions. However, they do not natively support VPC to VPC traffic.
+
+Refresher: Transit Gateways (TGW) can be connected to multiple VPCs in the same region similar to a hub and spoke. The TGW allows many VPCs to communicate with each other. TGWs cannot be associated with VPCs in other regions, but two TGWs in different regions can be peered to share routes - effectively allowing communication between VPCs in one region with VPCs in other regions.
+
+A **transit VIF** over a DX connection can terminate at a transit gateway (TGW). Since TGWs support transitive communication between VPCs and other peered TGWs in other regions, this setup effectively allows you to connect the on-prem business location with multiple VPCs in many regions.
+
+Limitations:
+- A DX gateway only supports on transit VIF.
+- A DX gateway can use a transit VIF or private VIFs, but not both.
+- A transit VIF can support up to 3 TGWs.
+- DX Gateway does not support routing between interfaces attached to the gateway (e.g., two on-prem sites).
+
+![Example](./static/images/dx_dxgw_tgw_example.png)
+*Caption:*  
+*- This example shows two on-prem business locations using a transit VIF over a DX connection from each location.*  
+*- The DX connection terminates at an in-region TGW. The two regional TGWs are peered to allow for VPC to VPC communication.*  
+*- This setup allows both business locations to communicate with VPCs in both AWS regions as well as communicate with each other.*
+
+## DX Resilience and High Availability
+
+### Default - NOT RESILIENT
+
+- DX locations are connected to the AWS region via redundant high speed connections. This can be assumed to be resilient.
+- By default, a single cross-connect links a DX port with a customer router.
+- A DX is extended from the DX location to a customer premises.
+
+![DX resiliency](./static/images/dx_resiliency.png)
+
+What could go wrong?
+- The entire DX location could fail
+- The AWS DX router could fail
+- The customer DX router could fail
+- The cross-connect could fail
+- The connection between the DX location and the customer premises could fail
+- The customer premises could fail
+- The customer premises router could fail
+
+DX is not resilient by default, but it can be improved with careful planning.
+
+### Better - SOMEWHAT RESILIENT
+
+The following diagram shows a semi-resilient architecture. By establishing two DX connections using two customer premises routers, two customer DX routers, and two AWS DX routers, we have eliminated many of the single points of failure in the default pattern.
+
+![DX - semi-resilient](./static/images/dx_semiresilient.png)
+
+There are still several points of failure to consider:
+- The DX location could fail
+- The customer premises could fail
+- If the two DX extensions to the customer premises are run using the same cable, it is still a single point of failure
+
+### Even Better - RESILIENT
+
+By establishing a DX connection at two different customer premises to different DX locations, the single points of failure in the previous architecture are remediated.
+
+![Mostly resilient DX connection](./static/images/dx_mostlyresilient.png)
+
+A failure in one location would result in a partial outage, but the company would still have a connection to AWS.
+
+### Best - EXTREME RESILIENCE
+
+By duplicating the DX connections in each customer premises, extreme resilience is possible.
+
+![DX Connection - extreme resilience](./static/images/dx_extremeresilience.png)
+
+## DX Link Aggregation Groups (LAG)
+
+*LAGs* allow multiple physical connections to act as a single connection. By combining multiple connections, you can multiple the amount of speed available.
+
+Each LAG supports a maximum of four connections of the same speed and that terminate at the same location. 
+
+> [Exam Tip]  
+>  
+> Although LAGs do offer some resiliency benefits, it is primary advertised as a way to improve speed over a connection.  
+> For the exam, assume LAGs do not improve resilience.
+
+A LAG has a `minimumLinks` attribute that acts a measure of health for the connection. The LAG is active as long as there are (*minimumLinks*) number of active connections.
