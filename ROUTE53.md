@@ -50,4 +50,4 @@ By default, zones are hosted on four R53 nameservers.
 
 `Private hosted zones` are only accessible from its associated VPCs. Private hosted zones can be associated with VPCs in other accounts via the AWS CLI only.
 
-The `split-view` strategy involves having a public and private hosted zone for the same domain name. This allows you to specify different DNS behavior for internal users via the private hosted zone than for general public via the public hosted zone.
+The `split-view` (also called `split-horizon`) strategy involves having a public and private hosted zone for the same domain name. This allows you to specify different DNS behavior for internal users via the private hosted zone than for general public via the public hosted zone.
