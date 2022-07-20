@@ -51,3 +51,35 @@ By default, zones are hosted on four R53 nameservers.
 `Private hosted zones` are only accessible from its associated VPCs. Private hosted zones can be associated with VPCs in other accounts via the AWS CLI only.
 
 The `split-view` (also called `split-horizon`) strategy involves having a public and private hosted zone for the same domain name. This allows you to specify different DNS behavior for internal users via the private hosted zone than for general public via the public hosted zone.
+
+### R53 CNAME vs Alias
+
+Canonical name records are used to specify an alias to another domain.
+
+E.g., `www -> amazon.com.`
+
+Problem statement: CNAME records do not support the apex domain name (e.g., amazon.com). Many AWS services do not give you a static IP address. Instead they give you a DNS name (e.g., ELBs). Therefore, while you can point a subdomain to the ELB (e.g., `www => ELB`), it is not possible to point the apex domain to an ELB (e.g., `catagram.io => ELB`).
+
+`Alias` records map a name to an AWS resource and can be used for both the apex and subdomain. When alias records are applied to a subdomain, they behave exactly like a CNAME record.
+
+Unlike most DNS queries, there is no charge for alias requests pointing to AWS resources.
+
+Alias records can be of type `A` or `CNAME` records. The alias record should be the same "type" as what the record is pointing at.
+
+Alias records support API Gateway, CloudFront, Elastic Beanstalk, ELB, Global Accelerator, S3, and more.
+
+> [EXAM TIP]
+> 
+> AWS recommends using Alias records over CNAME records.
+
+### Routing Policies & Health Checks
+
+#### Health Checks
+
+#### Simple Routing 
+
+`Simple routing` supports one record per name (e.g., www), but each record can have multiple values. All values are returned in a random order.
+
+Simple routing does not support health checks.
+
+Use simple routing when you want to route requests toward one service (e.g., webserver).
