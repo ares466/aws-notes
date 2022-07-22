@@ -5,6 +5,7 @@
 - [Amazon Cognito](./COGNITO.md)
 - [Direct Connect (DX)](./DIRECTCONNECT.md)
 - [Directory Services](./DIRECTORYSERVICES.md)
+- [Endpoints](./ENDPOINTS.md)
 - [Global Accelerator](./GLOBALACCELERATOR.md)
 - [Identity Federation](./IDENTITYFEDERATION.md)
 - [Networking Foundations](./NETWORKING.md)
