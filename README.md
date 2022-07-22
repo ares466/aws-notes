@@ -9,6 +9,7 @@
 - [Identity Federation](./IDENTITYFEDERATION.md)
 - [Networking Foundations](./NETWORKING.md)
 - [Quotas](./QUOTAS.md)
+- [Private Link](./PRIVATELINK.md)
 - [Resource Access Manager](./RESOURCEACCESSMANAGER.md)
 - [Route53](./ROUTE53.md)
 - [S3 - Cross Account Access](./S3_CROSSACCOUNTACCESS.md)
