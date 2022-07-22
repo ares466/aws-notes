@@ -72,14 +72,90 @@ Alias records support API Gateway, CloudFront, Elastic Beanstalk, ELB, Global Ac
 > 
 > AWS recommends using Alias records over CNAME records.
 
-### Routing Policies & Health Checks
+### Health Checks
 
-#### Health Checks
+Amazon Route 53 health checks monitor the health and performance of your web applications, web servers, and other resources. Health checks are used by Route53 to intelligently route traffic to healthy instances.
 
-#### Simple Routing 
+Route53 health checkers are deployed globally. By default, all these health checkers perform a health check every 30 seconds (can be decreased to 10 seconds for an extra cost). **If 18% or more of the health checkers report a healthy check, the health check is reported as healthy.**
+
+Route53 health checks support TCP, HTTP/S, or HTTP/S with string matching.
+
+HTTP health checks must return a result in the 200-300 response status range within 3 seconds.
+
+Additionally, health checks can be configured against CloudWatch Alarms and other Route53 health checks (called *calculated health checks*).
+
+The *failure threshold* of a health check is the number of consective checks that must pass or fail in order for Route53 to change the status of the endpoint to healthy or unhealthy.
+
+### Simple Routing 
 
 `Simple routing` supports one record per name (e.g., www), but each record can have multiple values. All values are returned in a random order.
 
 Simple routing does not support health checks.
 
 Use simple routing when you want to route requests toward one service (e.g., webserver).
+
+### Failover Routing
+
+`Failover routing` lets you route traffic to a resource when the resource is healthy or to a different resource when the first resource is unhealthy.
+
+If the target of the health check is healthy, the primary record is used. If the target of the health check is unhealthy, any DNS queries return the secondary record of the same name.
+
+Use failover routing when you need to configure active/passive failover.
+
+### Multi-value Routing
+
+`Multivalue answer routing` lets you configure Amazon Route 53 to return multiple values, such as IP addresses for your web servers, in response to DNS queries. 
+
+You can specify multiple values for almost any record, but multivalue answer routing also lets you check the health of each resource, so Route 53 returns only values for healthy resources.
+
+It's not a substitute for a load balancer, but the ability to return multiple health-checkable IP addresses is a way to use DNS to improve availability and load balancing.
+
+Route53 responds to DNS queries with up to 8 healthy records. If more exist, Route53 will randomly select 8. The client must choose which to use.
+
+### Weighted Routing
+
+`Weighted routing` lets you associate multiple resources with a single domain name (example.com) or subdomain name (acme.example.com) and choose how much traffic is routed to each resource.
+
+The weight of a record determines how often is used in routing. A weight of zero means a record is never returned (unless all records have a weight of zero).
+
+The weight of a record is based on the record weight vs the total weight of all records.
+
+If a chosen record is unhealthy, the process of selection is repeated until a healthy record is chosen so that weights of all records are considered regardless of health status.
+
+Use weighted routing to load balance intelligently or test new versions of software (e.g., A/B testing).
+
+### Latency-Based Routing
+
+If your application is hosted in multiple AWS Regions, you can improve performance for your users by serving their requests from the AWS Region that provides the lowest latency.
+
+To use `latency-based routing`, you create latency records for your resources in multiple AWS Regions. When Route 53 receives a DNS query for your domain or subdomain (example.com or acme.example.com), it determines which AWS Regions you've created latency records for, determines which region gives the user the lowest latency, and then selects a latency record for that region. Route 53 responds with the value from the selected record, such as the IP address for a web server.
+
+AWS maintains a database of latency between the users general location and the regions tagged in records.
+
+Use latency-based routing when optimizing for performance and user-experience, especially with a global user base.
+
+### Geolocation Routing
+
+`Geolocation routing` lets you choose the resources that serve your traffic based on the geographic location of your users, meaning the location that DNS queries originate from.
+
+The location of the user is determined by the IP address on the query.
+
+Geolocation records are tagged with locations: region, country, state, etc.
+
+Geolocation does not return the "closest" record. It returns relevant records.
+
+Route53 allows you to specify a default record that can be returned in the case that no relevant DNS records are found.
+
+If no relevant records are found, and no default record is configured, a `NO ANSWER` is returned by Route53.
+
+Use geolocation when its important to users interact with regional resources (e.g., regional compliance law).
+
+### Geoproximity Routing
+
+`Geoproximity routing` lets Amazon Route 53 route traffic to your resources based on the geographic location of your users and your resources. 
+
+Records can be tagged with an AWS Region or latitude/longitude coordinates.
+
+You can also optionally choose to route more traffic or less to a given resource by specifying a value, known as a `bias`. 
+
+A bias expands or shrinks the size of the geographic region from which traffic is routed to a resource.
