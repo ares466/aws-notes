@@ -159,3 +159,44 @@ Records can be tagged with an AWS Region or latitude/longitude coordinates.
 You can also optionally choose to route more traffic or less to a given resource by specifying a value, known as a `bias`. 
 
 A bias expands or shrinks the size of the geographic region from which traffic is routed to a resource.
+
+## Route53 Endpoints
+
+Within every subnet, the second IP address is reserved for the DNS resolver (*e.g., 10.16.0.2*). This is called the `Route53 resolver`.
+
+The Route53 resolver provides Route53 public and associate private zone DNS resolution. 
+
+**By Default - DNS Boundaries**
+
+Historically, the Route53 resolver has only been accessible from within a VPC. This is problematic in hybrid network integration because it creates DNS boundaries.
+
+*Caption (below): Hybrid network with DNS boundaries*
+![Hybrid network - DNS boundaries](./static/images/route53_dnsboundary.png)
+- *DNS Queries originating from an AWS subnet are handled by the Route53 resolver. Any destinations that are not predefined are forwarded to public DNS for resolution.*
+- *DNS queries originating from on-prem use an on-prem DNS resolver. Any destinations that are not predefined are forwarded to public DNS for resolution.*
+- *Route53 DNS cannot conditionally forward requests to the on-prem DNS servers, and on the on-prem DNS servers cannot conditionally forward requests to the Route53 Resolver. This creates distrinct DNS boundaries.*
+
+**Previous Solution - DNS Forwarder**
+
+Until Route53 endpoints were introduced, this was the best practice for integrating an on-prem network with an AWS network.
+
+*Caption (below): Hybrid network that uses a DNS forwarder running on EC2.*
+![DNS Forwarding](./static/images/route53_dnsforwarding.png)
+- *A DNS Forwarder is deployed on EC2 and the `DHCP Option Set` for a VPC is modified. The forwarder can conditionally forward requests to an on-prem DNS server.*
+- *Likewise, the on-prem resolver can selectively forward DNS queries to the Route53 resolver.*
+
+**Best Solution - Route53 Endpoints**
+
+A `Route53 endpoint` is a fully-managed feature that conditionally forwards DNS queries based on rules. The endpoint is available via an ENI injected into the subnet.
+
+The Route53 endpoint ENI is available over VPN and DX.
+
+Route53 endpoints come in two forms: inbound and outbound. 
+- `Inbound endpoints` forward on-prem DNS queries to the Route53 Resolver.
+- An `outbound endpoint` is a conditional forwarder that will forward DNS queries to an on-prem DNS resolver. `Rules` are used to determine which requests are forwarded (e.g., corp.animals4life.org => on-prem DNS nameservers).
+
+*Caption (below): Using a Route53 endpoint to create a hybrid network.*
+![Route53 Endpoint](./static/images/route53_endpoints.png)
+- *By enabling a Route53 outbound endpoint, an ENI is injected into the subnet. The Route53 resolver forwards requests to the ENI which conditionally forwards traffic over a VPN or DX to the on-prem DNS servers.*
+- *Using a Route53 inbound endpoint, an ENI is injected into the subnet. The on-prem DNS server forwards requests to the inbound ENI, which forwards traffic to the Route53 Resolver.*
+- *Route53 endpoints allow on-prem resources to access domains defined in Route53 hosted zones and AWS resources to access domains defined in on-prem zones.*
