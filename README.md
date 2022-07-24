@@ -1,23 +1,25 @@
 # Notes on AWS
 
-## Advanced Identities and Federation
-- [Cognito](./COGNITO.md)
-- [Directory Services](./DIRECTORYSERVICES.md)
-- [Identity Federation](./IDENTITYFEDERATION.md)
-- [Quotas](./QUOTAS.md)
+## Advanced Permissions and Accounts
+- [Quotas](./advanced_permissions_and_accounts/QUOTAS.md)
 - [Resource Access Manager](./RESOURCEACCESSMANAGER.md)
-- [WorkSpaces](./WORKSPACES.md)
+
+## Advanced Identities and Federation
+- [Cognito](./advanced_identities_federation/COGNITO.md)
+- [Directory Services](./advanced_identities_federation/DIRECTORYSERVICES.md)
+- [Identity Federation](./advanced_identities_federation/IDENTITYFEDERATION.md)
+- [WorkSpaces](./advanced_identities_federation/WORKSPACES.md)
 
 ## Networking and Hybrid
-- [Networking Foundations](./NETWORKING.md)
-- [Direct Connect (DX)](./DIRECTCONNECT.md)
-- [Endpoints](./ENDPOINTS.md)
-- [Global Accelerator](./GLOBALACCELERATOR.md)
-- [Private Link](./PRIVATELINK.md)
-- [Route53](./ROUTE53.md)
-- [S3 - Cross Account Access](./S3_CROSSACCOUNTACCESS.md)
-- [Transit Gateway](./TRANSITGATEWAY.md)
-- [VPNs in AWS](./VPN.md)
+- [Networking Foundations](./networking/NETWORKING.md)
+- [Direct Connect (DX)](./networking/DIRECTCONNECT.md)
+- [Endpoints](./networking/ENDPOINTS.md)
+- [Global Accelerator](./networking/GLOBALACCELERATOR.md)
+- [Private Link](./networking/PRIVATELINK.md)
+- [Route53](./networking/ROUTE53.md)
+- [S3 - Cross Account Access](./networking/S3_CROSSACCOUNTACCESS.md)
+- [Transit Gateway](./networking/TRANSITGATEWAY.md)
+- [VPNs in AWS](./networking/VPN.md)
 
 ## Storage Services
 
