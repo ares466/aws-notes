@@ -32,7 +32,7 @@ Whether your users sign in directly or through a third party, all members of the
 
 > With the exception of AWS API Gateway, AWS services do not support JWT authentication. To access an AWS service, you must swap the JWT for AWS credentials using an Identity Pool.
 
-![Amazon Cognito User Pool](./static/images/cognito_userpool.png)
+![Amazon Cognito User Pool](../static/images/cognito_userpool.png)
 
 1. The user signs into the User Pool and receives a JWT.
 2. The user can now use the JWT to call self-managed APIs, or services through AWS API Gateway.
@@ -52,7 +52,7 @@ With an identity pool, you can obtain temporary AWS credentials with permissions
 
 When Amazon Cognito receives a user request, the service will determine if the request is either authenticated or unauthenticated, determine which role is associated with that authentication type, and then use the policy attached to that role to respond to the request. 
 
-![Amazon Cognito Identity Pool](./static/images/cognito_identitypool.png)
+![Amazon Cognito Identity Pool](../static/images/cognito_identitypool.png)
 
 1. Users initiate authentication with an identity pool.
 2. The user is redirected to the sign-in page of the configured identity provider.
@@ -88,7 +88,7 @@ The roles used to provide access to resources must have the proper trust policy 
 
 Cognito user and identity pools can be used together to create a complete authentication and authorization solution that enables user management, user login, and authorization to AWS resources.
 
-![Cognito User and Identity Pools together](./static/images/cognito_userandidentitypool.png)
+![Cognito User and Identity Pools together](../static/images/cognito_userandidentitypool.png)
 1. Users obtain a JWT from a Cognito user pool.
 2. The JWT is swapped for temporary AWS credentials.
 3. The AWS credentials can be used to access AWS resources.

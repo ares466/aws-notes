@@ -34,15 +34,15 @@ AWS SSO offers a built-in identity store in which you can create users and group
 
 You can configure the MFA settings for all users in the identity store, including whether users can manage their own MFA devices.
 
-![AWS SSO MFA](./static/images/sso_mfa.png)
+![AWS SSO MFA](../static/images/sso_mfa.png)
 
 Once avaialble, the identity federation service is available via a customizable link (e.g., `https://animals4life234324.awsapps.com/start`).
 
-![AWS id federation console](./static/images/sso_identityfederationconsole.png)
+![AWS id federation console](../static/images/sso_identityfederationconsole.png)
 
 From this console, users can jump into the AWS console, or obtain tokens for CLI use.
 
-![AWS SSO CLI Creds](./static/images/sso_clicreds.png)
+![AWS SSO CLI Creds](../static/images/sso_clicreds.png)
 
 ## SAML 2.0 Identity Federation
 
@@ -65,7 +65,7 @@ SAML-based identity providers can be created and managed in the IAM console. Cre
 
 **SAML for API access**
 
-![SAML-based identity federation](./static/images/federation_samlapp.png)
+![SAML-based identity federation](../static/images/federation_samlapp.png)
 
 1. An app requests access via the off-cloud idP.
 2. The idP (e.g., Microsoft ADFS) authenticates the request against some identity store. Additionally, it identifies which roles are available for the application.
@@ -76,7 +76,7 @@ SAML-based identity providers can be created and managed in the IAM console. Cre
 
 **SAML for Console access**
 
-![SAML-based identity federation for console access](./static/images/federation_samlconsole.png)
+![SAML-based identity federation for console access](../static/images/federation_samlconsole.png)
 
 1. A user browses to the idP portal.
 2. The idP authenticates the request against some identity store. Additionally, it identifies which roles are available for the application.

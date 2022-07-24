@@ -5,7 +5,7 @@
 - **Public services** are accessed via public endpoints (e.g., S3).  
 - **Private services** run in a private VPC and can only be accessed by devices that have been specifically allowed (e.g., EC2).
 
-![AWS Public and Private Zones](./static/images/networking_privatepubliczone.png)
+![AWS Public and Private Zones](../static/images/networking_privatepubliczone.png)
 
 ## DHCP
 
@@ -41,7 +41,7 @@
 - Route tables attempts to pick the most specific route first.
 - Route tables can be associated with gateways.
 
-![VPC Route Table](./static/images/networking_routetable.png)
+![VPC Route Table](../static/images/networking_routetable.png)
 
 - Route tables can contain two different types of routes: static and dynamic.
   - *Static* routes are added manually.
@@ -82,7 +82,7 @@ VPNs will have a route for traffic to the on-prem network via a virtual private 
 > 1. The client picks a temporary (ephemeral) source port 1024-65535 (depends on OS).
 > 2. [REQUEST] The client initiates a connection to the server on a well-known destination port (e.g., HTTPS tcp/443).
 > 3. [RESPONSE] The server responds using the source port of tcp/443 and the destination ephemeral port picked by the client.
-> ![TCP](./static/images/networking_tcp.png)
+> ![TCP](../static/images/networking_tcp.png)
 
 - The **directionality** of TCP connection depends on the perspective of the sender or receiver. Traffic can either be *inbound* traffic or *outbound* traffic.
 - A stateful firewall is intelligent enough to identify the request and response components as being related. As a result, you only need to explicitly allow traffic in one direction.
@@ -96,7 +96,7 @@ VPNs will have a route for traffic to the on-prem network via a virtual private 
 - Since NACLs are stateless, you must allow traffic in both directions (INBOUND and OUTBOUND).
 - VPCS are created with a default NACL with two *INBOUND* rules and two *OUTBOUND* rules. The result is that all traffic is ALLOWED (the NACL has no effect).
 
-![Default NACL](./static/images/networking_nacldefault.png)
+![Default NACL](../static/images/networking_nacldefault.png)
 
 - When you create a NACL manually, it is created with a single `DENY ALL` rule. NACLs are not automatically associated with VPCs.
 - NACLs can be used to block traffic based on IPs/CIDR, port, and protocol. They cannot be used to block logical resources.
@@ -123,7 +123,7 @@ VPNs will have a route for traffic to the on-prem network via a virtual private 
 - iBGP (internal BGP) focuses on routing within an AS. eBGP (external BGP) focuses on routing among different AS.
 - BGP advertises the shortest ASPATH between peers, regardless of the latency characteristics of the path. **ASPATH prepending** can be used to artificially make a path seem longer. With ASPATH prepending, you can configure BGP routers to advertise certain paths.
 
-![BGP Example](./static/images/networking_bgp.png)
+![BGP Example](../static/images/networking_bgp.png)
 
 ## IPv4 and IPv6
 
@@ -146,7 +146,7 @@ IPv4 and IPv6 routing is handled separately (via separate routes).
 IPv6 traffic flows to the internet via an `Egress-only IGW`.
 
 *Caption (below): The following architecture shows an example of a network profile that supports IPv4 and IPv6.*
-![IPv4 and IPv6](./static/images/networking_ipv4ipv6.png)
+![IPv4 and IPv6](../static/images/networking_ipv4ipv6.png)
 - *Bi-directional IPv4 traffic is routed to the public internet via an internet gateway (IGW).*
 - *Outbound-only IP6 traffic is routed to the public internet via an egress-only IGW. This type of gateway only supports IPV6 and only allows outbound traffic.* 
 
@@ -160,7 +160,7 @@ IPv6 traffic flows to the internet via an `Egress-only IGW`.
 
 The application running in a single AZ would not be highly available. If the AZ becomes unavailable, the application also becomes completely unavailable.
 
-![Single AZ Design](./static/images/networking_singleaz.png)
+![Single AZ Design](../static/images/networking_singleaz.png)
 
 **Two AZs** - split the required six instances between two availability zones.
 
@@ -168,7 +168,7 @@ If one availability zone fails, the application is still available at reduced ca
 
 Since the application requires a minimum of six instances, this is not sufficient for high availability.
 
-![Multi AZ](./static/images/networking_multiaz_1.png)
+![Multi AZ](../static/images/networking_multiaz_1.png)
 
 **Two AZs** - run a full workload in each AZ.
 
@@ -178,13 +178,13 @@ If one of the AZs fail, the application would still be available in the other AZ
 
 However, this requires 2x the number of instances than your application requires.
 
-![Multi AZ](./static/images/networking_multiaz_2.png)
+![Multi AZ](../static/images/networking_multiaz_2.png)
 
 **Three AZs** - run 1.5x instances across three AZs.
 
 This is highly available! By splitting the workload across three AZs, we can ensure high availability while only provisioning 1.5x instances.
 
-![Multi AZ](./static/images/networking_multiaz_3.png)
+![Multi AZ](../static/images/networking_multiaz_3.png)
 
 ### Subnets and Tiers
 

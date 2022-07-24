@@ -11,4 +11,4 @@ Features:
 - Private DNS is supported
 - Private link resources can be accessed over Direct Connect, S2S vPN, and VPC Peering.
 
-![Private Link](./static/images/privatelink.png)
+![Private Link](../static/images/privatelink.png)

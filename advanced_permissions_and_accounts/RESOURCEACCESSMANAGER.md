@@ -16,7 +16,7 @@ One of the most common use case for RAM is **shared networking**.
 
 RAM can be used for shared networking infrastructure like subnets. Participants can provision services into the shared subnets, read and reference network objects, but cannot modify or delete resources owned by the owner or other participants.
 
-![RAM - Shared Networking](./static/images/ram_sharedvpc.png)  
+![RAM - Shared Networking](../static/images/ram_sharedvpc.png)  
 *Caption: Account 1 (owner account) creates a VPC and subnets and shares it with Accounts 2 & 3 (participant accounts). Accounts 2 and 3 may deploy resources into the shared subnets and interact with other resources via L3 networking, but cannot view or manage other participants' resources.*
 
 ## Accepting RAM Requests
@@ -25,7 +25,7 @@ Participants need to explicitly accept the invitation for the resource share.
 
 If the participant is inside the same Organization with sharing enabled, the invite will be automatically accepted.
 
-![Share with AWS Organization Setting](./static/images/ram_sharewithorganization.png)
+![Share with AWS Organization Setting](../static/images/ram_sharewithorganization.png)
 
 ## A Note about Availability Zones
 

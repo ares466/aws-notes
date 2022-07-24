@@ -2,7 +2,7 @@
 
 Due to the fact that VPN connections are not transitive, even moderately complex networks require a lot of connections between disparate networks.
 
-![Complex network connections](./static/images/networking_transitgateway_problem.png)
+![Complex network connections](../static/images/networking_transitgateway_problem.png)
 
 This solution has several drawbacks:
 1. Requires a lot of administrative overhead
@@ -28,7 +28,7 @@ Transit gateways support up to 50 peering attachment across different regions an
 - Attachments can only be associated with a single route table, but route tables can be associated with many attachments.
 - Attachments can propagate to many route tables, even when not associated to the route table.
 
-![Transit Gateway](./static/images/networking_transitgateway.png)
+![Transit Gateway](../static/images/networking_transitgateway.png)
 
 Summary:
 - Transit gateway supports transitive routing

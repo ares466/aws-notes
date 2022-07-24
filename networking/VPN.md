@@ -2,7 +2,7 @@
 
 By default, instances that you launch into an Amazon VPC can't communicate with your own (remote) network. You can enable access to your remote network from your VPC by creating an AWS Site-to-Site VPN (S2S VPN) connection, and configuring routing to pass traffic through the connection.
 
-![S2S VPN Connection](./static/images/networking_s2svpn.png)
+![S2S VPN Connection](../static/images/networking_s2svpn.png)
 
 Steps to create a S2S VPN Connection:
 
@@ -35,7 +35,7 @@ Steps to create a S2S VPN Connection:
     - *Dynamic Routes* use a protocol called BGP to automatically exchange network information. By enabling **route propagation** on the route table, learned routes are automatically added and updated on the route table.
 
 
-![Customer Gateway](./static/images/networking_customergateway.png)
+![Customer Gateway](../static/images/networking_customergateway.png)
 
 VPN Considerations:
 - VPN speed is limited to 1.25 Gbps.
@@ -68,7 +68,7 @@ IPSEC consists of two phases: IKE phase 1 & IKE phase 2.
 
 S2S VPNs can be established with a transit gateway which greatly simplifies the network complexity of connecting multiple VPCs together.
 
-![S2S VPN with a Transit Gateway](./static/images/networking_s2svpn_tgw.png)
+![S2S VPN with a Transit Gateway](../static/images/networking_s2svpn_tgw.png)
 
 ## Accelerator Site-to-Site VPN
 
@@ -98,13 +98,13 @@ Connection logs and metrics are stored in CloudWatch.
 
 By *default*, the VPN route table replaces any local routes and public internet routes on the clients. This means that the client devices cannot access any resources on the local network or on the internet without first going through the VPN. This is not optimal.
 
-![ClientVPN - default mode](./static/images/networking_clientvpndefault.png)
+![ClientVPN - default mode](../static/images/networking_clientvpndefault.png)
 *Caption: ClientVPN in default mode: all routes from client devices must go through the VPN, including routes to other local devices or the public internet.*
 
 To work around this inefficiency, the ClientVPN can be configured to run in **split tunnel** mode. Split tunnel mode means that ClientVPN routes are added to existing routes (does not replace existing routes).
 
 This results in a situation where the client devices uses local routes to access other devices and the public internet, but uses the ClientVPN to access the private network.
 
-![ClientVPN - Split Tunnel](./static/images/networking_clientvpnsplittunnel.png)
+![ClientVPN - Split Tunnel](../static/images/networking_clientvpnsplittunnel.png)
 *Caption: In split tunnel mode, only specified traffic goes through the ClientVPN. Other traffic, such as traffic to the public internet, or traffic between local devices, does not go through the ClientVPN.*
 

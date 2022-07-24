@@ -13,7 +13,7 @@ Global accelerator uses two global, public anycast IP addresses that act as a fi
 Traffic uses the public internet to find a Global Accelerator edge location. 
 From that edge location, data transits globally across the AWS global backbone network to the closes application instance which results in less hops and significantly better performance.
 
-![Global Accelerator](./static/images/networking_globalaccelerator.png)
+![Global Accelerator](../static/images/networking_globalaccelerator.png)
 
 *Table: Comparing CloudFront and AWS Global Accelerator:*
 

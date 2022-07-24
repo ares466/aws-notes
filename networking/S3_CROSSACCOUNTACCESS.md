@@ -13,7 +13,7 @@ Bucket ACLs enable you to manage access to buckets and objects. Each bucket and 
 
 Bucket ACLs cannot be used to manage access within the same AWS account as the bucket.
 
-![S3 Bucket ACL](./static/images/s3_bucketacl.png)
+![S3 Bucket ACL](../static/images/s3_bucketacl.png)
 
 Bucket ACLs grant access based on Cononical Account IDs (a legacy account identifier). The *Account canonical user ID* can be found on the *Security Credentials* console.
 
@@ -82,7 +82,7 @@ The IAM role must grant `sts:AssumeRole` permissions to an identity in the other
 
 When S3 ACLs are enabled, bucket owners can choose the preferred object ownership strategy.
 
-![S3 Object Ownership Setting](./static/images/s3_objectownershipenabled.png).
+![S3 Object Ownership Setting](../static/images/s3_objectownershipenabled.png).
 
 - **Bucket owner preferred** - if new objects written to the bucket specify the bucket-owner-full-control canned ACL, they are owned by the bucket owner. Otherwise, they ware owned by the object writer.
 - **Object writer** - The object writer remains the object owner.

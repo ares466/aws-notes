@@ -10,7 +10,7 @@ DX costs include hourly charges and outbound data transfer charges.
 
 DX provides low and consistent latency. It also enables connection to AWS private services (VPCs) and AWS public services (e.g., S3, DynamoDB) without traversing the public internet.
 
-![DX](./static/images/networking_dx.png)
+![DX](../static/images/networking_dx.png)
 
 DX locations are large regional data centers that are not owned by AWS, but rent space and equipment to AWS.
 
@@ -66,7 +66,7 @@ Public VIFs allow access to all public zone regions across the AWS global networ
 
 AWS advertises all AWS public IP ranges to the customer. The customer can advertise any public IPs owned over BGP. Advertised routes are not transitive; Customer-advertised prefixes do not leave AWS.
 
-![Public VIF over DX](./static/images/dx_publicvif.png)
+![Public VIF over DX](../static/images/dx_publicvif.png)
 
 ### Private VIFs
 
@@ -82,7 +82,7 @@ Private VIFs support standard (1500 MTU) or jumbo (9001 MTU) frames.
 
 Route propagation is enabled by default in private VIFs when the VIF terminates at a VGW. AWS will advertise the VPC CIDR and the BGP Peer IPs and you can advertise specific corporate prefixes (100 max) or the default route (0.0.0.0/0).
 
-![Private VIF over DX](./static/images/dx_privatevif.png)
+![Private VIF over DX](../static/images/dx_privatevif.png)
 
 > [Exam tip]   
 >
@@ -104,7 +104,7 @@ Key Learning Objectives:
 
 By default, traffic flowing through a DX is unencrypted. Historically, the solution has been to run an end-to-end VPN over the DX connection, but speed suffers due to the heavy computational requirements of the VPN.
 
-![DX Connection without MACsec](./static/images/networking_dxnomacsec.png)
+![DX Connection without MACsec](../static/images/networking_dxnomacsec.png)
 *Caption: There are some security problems with a DX connection without MACsec.*  
 *1. Plaintext data is flowing over a physical cable between AWS and a customer cage in the data center.*  
 *2. Its common to use a 3rd party provider to establish the connection between the customer cage in the DX location and the customer premisis - another unknown party that must be trusted.*
@@ -130,7 +130,7 @@ MACsec adds two 16 byte tags to the standard *802.1Q* ethernet frame:
 
 The original frame components are encapsulated, encrypted, and integrity protected.
 
-![DX Connection with MACsec](./static/images/networking_macsecframe.png)
+![DX Connection with MACsec](../static/images/networking_macsecframe.png)
 
 ### MACsec vs VPN (IPSEC)
 
@@ -149,7 +149,7 @@ A VPN provides end-to-end encryption and authentication over the public internet
 
 VPNs over DX use a public VIF and VGW/TGW public endpoints.
 
-![VPN over DX](./static/images/dx_vpn.png)
+![VPN over DX](../static/images/dx_vpn.png)
 
 Customers may choose to use a VPN over DX, or a VPN as a backup to the DX connection, or both.
 
@@ -163,7 +163,7 @@ The DX Gateway is attached to one or more VGWs that are attached to VPCs. This a
 
 A DX gateway does not support VPC to VPC traffic.
 
-![DX Gateway Architecture](./static/images/dx_dxgateway.png)
+![DX Gateway Architecture](../static/images/dx_dxgateway.png)
 
 DX Gateway has no additional costs.
 
@@ -185,7 +185,7 @@ Limitations:
 - A transit VIF can support up to 3 TGWs.
 - DX Gateway does not support routing between interfaces attached to the gateway (e.g., two on-prem sites).
 
-![Example](./static/images/dx_dxgw_tgw_example.png)
+![Example](../static/images/dx_dxgw_tgw_example.png)
 *Caption:*  
 *- This example shows two on-prem business locations using a transit VIF over a DX connection from each location.*  
 *- The DX connection terminates at an in-region TGW. The two regional TGWs are peered to allow for VPC to VPC communication.*  
@@ -199,7 +199,7 @@ Limitations:
 - By default, a single cross-connect links a DX port with a customer router.
 - A DX is extended from the DX location to a customer premises.
 
-![DX resiliency](./static/images/dx_resiliency.png)
+![DX resiliency](../static/images/dx_resiliency.png)
 
 What could go wrong?
 - The entire DX location could fail
@@ -216,7 +216,7 @@ DX is not resilient by default, but it can be improved with careful planning.
 
 The following diagram shows a semi-resilient architecture. By establishing two DX connections using two customer premises routers, two customer DX routers, and two AWS DX routers, we have eliminated many of the single points of failure in the default pattern.
 
-![DX - semi-resilient](./static/images/dx_semiresilient.png)
+![DX - semi-resilient](../static/images/dx_semiresilient.png)
 
 There are still several points of failure to consider:
 - The DX location could fail
@@ -227,7 +227,7 @@ There are still several points of failure to consider:
 
 By establishing a DX connection at two different customer premises to different DX locations, the single points of failure in the previous architecture are remediated.
 
-![Mostly resilient DX connection](./static/images/dx_mostlyresilient.png)
+![Mostly resilient DX connection](../static/images/dx_mostlyresilient.png)
 
 A failure in one location would result in a partial outage, but the company would still have a connection to AWS.
 
@@ -235,7 +235,7 @@ A failure in one location would result in a partial outage, but the company woul
 
 By duplicating the DX connections in each customer premises, extreme resilience is possible.
 
-![DX Connection - extreme resilience](./static/images/dx_extremeresilience.png)
+![DX Connection - extreme resilience](../static/images/dx_extremeresilience.png)
 
 ## DX Link Aggregation Groups (LAG)
 
