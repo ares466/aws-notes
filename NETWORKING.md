@@ -188,4 +188,8 @@ This is highly available! By splitting the workload across three AZs, we can ens
 
 ### Subnets and Tiers
 
+Traditional applications use an `n-tier architecture`. Each tier is responsible for a specific part of the app functionality (*e.g., presentation tier, logic tier, and data tier*).
 
+In legacy infrastructure platforms, physical networking and security was built around these tier. Therefore, each tier had its own networking and security configurations. Each tier was isolated and data crossing tiers was tightly controlled using firewalls.
+
+This structure is not necessary in AWS due to the security and network features AWS offers.
