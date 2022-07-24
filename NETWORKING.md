@@ -124,3 +124,64 @@ VPNs will have a route for traffic to the on-prem network via a virtual private 
 - BGP advertises the shortest ASPATH between peers, regardless of the latency characteristics of the path. **ASPATH prepending** can be used to artificially make a path seem longer. With ASPATH prepending, you can configure BGP routers to advertise certain paths.
 
 ![BGP Example](./static/images/networking_bgp.png)
+
+## IPv4 and IPv6
+
+The `IPv4` address space contains 4,294,967,296 addresses, which is fewer than the number of people alive today.
+
+The IPv4 address space contains private addresses. Private addresses are used within private subnets. These IPs are not routable over the internet without first translating the private IP to a public IP using a NAT.
+
+Services never have public IPv4 addresses configured on the OS within a VPC. Instead, it's handled through a gateway appliance. 
+
+The `IPv6` address space contains 340,282,366,920,938,463,463,374,607,431,770,000,000 addresses. This allows each person alive to have 50 octillion addresses.
+
+All IPv6 addresses are publicly routable. Therefore, NAT as a concept does not apply to IPv6 addresses. Consequently, NATs and NAT gateway do not support IPv6 addresses.
+
+Each VPC can be IPv6-enabled which allocates an IPv6 CIDR (e.g., 2600:1f18:8e1:2200::/56). The VPC can be enabled at creation or updated after creation.
+
+The same VPC can communicate via IPv4 or IPv6.
+
+IPv4 and IPv6 routing is handled separately (via separate routes).
+
+IPv6 traffic flows to the internet via an `Egress-only IGW`.
+
+*Caption (below): The following architecture shows an example of a network profile that supports IPv4 and IPv6.*
+![IPv4 and IPv6](./static/images/networking_ipv4ipv6.png)
+- *Bi-directional IPv4 traffic is routed to the public internet via an internet gateway (IGW).*
+- *Outbound-only IP6 traffic is routed to the public internet via an egress-only IGW. This type of gateway only supports IPV6 and only allows outbound traffic.* 
+
+## Designing a VPC
+
+**Example**: An application requires six instances to operate reliable based on normal load.
+
+**Single AZ** - run all six instances within a single AZ.
+
+The application running in a single AZ would not be highly available. If the AZ becomes unavailable, the application also becomes completely unavailable.
+
+![Single AZ Design](./static/images/networking_singleaz.png)
+
+**Two AZs** - split the required six instances between two availability zones.
+
+If one availability zone fails, the application is still available at reduced capacity.
+
+Since the application requires a minimum of six instances, this is not sufficient for high availability.
+
+![Multi AZ](./static/images/networking_multiaz_1.png)
+
+**Two AZs** - run a full workload in each AZ.
+
+This design would meet the requirement of being highly avialable, but at the cost of being overprovsioned. 
+
+If one of the AZs fail, the application would still be available in the other AZ at full capacity.
+
+However, this requires 2x the number of instances than your application requires.
+
+![Multi AZ](./static/images/networking_multiaz_2.png)
+
+**Three AZs** - run 1.5x instances across three AZs.
+
+This is highly available! By splitting the workload across three AZs, we can ensure high availability while only provisioning 1.5x instances.
+
+![Multi AZ](./static/images/networking_multiaz_3.png)
+
+
