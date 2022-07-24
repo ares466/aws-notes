@@ -14,6 +14,9 @@ EFS supports bursting and provisioned `throughput modes`.
 
 EFS supports standard and infrequent access (IA) `storage classes`. Lifecycle policies can be used to automatically move data between storage classes.
 
+*Caption (below): Screenshot showing the various configuration options available when creating an EFS instances.*
+![EFS modes](../static/images/efs_modes.png)
+
 *Caption (below): EFS is accessible from an on-prem network via mount targets over a VPN or DX connection.*
 ![EFS](../static/images/efs.png)
 
