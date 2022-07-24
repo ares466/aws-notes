@@ -1,3 +1,22 @@
+# EFS (Elastic File System)
+
+`EFS` is a `NFSv4-based` file system that can be mounted into Linux. EFS uses `POSIX` file permissions.
+
+A single EFS instance can be mounted into many EC2 instances at the same time.
+
+EFS is a private service that is accessible from `mount targets` within a VPC. An EFS instance can also be accessed via VPN or DX as well.
+
+To ensure high availability, a mount target should be deployed in multiple AZs.
+
+EFS supports general purpose and max i/o `performance modes`. The general purpose mode is default and is sufficient for 99.9% of users.
+
+EFS supports bursting and provisioned `throughput modes`.
+
+EFS supports standard and infrequent access (IA) `storage classes`. Lifecycle policies can be used to automatically move data between storage classes.
+
+*Caption (below): EFS is accessible from an on-prem network via mount targets over a VPN or DX connection.*
+![EFS](../static/images/efs.png)
+
 # FSx for Windows
 
 `FSx for Windows File Server` is a fully-managed native Windows file server/shares. It is designed for integration with Windows environments.
