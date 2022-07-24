@@ -1,4 +1,4 @@
-# Notes on AWS
+# AWS Certified Solutions Architect - Professional
 
 ## Advanced Permissions and Accounts
 - [Quotas](./advanced_permissions_and_accounts/QUOTAS.md)
