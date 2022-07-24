@@ -22,6 +22,7 @@
 - [VPNs in AWS](./networking/VPN.md)
 
 ## Storage Services
+- [File Shares](./storage_services/FILESHARES.md)
 
 ## Resources
 
