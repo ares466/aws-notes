@@ -1,23 +1,25 @@
 # Notes on AWS
 
-## Notes
-
-- [Amazon Cognito](./COGNITO.md)
-- [Direct Connect (DX)](./DIRECTCONNECT.md)
+## Advanced Identities and Federation
+- [Cognito](./COGNITO.md)
 - [Directory Services](./DIRECTORYSERVICES.md)
+- [Identity Federation](./IDENTITYFEDERATION.md)
+- [Quotas](./QUOTAS.md)
+- [Resource Access Manager](./RESOURCEACCESSMANAGER.md)
+- [WorkSpaces](./WORKSPACES.md)
+
+## Networking and Hybrid
+- [Networking Foundations](./NETWORKING.md)
+- [Direct Connect (DX)](./DIRECTCONNECT.md)
 - [Endpoints](./ENDPOINTS.md)
 - [Global Accelerator](./GLOBALACCELERATOR.md)
-- [Identity Federation](./IDENTITYFEDERATION.md)
-- [Networking Foundations](./NETWORKING.md)
-- [Quotas](./QUOTAS.md)
 - [Private Link](./PRIVATELINK.md)
-- [Resource Access Manager](./RESOURCEACCESSMANAGER.md)
 - [Route53](./ROUTE53.md)
 - [S3 - Cross Account Access](./S3_CROSSACCOUNTACCESS.md)
 - [Transit Gateway](./TRANSITGATEWAY.md)
 - [VPNs in AWS](./VPN.md)
-- [WorkSpaces](./WORKSPACES.md)
 
+## Storage Services
 
 ## Resources
 

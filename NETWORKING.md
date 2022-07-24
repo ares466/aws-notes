@@ -152,6 +152,8 @@ IPv6 traffic flows to the internet via an `Egress-only IGW`.
 
 ## Designing a VPC
 
+### How many AZs should be use?
+
 **Example**: An application requires six instances to operate reliable based on normal load.
 
 **Single AZ** - run all six instances within a single AZ.
@@ -183,5 +185,7 @@ However, this requires 2x the number of instances than your application requires
 This is highly available! By splitting the workload across three AZs, we can ensure high availability while only provisioning 1.5x instances.
 
 ![Multi AZ](./static/images/networking_multiaz_3.png)
+
+### Subnets and Tiers
 
 
