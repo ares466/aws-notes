@@ -17,12 +17,12 @@
 - [Global Accelerator](./networking/GLOBALACCELERATOR.md)
 - [Private Link](./networking/PRIVATELINK.md)
 - [Route53](./networking/ROUTE53.md)
-- [S3 - Cross Account Access](./networking/S3_CROSSACCOUNTACCESS.md)
 - [Transit Gateway](./networking/TRANSITGATEWAY.md)
 - [VPNs in AWS](./networking/VPN.md)
 
 ## Storage Services
 - [File Shares](./storage_services/FILESHARES.md)
+- [S3](./storage_services/S3.md)
 
 ## Resources
 
