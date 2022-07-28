@@ -10,6 +10,9 @@
 - [Identity Federation](./advanced_identities_federation/IDENTITYFEDERATION.md)
 - [WorkSpaces](./advanced_identities_federation/WORKSPACES.md)
 
+## Infrastructure as Code
+- [CloudFormation](./infrastructure_as_code/CLOUDFORMATION.md)
+
 ## Networking and Hybrid
 - [Networking Foundations](./networking/NETWORKING.md)
 - [Direct Connect (DX)](./networking/DIRECTCONNECT.md)

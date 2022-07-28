@@ -1,0 +1,12 @@
+Resources:
+  Bucket: # Logical Resource Name
+    Type: AWS::S3::Bucket # Logical Resource Type
+    Properties:
+      BucketName: 'arcatpics192382'
+
+  Instance:
+    Type: AWS::EC2::Instance
+    Properties:
+      KeyName: 'a4l-keypair'
+      InstanceType: 't2.micro'
+      ImageId: 'ami-0cff7528ff583bf9a'
