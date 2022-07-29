@@ -244,3 +244,160 @@ Using the `GetAtt` function and the `WaitHandle` logical resource, we can pull d
 !GetAtt WaitCondition.Data
 ```
 *Caption (above): The `GetAtt` can be used to pull data from the signal from the `WaitCondition`.*
+
+## Cross Stack Architectures
+
+Thus far, we've discuss CloudFormation stacks in the context of a single template. There are some limitations with a single template strategy:
+- There is a limit of 500 resources within a template
+- All resources within a single stack share the same lifecycle
+
+For complex architectures, CloudFormation supports two approaches to a multi-stack strategy:
+- Nested Stacks
+- Cross-Stack References
+
+**Nested Stacks** are stacks created as part of other stacks. You create nested stacks within another stack by using the `AWS::CloudFormation::Stack` resource.
+
+Nested stacks start with a **root stack**, which defines the first `AWS::CloudFormation::Stack` resource. Any stack that creates a `AWS::CloudFormation::Stack` resource is also called a **parent stack**.
+
+```yaml
+VpcStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+        TemplateURL: https://someurl.com/template.yaml
+        Parameters:
+            Param1: !Ref SomeParam1
+            Param2: !Ref SomeParam2
+            Param3: !Ref SomeParam3
+```
+
+Nested stacks should be used:
+- to make modular templates for code reuse
+- when all resources are lifecycle linked
+- when you need to overcome the 500 reource limit in a stack
+
+**Cross-stack references** serves a similar objective as nested stacks, but works differently which means its better suited for some use cases.
+
+Normally, outputs are not visible from other stacks unless the stacks are nested. Outputs can be **exported** which makes them visible from other stacks. Exports must have a unique name within the region.
+
+`Fn::ImportValue` can be used within a template to use an exported value.
+
+*Caption (below): A stack can export an output value so it is available to other stacks.*
+```yaml
+Outputs:
+    SharedVpcId:
+        Description: Shared Services VPC
+        Value: !Ref VPC
+        Export:
+            Name: SharedVpcId
+```
+
+*Caption (below): The `!ImportValue` function can be used to reference the exported value.*
+```yaml
+!ImportValue SharedVpcId
+```
+
+Stacks can only reference values from within the same region. It cannot access values in other regions.
+
+> [Exam Tip]
+>
+> *Nested Stacks* can be used to share templates. *Cross-stack references* can be used to share resources.
+
+## Stack Sets
+
+**AWS CloudFormation StackSets** extends the capability of stacks by enabling you to create, update, or delete stacks across multiple accounts and AWS Regions with a single operation.
+
+StackSets are containers that are deployed within an **admin account**. These containers contain stack instances which reference stacks. Stack instances and stacks are within **target accounts**.
+
+StackSets can deploy stacks using *self-managed* roles or *service-managed* roles.
+
+After you've defined a stack set, you can create, update, or delete stacks in the target accounts and AWS Regions you specify. 
+
+![StackSets](../static/images/cf_stacksets.png)
+
+When you create, update, or delete stacks, you can also specify operation preferences. For example, include the order of Regions you want to perform the operation, the **failure tolerance threshold** before stack operations stop, and the number of accounts performing **stack operations concurrently**.
+
+By default, StackSets will delete all stacks that it manages. You can configure it to retain stacks in certain accounts or regions, while deleting the rest.
+
+## Deletion Policies
+
+If you delete a logical resource from a template and deploy it, the physical resource will be deleted. This can cause data loss or a loss of service.
+
+You can optionally define a **deletion policy** on each resource. The deletion policy supports three options:
+- Delete (default)
+- Retain
+- Snapshot (supported for some AWS services such as EBS, ElastiCache, Neptune, RDS, Redshift)
+
+The **Snapshot** deletion policy will create a snapshot of the resource before deleting it. The created snapshot will continue to exist even after the stack is deleted. It must be manually cleaned up if desired. Notably, EC2 is not a supported resource for the snapshot deletion policy.
+
+Deletion policies only apply to delete operations, not replace operations.
+
+## Stack Roles
+
+Everything that happens within AWS require permissions via IAM roles, including creating resources in CloudFormation. 
+
+By default, CloudFormation uses the permissions of the principal that initiated a stack operation. As a result, the principal initiating a stack operation must have the correct permissions to create, update, or delete the AWS resources contained in the stack.
+
+Alternatively, CloudFormation can assume a role to gain the necessary permissions to create and manage AWS resources. **Stack Roles** allows users to implement role separation so that the identity creating the stack does not need resource permissions - only the `PassRole` permission. 
+
+![CloudFormation Stack Roles](../static/images/cf_stackroles.png)
+
+## Init
+
+To initiate an EC2 instance after creation, the `UserData` property within the `AWS::EC2::Instance` resource can be used to perform procedural commands.
+
+Alternatively, the **CloudFormation Init** feature allows you to boostrap an EC2 instance by defining a desired state in a `AWS::CloudFormation::Init` property within an `AWS::EC2::Instance` resource.
+
+CloudFormation Init is idempotent.
+
+The target EC2 instance must have the `cfn-init` helper script installed. This script is responsible for performing the operations defined in the `AWS::CloudFormation::Init` resource.
+
+```yaml
+EC2Instance:
+    Type: AWS::EC2::Instance
+    Metadata:
+        AWS::CloudFormation::Init:
+            configSets:
+            install_cfn:
+            software_install:
+            configure_instance:
+            install_wordpress:
+            configure_wordpress:
+    Properties:
+        UserData:
+            !Base64 !Sub |
+                #!/bin/bash -xe
+                yum -y update
+                /opt/aws/bin/cfn-init -v --stacak ${AWS::StackId} --resource ECInstance --configsets wordpress_install --region ${AWS::Region}
+                /opt/aws/bin/cfn-signal -e $? --stack ${AWS::StackId} --resource EC2Instance --region ${AWS::Region}
+```
+*Caption (above):*
+- *In the `Metadata` property of the EC2 instance, we define **Config Keys** that should be preformed as part of the EC2 initialization process.*
+- *In the `UserData` section of the EC2 instance, we must make a call to the `cfn-init` and `cfn-signal` scripts to start the initiation process and provide necessary info.*
+
+Each `ConfigKey` in `AWS::CloudFormation::Init` contains several sections that perform different types of operations:
+
+```yaml
+AWS::CloudFormation::Init:
+    configure_wordpress:
+        packages: # packages to install
+        groups: # local group management
+        users: # local user management
+        sources: # download and extract archives
+        files: # files to create
+        commands: # commands to execute
+        services: # services to enable
+```
+
+The output logs of the UserData component can be found in `/var/log/cloud-init-output.log`, 
+If using CloudFormation Init, there is also a `/var/log/cfn-init-cmd.log`, `var/log/cfn-init.log.
+
+These files are useful for diagnosing issues with the EC2 bootsrapping process.
+
+## Cfn Hup
+
+`cfn-init` is a helper tool on EC2 instances that is only run once as part of the bootstraping process. If you update `AWS::CloudFormation::Init` on a running instance, it is not rerun.
+
+The `cfn-hup` helper is a daemon which can be installed to detect changes in resources metadata and run configurable actions based on those changes. When an update stack operation is performed with new metadata, the running EC2 instance is updated.
+
+![CloudFormation Hup](../static/images/cf_hup.png)
+*Caption (above): The `cfn-hup` utility on the EC2 service periodically checks the CF metadata provided by a CloudFormation deploy. When it detects a change, it updates the instance accordingly.*
