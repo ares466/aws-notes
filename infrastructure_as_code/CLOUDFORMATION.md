@@ -401,3 +401,69 @@ The `cfn-hup` helper is a daemon which can be installed to detect changes in res
 
 ![CloudFormation Hup](../static/images/cf_hup.png)
 *Caption (above): The `cfn-hup` utility on the EC2 service periodically checks the CF metadata provided by a CloudFormation deploy. When it detects a change, it updates the instance accordingly.*
+
+## Change Sets
+
+When updating a stack, the update can have one of three impacts on the AWS resource:
+- No interruption (No impact to the resource)
+- Some interruption (e.g., EC2 reboot)
+- Replacement (Create a new copy of the resource which may result in data loss)
+
+`Change Sets` allow you to preview changes to validate which operations will occur on the resource, and how it will impact the resource. If you wish to proceed, you can initiate the update operation from the change set to actually make the changes.
+
+## Custom Resources
+
+CloudFormation supports most AWS services, but not every service and not every feature of every service.
+
+CloudFormation `Custom Resources` allow developers to create resources that are not yet supported, or in a configuration that is not supported by CloudFormation.
+
+For example, custom resources will allow you to populate (or empty) an S3 bucket after creation.
+
+Custom resources are backed by Lambda functions or an SQS Queue.
+
+![CloudFormation](../static/images/cf_customresources.png)
+
+*Caption (below): You can define a custom resource that calls a Lambda function and any number of parameters.*
+```yaml
+CopyS3Objects:
+    Type: "Custom::S3Objects"
+    Properties:
+      ServiceToken: !GetAtt MyFunction.Arn # Determines where to send the create/update/delete request
+      SourceBucket: "cl-randomstuffforlessons" # Param 1
+      SourcePrefix: "customresource" # Param 2
+      Bucket: !Ref animalpics # Param 3
+```
+
+When a CloudFormation operation is initiated, CloudFormation invokes the Lambda. It passes in a JSON object with contextual data.
+
+*Caption (below): The `ResponseURL` is used by the custom resource target to register success or failure.
+```json
+{
+    "RequestType": "Create",
+    "ServiceToken": "arn:aws:lambda:us-east-1:801955473075:function:S3BUCKETCUSTOM-CopyS3ObjectsFunction-w5I8gQBSiIwR",
+    "ResponseURL": "https://cloudformation-custom-resource-response-useast1.s3.amazonaws.com/arn%3Aaws%3Acloudformation%3Aus-east-1%3A801955473075%3Astack/S3BUCKETCUSTOM/20f18af0-0f7e-11ed-9097-0ec03a295bd3%7Ccopyanimalpics%7C90581a31-cb85-45b1-b89c-b5cae6bca709?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20220729T203732Z&X-Amz-SignedHeaders=host&X-Amz-Expires=7200&X-Amz-Credential=AKIA6L7Q4OWTTE4NZIXU%2F20220729%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Signature=1e2ec308d4c5de616345f97a16b16b8c1a74a6b813645e260735153422c91390",
+    "StackId": "arn:aws:cloudformation:us-east-1:801955473075:stack/S3BUCKETCUSTOM/20f18af0-0f7e-11ed-9097-0ec03a295bd3",
+    "RequestId": "90581a31-cb85-45b1-b89c-b5cae6bca709",
+    "LogicalResourceId": "copyanimalpics",
+    "ResourceType": "Custom::S3Objects",
+    "ResourceProperties": {
+        "ServiceToken": "arn:aws:lambda:us-east-1:801955473075:function:S3BUCKETCUSTOM-CopyS3ObjectsFunction-w5I8gQBSiIwR",
+        "SourceBucket": "cl-randomstuffforlessons",
+        "SourcePrefix": "customresource",
+        "Bucket": "s3bucketcustom-animalpics-14m7mbmcw7zzv"
+    }
+}
+```
+
+From within the Lambda function, we must signal to CloudFormation whether the custom operation was completed successfully.
+
+```python
+import cfnresponse
+
+def handler(event, context):
+    
+    # DO CUSTOM THINGS
+
+    # result is either cfnresponse.FAILED or cfnresponse.SUCCESS
+    cfnresponse.send(event, context, result, {})
+```
