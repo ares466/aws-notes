@@ -13,6 +13,11 @@
 ## Infrastructure as Code
 - [CloudFormation](./infrastructure_as_code/CLOUDFORMATION.md)
 
+## Monitoring, Logging, and Cost Management
+- [CloudTrail](./monitoring/CLOUDTRAIL.md)
+- [CloudWatch](./monitoring/CLOUDWATCH.md)
+- [Trusted Advisor](./monitoring/TRUSTEDADVISOR.md)
+
 ## Networking and Hybrid
 - [Networking Foundations](./networking/NETWORKING.md)
 - [Direct Connect (DX)](./networking/DIRECTCONNECT.md)

@@ -79,3 +79,14 @@ ST1 supports volume sizes from 125 GB to 16 TBs, a maximum of 500 IOPS with a th
 SC1 is designed for infrequently used data storage, not performance workloads.
 
 SC1 supports volume sizes from 125 GB to 16 TB, a maximum of 250 IOPS, and a max throughput of 250 MB/s.
+
+## Exam Tips
+
+- If the exam question highlights cost efficiency as a requirement, choose HHD-ST1 or HHD-SC1. 
+    - If the exam question mentions throughput or streaming, choose HHD-ST1 over HHD-SC1.
+    - If the exam question mentions a boot drive, ST1 and SC1 *cannot* be used.
+- GP2/3 can achieve up to 16,000 IOPS per volume.
+- IO1/2 can achieve up to 64,000 IOPS per volume.
+- IO-BLOCKEXPRESS can achieve up to 256,000 IOPS per volume.
+- You can combine volumes in a RAID0 configuration for up to 260,000 IOPS. This is the max IOPS per EC2 instance.
+- If you need more than 260,000 IOPS, you must use an ephemeral instance store.
