@@ -26,6 +26,7 @@
 ## Storage Services
 - [EFS](./storage_services/EBS.md)
 - [File Shares](./storage_services/FILESHARES.md)
+- [Instance Stores](./storage_services/INSTANCESTORE.md)
 - [S3](./storage_services/S3.md)
 
 ## Resources

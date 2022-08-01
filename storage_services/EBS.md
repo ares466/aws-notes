@@ -6,6 +6,7 @@ When provisioning an EB2 instance, you must select an instance type. There are s
 - General Purpose SSD (GP2)
 - General Purpose SSD (GP3)
 - Provisioned IOPS (IO1/IO2/BlockExpress)
+- Hard Disk Drive (HDD)-based
 
 ## GP2 
 
@@ -64,3 +65,17 @@ Provisioned IOPS offer consistently low latency and jitter.
 | BlockExpress | 4 GB to 64 TB | 1000 IOPS/GB | 4000 MB/s | 260,000 IOPS & 7500 MB/s |
 
 Use IO1/IO2/BlockExpress for high performance, latency sensitive, I/O intense workloads such as NoSQL or relational databases.
+
+## HHD
+
+There are two types of HDD-based instance types:
+- ST1 (throughput optimized)
+- SC1 (cold storage)
+
+ST1 is optiimized for serially written data (not randomly accessed).
+
+ST1 supports volume sizes from 125 GB to 16 TBs, a maximum of 500 IOPS with a throughput of 500 MB/s.
+
+SC1 is designed for infrequently used data storage, not performance workloads.
+
+SC1 supports volume sizes from 125 GB to 16 TB, a maximum of 250 IOPS, and a max throughput of 250 MB/s.
