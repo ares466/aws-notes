@@ -25,6 +25,18 @@ CloudTrail typically publishes events within 15 minutes of activity. There is no
 
 By default, CloudTrail is enabled on the account for management events only without any trails configured.
 
+When creating a new CloudTrail trail, you can specify several parameters.
+- Destination S3 bucket
+- Enable/disable SSE-KMS encryption
+- Enable/disable log file validation
+- Enable/disable SNS notification delivery
+- Enable/disable publishing to CloudWatch Logs
+    - If enabled, you must provide an IAM role that can publish to CloudWatch Logs
+- Enable/disable management events and which management events to exclude (e.g., KMS events, RDS data API events)
+- Enable/disable data events and which types of events (e.g., read, write) from which services (e.g., S3, DynamoDB) and optional selectors to limit events to a specific bucket/table.
+- Enable/disable insight events and which types of insights to enable
+
+
 ![CloudTrail](../static/images/cloudtrail.png)
 
 ## Pricing

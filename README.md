@@ -16,7 +16,9 @@
 ## Monitoring, Logging, and Cost Management
 - [CloudTrail](./monitoring/CLOUDTRAIL.md)
 - [CloudWatch](./monitoring/CLOUDWATCH.md)
+- [Tags](./monitoring/TAGS.md)
 - [Trusted Advisor](./monitoring/TRUSTEDADVISOR.md)
+- [X-Ray](./monitoring/XRAY.md)
 
 ## Networking and Hybrid
 - [Networking Foundations](./networking/NETWORKING.md)
