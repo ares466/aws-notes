@@ -24,6 +24,7 @@
 - [VPNs in AWS](./networking/VPN.md)
 
 ## Storage Services
+- [EFS](./storage_services/EBS.md)
 - [File Shares](./storage_services/FILESHARES.md)
 - [S3](./storage_services/S3.md)
 
