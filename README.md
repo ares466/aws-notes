@@ -11,6 +11,9 @@
 - [Identity Federation](./advanced_identities_federation/IDENTITYFEDERATION.md)
 - [WorkSpaces](./advanced_identities_federation/WORKSPACES.md)
 
+## Data Analytics
+- [Kinesis](./data_analytics/KINESIS.md)
+
 ## Infrastructure as Code
 - [CloudFormation](./infrastructure_as_code/CLOUDFORMATION.md)
 
