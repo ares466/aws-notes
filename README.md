@@ -6,6 +6,7 @@
 
 ## Advanced Identities and Federation
 - [Cognito](./advanced_identities_federation/COGNITO.md)
+- [Control Tower](./advanced_identities_federation/CONTROLTOWER.md)
 - [Directory Services](./advanced_identities_federation/DIRECTORYSERVICES.md)
 - [Identity Federation](./advanced_identities_federation/IDENTITYFEDERATION.md)
 - [WorkSpaces](./advanced_identities_federation/WORKSPACES.md)
