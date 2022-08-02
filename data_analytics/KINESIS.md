@@ -52,3 +52,29 @@ Kinesis Firehouse supports near real time delivery of data (within 60 seconds). 
 - For high throughput consumers, Kinesis Firehose will write to the destination every 1 MB.
 
 ![Kinesis Firehose](../static/images/kinesis_firehose.png)
+
+## Kinesis Data Analytics
+
+Kinesis Data Analytics is a service that provides real time processing of data using SQL.
+
+The product ingests data from Kinesis Data Streams or Firehose.
+
+Once the data is processed, it can be sent to AWS Lambda, Kinesis Data Stream, or Firehouse (and then onto S3, Redshift, ElasticSearch, Splunk).
+
+Kinesis Data Analytics creates and maintains an `in-application input stream`. This stream is conceptually similar to a database table, but is constantly updated based on new input.
+
+Additionally, Kinesis Data Analytics uses a `reference table` to encrich streaming input.
+
+The reference table and in-application input streams are used to process input and produce output using application code and SQL.
+
+The results of the processing are pushed to the `in-application output stream` and onto a Kinesis Stream or Kinesis Firehose.
+
+Any errors during processing are sent to the `in-application error stream`.
+
+![Kinesis Data Analytics](../static/images/kinesis_analytics.png)
+
+Kinesis Data Analytics should be used on streaming data that requires real-time SQL processing (e.g., time-series analytics, real-time dashboards, real-time metrics).
+
+> [Exam Tip]
+>
+> Kinesis Firehouse can trigger a Lambda to process data, but it is only near real-time. Kinesis Data Analytics provides real time data processing.
