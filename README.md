@@ -12,7 +12,11 @@
 - [WorkSpaces](./advanced_identities_federation/WORKSPACES.md)
 
 ## Data Analytics
+- [AWS Batch](./data_analytics/BATCH.md)
+- [EMR](./data_analytics/EMR.md)
 - [Kinesis](./data_analytics/KINESIS.md)
+- [QuickSight](./data_analytics/QUICKSIGHT.md)
+- [Redshift](./data_analytics/REDSHIFT.md)
 
 ## Infrastructure as Code
 - [CloudFormation](./infrastructure_as_code/CLOUDFORMATION.md)
