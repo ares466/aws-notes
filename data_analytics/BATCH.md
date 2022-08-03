@@ -12,6 +12,8 @@ The `job definition` is the metadata that describes the job. The job definition 
 
 Jobs are submitted to `job queues`. Jobs wait on these queues until there is sufficient capacity to process them. Queues are associated with one or more compute environments.
 
+![Batch](../static/images/batch_queues.png)
+
 A `compute environment` is a managed or unamanged compute. Users can configure instance type, size, vCPU amount, spot price, and more.
 
 AWS Batch supports a `managed` mode and `unmanaged` mode. In the managed mode, AWS Batch manages capacity of compute baed on the workload. You can configure `managed` mode to use on-demand or spot instances. If spot instances are chosen, you can specify your max spot price.
@@ -20,8 +22,8 @@ AWS Batch supports both private and public VPCs, which may require VPC Gateways.
 
 In unmanaged mode, you manage all compute.
 
-*Caption (below): Consider a batch-type workload that does not use AWS Batch. Lambda cannot be used for compute-intensive batch-like scenarios due to its execution constraints.*
-![Batch-type workload](../static/images/batch_processwithoutbatch.png)
+*Caption (below): AWS Batch supports seamless integration with several AWS services.*
+![Batch](../static/images/batch_services.png)
 
 ## Comparing Lambda and Batch
 
@@ -31,6 +33,9 @@ In unmanaged mode, you manage all compute.
     - Lambda is fully serverless, but offers a limited runtime selection. 
 - Batch does not have any time limit or effective resource limit and therefore is ideal for large batch processing jobs.
 - Batch is not serverless, but supports Docker or any other runtime.
+
+*Caption (below): Consider a batch-type workload that does not use AWS Batch. Lambda cannot be used for compute-intensive batch-like scenarios due to its execution constraints.*
+![Batch-type workload](../static/images/batch_processwithoutbatch.png)
 
 > [Exam Tip]
 >
