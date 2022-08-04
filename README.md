@@ -43,6 +43,7 @@
 - [File Shares](./storage_services/FILESHARES.md)
 - [Instance Stores](./storage_services/INSTANCESTORE.md)
 - [S3](./storage_services/S3.md)
+- [Transfer Family](./storage_services/TRANSFERFAMILY.md)
 
 ## Resources
 
