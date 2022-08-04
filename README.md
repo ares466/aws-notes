@@ -11,6 +11,10 @@
 - [Identity Federation](./advanced_identities_federation/IDENTITYFEDERATION.md)
 - [WorkSpaces](./advanced_identities_federation/WORKSPACES.md)
 
+## Compute, Scaling, & Load Balancing
+- [EC2](./compute/EC2.md)
+- [ELB](./compute/ELB.md)
+
 ## Data Analytics
 - [AWS Batch](./data_analytics/BATCH.md)
 - [EMR](./data_analytics/EMR.md)
