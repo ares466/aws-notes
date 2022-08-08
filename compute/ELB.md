@@ -94,3 +94,40 @@ NLBs are used for private link to access many AWS services.
 | --- | --- | --- | --- |
 | Application Load Balancer | Layer 7 | HTTP/S | HTTP/S protocols, conditional forwarding based on HTTP, advanaced health checks |
 | Network Load Balancer | Layer 4 | UDP, TCP, TLS | UDP/TCP/TLS protocols, Unbroken encryption, Static IP, Very high throughput, PrivateLink |
+
+## Connection Draining
+
+When instances are deemed unhealthy or deregistered, the default action is to close all connections and prevent any new connections to the instance from being established.
+
+The `connection draining` feature allows all in-flight requests to complete. When enabled, connection draining can be configured to timeout after 1 - 3600 seconds.
+
+> The term *connection draining* is only used in relation to Classic Load Balancers. The setting is applied directly on the CLB (since it does not use a target group architecture).
+
+The `deregistration delay` feature is similar to connection draining. It is supported by ALBs, NLBs, and GWLBs.
+
+The deregistration delay feature is configured on the target group (not the load balancer itself).
+
+## X-Forwarded-For & Proxy Protocol
+
+When a server receives a request, it has access to the clients IP address. When a load balancer is used, the client IP address represents the LB, not the end user.
+
+### X-Forwarded-For
+
+`X-FORWARDED-FOR` is an HTTP header. As traffic passes through a LB, the LB adds or appends its IP address to the header. The application server can use this header to see the full chain of clients involved in the request, including the end user.
+
+The `X-Forwarded-For` header is supported by CLBs and ALBs, but not NLBs since it does not support Layer 7.
+
+### PROXY Protocol
+
+The `Proxy protocol` works at Layer 4 and therefore supports TCP, SMTP, HTTP, etc.
+
+Similar to *X-Forwarded-For* header, the proxy protocol adds a header to track IPs of components traversed in a request.
+
+The *proxy protocol* feature is supported by CLBs (v1) and NLBs.
+
+### Comparing X-Forwarded-For and PROXY Protocol
+
+| | OSI Layer | Support | Use Case |
+| --- | --- | --- | --- |
+| X-Forwarded-For | Layer 7 | ALB, CLB | HTTP applications that use ALBs or CLBs. |  
+| PROXY Protocol | Layer 4 | NLBs, CLB (v1) | Applications that use NLB or CLB (v1).
