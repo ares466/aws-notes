@@ -1,1 +1,96 @@
 # Elastic Load Balancers (ELB)
+
+ELBs monitor for, and accept, connections on a specific port from clients and distribute the traffic among one or more backend compute.
+
+ELBs can support `IPv4` or `support dual stack` (IPv4 and IPv6).
+
+ELBs are created with a DNS name (A record) that resolve to all the `nodes` of an ELB. The ELB will automatically scale (add more nodes) as traffic requires.
+
+ELB nodes are configured in all AZs within a region (at least 2 AZs).
+
+ELBs can be `internet-facing`, which means it is accessible from the public internet, or `internal`, which means it is only accessible from within the VPC by a private IP address.
+
+ELBs require 8+ free IP addresses in a subnet in order to operate. AWS recommends a subnet with at least a /27 subnet mask.
+
+![ELB](../static/images/elb_arch.png)
+
+ELBs allow architecture teirs to scale independent of each other.
+
+Originally, each ELB node could only distribute load to compute within the same AZ. However, ELBs now support `cross-zone load balancing`. This enhancement allows the load balancer to distribute load across zones.
+
+## Session Stickiness
+
+Session data is stored on a specific server that persists while you have a valid session with the application.
+
+If an application does not store session state, it is known as `stateless`.
+
+`Session stickiness` is a feature supported by ALBs that temporarily maps users to instances on which their session is stored. As a result, all requests from the same user will be forwarded to the same instance.
+
+Session stickiness is enabled at a `target group` level.
+
+This feature generates a `cookie` (called `AWSALB`) which temporarily locks the user to a specific backend instance. Cookies can last any duration from 1 second to 7 days.
+
+If the cookie fails or expires, a new instance will be chosen for that user.
+
+Session stickiness can result in uneven loads on backend instances.
+
+## Load Balancer Types
+
+Load balancers are split between two versions: v1 (deprecated) and v2 (standard).
+
+There are three types of load balancers on AWS:
+- Classic Load Balancer (v1)
+- Network Load Balancer (v2)
+- Application Load Balancer (v2)
+
+### Classic Load Balancers
+
+Classic Load Balancers are a v1 product that is deprecated. CLBs can only be used with the Classic VPC architecture.
+
+*Caption (below): CLBs do not scale efficiently because they only support 1 SSL and one domain name per load balancer.*
+![Classic Load Balancer - Limitations](../static/images/elb_clblimitations.png)
+
+### Application Load Balancer
+
+Application Load Balancers (`ALB`) are layer-7 load balancers that have advanced HTTP features. 
+
+ALBs support `HTTP` and `HTTPS` protocol. They cannot support other layer-7 protocols such as SMTP, SSH, or gaming protocols. ALBs also do not support layer-4 protocols such as TCP, UDP, or TLS.
+
+ALBs require `SSL termination`. SSL termination is a situation in which SSL connections are terminated on the load balancer and the traffic is forwarded to the target on a brand new connection. As a result, the ALB must have an SSL if HTTPS is used.
+
+ALB processing is slower than NLBs.
+
+ALBs support health checks.
+
+You are able to create `load balancing rules`. Rules determine what happens to the connection when it arrives at the load balancer. Rules are processed in priority order. The last rule is always a "catch-all" default rule.
+
+ALB rules support conditions that analyze host headers, http headers, http request method, path pattern, query string, and source IP address.
+
+ALB rules can result in a one action: forward, redirect, fixed-response, authenticate-oidc, or authenticate-cognito.
+
+> [Exam Tip]
+>
+> ALBs do not support end-to-end encryption!
+
+### Network Load Balancer
+
+NLBs are layer-4 load balancers that support the `UDP`, `TCP`, `TLS`, and `TCP_UDP` protocols. NLBs can be used to support `SMTP`, `SSH`, and game servers.
+
+NLBs cannot support HTTP features such as conditional forwarding. They do not support features such as headers, cookies, or session stickiness.
+
+NLBs are very fast and can support millions of requests per second.
+
+NLBs support simple health checks based on `ICMP/TCP` handshakes.
+
+NLBs can have static IPs which can be useful for whitelisting.
+
+NLBs support end-to-end encryption by forwarding the SSL connection onto the target.
+
+NLBs are used for private link to access many AWS services.
+
+### Comparing Load Balancers
+
+| | OSI Layer | Supported Protocols | Use Cases |
+| --- | --- | --- | --- |
+| Application Load Balancer | Layer 7 | HTTP/S | HTTP/S protocols, conditional forwarding based on HTTP, advanaced health checks |
+| Network Load Balancer | Layer 4 | UDP, TCP, TLS | UDP/TCP/TLS protocols, Unbroken encryption, Static IP, Very high throughput, PrivateLink |
