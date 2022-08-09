@@ -108,3 +108,42 @@ Once the master instance is configured properly, you can create an AMI that can 
 Bootstrapping and AMI baking can be used together.
 
 ![EC2 AMI Baking and Bootstrapping](../static/images/ec2_amibakebootstrap.png)
+
+## Placement Groups
+
+By default, the placement of EC2 instances is handled by AWS. `EC2 Placement Groups` allow you to influence this process.
+
+There are three types of placement groups:
+- `Cluster`
+- `Spread`
+- `Partition`
+
+### Cluster
+
+The `Cluster` placement group specifies that instance should be launched within the same rack (and sometimes the same host) within a single AZ. `Cluster` placement groups are used to achieve the maximum network performance available on AWS.
+
+Notes about Cluster placement groups:
+- Because all instances are clustered, this type of deployments offers very little resilience to failures.
+- The Cluster placement group can span VPCs at the cost of reduced performance.
+- This placement group requires a support instance type.
+- It is recommended that all instances in a placement group are the same instance type, and they are all launched together.
+
+![EC2 Placement Group - Cluster](../static/images/ec2_placementgroups_cluster.png)
+
+### Spread
+
+The `Spread` placement group maximizes resilience to failures by spreading instances across multiple AZs, ensuring they do not end up on the same rack.
+
+The spread placement group is limited to 7 instances per AZ to ensure there are enough unique racks to handle the workload.
+
+The spread placement group does not support dedicated instances or hosts.
+
+![EC2 Placement Group - Spread](../static/images/ec2_placementgroups_spread.png)
+
+### Partition
+
+The `Partition` placement group allows you define a maximum of 7 partitions per AZ. Each partition is guarenteed to run on separate hardware from other partitions. Unlike the spread placement group, a partition can support any number of instances.
+
+Instances can be manually assigned to partition, or AWS can auto-distribute instances between partitions. 
+
+The partition placement group is useful for large scale applications in which you need to assign instancess to partitions (topology aware).

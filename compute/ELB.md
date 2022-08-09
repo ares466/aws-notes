@@ -131,3 +131,15 @@ The *proxy protocol* feature is supported by CLBs (v1) and NLBs.
 | --- | --- | --- | --- |
 | X-Forwarded-For | Layer 7 | ALB, CLB | HTTP applications that use ALBs or CLBs. |  
 | PROXY Protocol | Layer 4 | NLBs, CLB (v1) | Applications that use NLB or CLB (v1).
+
+## Gateway Load Balancers (GWLB)
+
+A transparent security appliance scans data after it leaves the application instance and before it enters the application instance. Using this type of appliance does not scale well and becomes complex when protecting multiple applications.
+
+The `Gateway Load Balancer` helps you run and scale 3rd party security appliances (e.g., firewalls, IDS, IPS). GWLBs provide transparent inspection for both inbound and outbound traffic.
+
+![GWLB](../static/images/elb_gwlb.png)
+
+GWLBs `endpoints` are used to ingress/egress traffic to/from the appliance. The GWLB load balances packets across the backend security appliances. Traffic and metadata are tunneled using the `GENEVE` protocol. Traffic is routed using `route tables`.
+
+![GWLB - Traffic Flow](../static/images/elb_gwlb_flow.png)
