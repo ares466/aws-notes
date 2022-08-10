@@ -42,6 +42,9 @@
 - [Transit Gateway](./networking/TRANSITGATEWAY.md)
 - [VPNs in AWS](./networking/VPN.md)
 
+## Other
+- [Miscellaneous Services](./other/OTHER.md)
+
 ## Storage Services
 - [EFS](./storage_services/EBS.md)
 - [File Shares](./storage_services/FILESHARES.md)

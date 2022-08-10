@@ -78,3 +78,14 @@ Kinesis Data Analytics should be used on streaming data that requires real-time 
 > [Exam Tip]
 >
 > Kinesis Firehouse can trigger a Lambda to process data, but it is only near real-time. Kinesis Data Analytics provides real time data processing.
+
+## Kinesis Video Streams
+
+Kinesis video streams allows you to `ingest` live video data from producers such as security cameras, cars, smartphones, drones, time-serialized audio, thermal, depth, or RADAR.
+
+Consumers can access data frame-by-frame or as needed via Kinesis Video Streams APIs. You cannot access the raw data directly.
+
+The data can be persisted and encrypted.
+
+Kinesis Video Streams can integrate with other AWS services (e.g., Rekognition, Connect).
+
