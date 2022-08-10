@@ -89,3 +89,5 @@ The data can be persisted and encrypted.
 
 Kinesis Video Streams can integrate with other AWS services (e.g., Rekognition, Connect).
 
+*Caption (below): Example Kinesis Video Streams architecture using Rekognition to identify faces, Kinesis data streams to analyze findings, and Lambda/SNS to notify the owner
+![Kinesis Video Streams](../static/images/kinesis_videostreams.png)
