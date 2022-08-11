@@ -112,3 +112,5 @@ Aurora supports `global databases`. When running a global Aurora database cluste
 `VPC Endpoints` exist within a single AZ and are therefore subject to AZ failures. You can deploy multiple VPCEs for regional high availability.
 
 ![DR - Networking](../static/images/dr_networkinglocal.png)
+
+`Route53` is a global service - Route53 entry points can survive multiple regional failures. Route53 Health Checks can be used to globally distribute traffic for global high availability.
