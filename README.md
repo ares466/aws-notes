@@ -22,6 +22,9 @@
 - [QuickSight](./data_analytics/QUICKSIGHT.md)
 - [Redshift](./data_analytics/REDSHIFT.md)
 
+## Disaster Recovery (DR)
+- [Disaster Recovery](./dr/DISASTER_RECOVERY.md)
+
 ## Infrastructure as Code
 - [CloudFormation](./infrastructure_as_code/CLOUDFORMATION.md)
 
