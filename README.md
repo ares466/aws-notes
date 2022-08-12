@@ -23,6 +23,8 @@
 - [Redshift](./data_analytics/REDSHIFT.md)
 
 ## Databases
+- [Aurora](./databases/AURORA.md)
+- [DynamoDB](./databases/DYNAMODB.md)
 - [RDS](./databases/RDS.md)
 
 ## Disaster Recovery (DR)
