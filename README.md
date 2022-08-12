@@ -22,6 +22,9 @@
 - [QuickSight](./data_analytics/QUICKSIGHT.md)
 - [Redshift](./data_analytics/REDSHIFT.md)
 
+## Databases
+- [RDS](./databases/RDS.md)
+
 ## Disaster Recovery (DR)
 - [Disaster Recovery](./dr/DISASTER_RECOVERY.md)
 
