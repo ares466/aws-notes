@@ -23,6 +23,7 @@
 - [Redshift](./data_analytics/REDSHIFT.md)
 
 ## Databases
+- [Athena](./databases/ATHENA.md)
 - [Aurora](./databases/AURORA.md)
 - [DynamoDB](./databases/DYNAMODB.md)
 - [Elasticsearch](./databases/ELASTICSEARCH.md)
