@@ -70,3 +70,18 @@ Use cases for Aurora Serverless:
 - Multi-tenant applications in which your revenue is tied to usage
 
 ## Multi-Master
+
+The default Aurora mode is `single master`, which consists of a single primary instance and zero or more replicas. All writes must go to the primary. The cluster endpoint is used to write data, the reader endpoint is used to load balance read requests.
+
+In the default Aurora mode, failover takes time since a replica has to be promoted to primary.
+
+In `multi-master` mode, all instances can read and write. 
+
+There is no cluster or reader endpoint, or any load balancer to connect to the cluster. Instead, each client is responsible for connecting to an instance directly.
+
+When a write happens on an instance, the instance *proposes* the write to all volumes in the cluster. If a quorum is reached, the write is performed and synchronously replicated to all volumes in the cluster. The write is also replicated to the instances themselves so their in-memory caches are up-to-date.
+
+If the write is rejected, an error is returned to the client. 
+
+![Aurora Multimaster](../static/images/aurora_multimaster.png)
+
