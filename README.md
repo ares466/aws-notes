@@ -27,6 +27,8 @@
 - [Aurora](./databases/AURORA.md)
 - [DynamoDB](./databases/DYNAMODB.md)
 - [Elasticsearch](./databases/ELASTICSEARCH.md)
+- [Neptune](./databases/NEPTUNE.md)
+- [QuantumDB](./databases/QUANTUMDB.md)
 - [RDS](./databases/RDS.md)
 
 ## Disaster Recovery (DR)
