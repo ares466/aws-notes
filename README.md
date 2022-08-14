@@ -25,6 +25,7 @@
 ## Databases
 - [Aurora](./databases/AURORA.md)
 - [DynamoDB](./databases/DYNAMODB.md)
+- [ElastiCache](./databases/ELASTICACHE.md)
 - [RDS](./databases/RDS.md)
 
 ## Disaster Recovery (DR)
