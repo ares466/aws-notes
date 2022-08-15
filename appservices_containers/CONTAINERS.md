@@ -64,5 +64,44 @@ When using Fargate, you only pay for the containers that are deployed.
 
 Use Fargate for large workloads with lots of overhead, or small bursty workloads since you only pay for usage.
 
+# Kubernetes
+
+Kubernetes is an open-source container orchestration system. Kubernetes is cloud-agnostic.
+
+Kubernetes allows you to define a highly available cluster of compute which are organized to work as one unit.
+
+The cluster `control plane` manages the cluster, scheduling, applications, scaling, and deployments.
+
+A Kubernetes `cluster` is made up of one or more `nodes`. Nodes are a VM or physical server which function as `workers` in the cluster.
+
+Each node is running software to handle container operations (either `containerd` or `Docker`). Each node is also running an agent to interact wit hthe cluster control plane called `kubelet`.
+
+The `Kubernetes API` is used for communication between the control plane and `kubelet agent`.
+
+![K8s Concepts](../static/images/k8s_objects.png)
+
+Kubernetes `pods` are the smallest unit of compute that share storage and networking. Typically, one container has one pod. Pods are nonpermanent.
+
+The `kube-apiserver` is a front-end for the Kubernetes control plane. Nodes and other cluster elements interact with the kube-apiserver.
+
+The `kube-scheduler` identifies any unassigned nodes within a cluster and assigns a node based on resource requirements, deadlines, data locality, and other contraints.
+
+`ectd` is a highly-available key value store used within the cluster.. It is used as the main backing store for the cluster.
+
+`kube-proxy` is a network proxy that runs on every node to coordinate networking with the control plane.
+
+![K8s Control Plane](../static/images/k8s_controlplane.png)
+
 # EKS
 
+EKS is an AWS-managed Kubernetes system in which the control plane scales and runs on multiple AZs for high availability.
+
+EKS integrates with other AWS services such as ECR, ELB, IAM, and VPC.
+
+An `EKS Cluster` consists of the EKS control plane and EKS nodes.
+
+AWS also manages `etcd` across multiple AZs.
+
+EKS nodes can be self-managed, managed node groups, or Fargate pods.
+
+EKS can be use EBS, EFS, and FSx as a storage provider.
