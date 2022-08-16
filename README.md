@@ -13,6 +13,7 @@
 
 ## Application Services, Containers, and Serverless
 - [Containers](./appservices_containers/CONTAINERS.md)
+- [SNS](./appservices_containers/SNS.md)
 
 ## Compute, Scaling, & Load Balancing
 - [EC2](./compute/EC2.md)
