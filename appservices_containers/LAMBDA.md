@@ -79,11 +79,27 @@ SQS queues or an SNS topic can be used to handle any discarded or failed event b
 
 ## Versions
 
-The Lambda services supports versioning of functions. The `version` of a function represents the code and configuration.
+The Lambda service supports `versioning` for functions. The `version` of a function represents the code and configuration.
 
-Lambda function versions are `immutable`. Once a version is created, it cannot be changed. Versions are given their own ARNs.
+When functions are `published`, Lambda creates an immutable version that can be referenced. You cannot edit a published version. Published versions are assigned a `qualified ARN` that uniquely identifies that version from others.
 
-Lambda `aliases` can be created to point to a specific version. The `$latest` alias can be used to point to the latest version.
+`arn:aws:lambda:us-east-1:123456789:function:myfunction:2`
+
+In contrast, an `unqualified ARN` points at the function, but not a specific version ($LATEST).
+
+`arn:aws:lambda:us-east-1:123456789:function:myfunction`
+
+Lambda `aliases` can be created to point to a specific version. All functions have a `$latest` alias that points to the latest version of the function.
+
+Each alias has a unique ARN.
+
+Alias can be updated so that the version of the function that it points to changes. 
+
+Services can be configured to point to aliases rather than specific versions. As a result, updating alias alleviates the need to make system changes when new function versions are deployed.
+
+Using `alias routing`, you can direct a certain percentage of traffic to one alias and the rest to another alias.
+
+
 
 ## Destinations
 
@@ -126,3 +142,13 @@ Lambda attempts to reuse an execution environment for multiple invocations of th
 To improve initialization time, put as much code into the initialization code (outside the handler function) as possible.
 
 ![Lambda - Invocation Stages](../static/images/lambda_invocationstages.png)
+
+## Environment Variables
+
+Environment variables are key-value pairs that are available to the functions runtime. Each function can have 0 or more environment variables.
+
+Environment variables are fixed when published as part of a version.
+
+Environment variables can be accessed within the execution environment.
+
+Environment variables can be encrypted with KMS.
