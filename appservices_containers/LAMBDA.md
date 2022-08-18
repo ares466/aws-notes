@@ -99,8 +99,6 @@ Services can be configured to point to aliases rather than specific versions. As
 
 Using `alias routing`, you can direct a certain percentage of traffic to one alias and the rest to another alias.
 
-
-
 ## Destinations
 
 Lambda supports `destinations` such as SQS, SNS, Lambda, and EventBridge. Developers can configure behavior so that a successful or failed execution will be sent as an event to some AWS service.
@@ -126,14 +124,14 @@ When a Lambda function executes within an existing execution context, this is kn
 ## Handler
 
 Lambda functions execute with a predictable `lifecycle`.
-1. **Initialization** - Creates or unfreezes execution environment
+1. **Initialization** - Creates or unfreezes execution environment.  
     1A. Extension Init  
     1B. Runtime Init  
-    1C. Function Init
-2. **Invocation** - Runs the function handler
-3. **Shutdown** - The execution environment is shut down.
-    3A. Runtime shutdown
-    3B. Extension shutdown
+    1C. Function Init  
+2. **Invocation** - Runs the function handler  
+3. **Shutdown** - The execution environment is shut down  
+    3A. Runtime shutdown  
+    3B. Extension shutdown  
 
 Function initailization code (code that is written outside the handler) is executed once every cold start, during the `function init` phase.
 
