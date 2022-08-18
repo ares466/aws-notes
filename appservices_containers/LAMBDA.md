@@ -149,4 +149,11 @@ Environment variables are fixed when published as part of a version.
 
 Environment variables can be accessed within the execution environment.
 
+```python
+import os
+
+def lambda_handler(event, context):
+    print (os.environ['ENV'])
+```
+
 Environment variables can be encrypted with KMS.
