@@ -12,7 +12,10 @@
 - [WorkSpaces](./advanced_identities_federation/WORKSPACES.md)
 
 ## Application Services, Containers, and Serverless
+- [API Gateway](./appservices_containers/APIGATEWAY.md)
 - [Containers](./appservices_containers/CONTAINERS.md)
+- [EventBridge](./appservices_containers/EVENTBRIDGE.md)
+- [GreenGrass](./appservices_containers/GREENGRASS.md)
 - [Lambda](./appservices_containers/LAMBDA.md)
 - [MQ](./appservices_containers/MQ.md)
 - [SNS](./appservices_containers/SNS.md)
