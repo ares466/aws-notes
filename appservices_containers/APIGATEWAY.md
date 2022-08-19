@@ -7,6 +7,8 @@ There are three phases in most API Gateway interactions:
 - `Integrations` - invokes other AWS services (e.g., DynamoDB, Lambda, HTTP Endpoints, Step Functions)
 - `Response` - transforms, prepares, and returns the response
 
+![API Gateway - Lambda Integration](../static/images/apigateway_lambda.png)
+
 API Gateway integrations with CloudWatch Logs to store and manage full stage request and response logs. CloudWatch Metrics is used for capturing metrics.
 
 The API Gateway can handle data caching.
@@ -22,6 +24,9 @@ API Gateway can also support a `custom Lambda authorizer`. When a request is rec
 If authentication fails, a 403 FORBIDDEN response is returned.
 
 ![API Gateway - Authentication](../static/images/apigateway_auth.png)
+
+## API Types
+
 
 ## Endpoint Types
 
