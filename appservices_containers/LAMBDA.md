@@ -157,3 +157,57 @@ def lambda_handler(event, context):
 ```
 
 Environment variables can be encrypted with KMS.
+
+## Layers
+
+Without layers, a single zip archive contains code and the dependencies to run that code. In some cases, the dependencies are very large and take a significant amount of time to download.
+
+![Lambda - No Layers](../static/images/lambda_wolayers.png)
+
+Lambda Layers help alleviate this issue. Developers can define a layer that contains shared and reusable libraries. The libraries are extracted into the `/opt` directory of the function so they're available to the function in the same way.
+
+Layers enable efficient sharing of dependencies between functions, enable new runtimes, and allow libraries to be externalized.
+
+As a result of using layers, deployment zips are much smaller.
+
+## Containers on Lambda
+
+When you create a Lambda function, you package your function code into a deployment package. Lambda supports two types of deployment packages: container images and zip file archives.
+
+The `AWS Lambda Runtime Interface Emulator` (`RIE`) is a proxy for the Lambda Runtime API that allows you to locally test your Lambda function packaged as a container image. The emulator is a lightweight web server that converts HTTP requests into JSON events to pass to the Lambda function in the container image.
+
+## Integrating Lambda with ALB
+
+Lambda functions can be represented in target groups within an ALB. The ALB `synchronously` invokes the Lambda (and waits for a response) when it receives an HTTP/S request from a client.
+
+The ALB is responsible for translating the HTTP request into a Lambda-compatible JSON event. It also translates the JSON response from the function into an HTTP response.
+
+![Lambda with ASG](../static/images/lambda_asg.png)
+
+Using `multi-value headers`, the load balancer collects all identical parameter keys and represents them in the `multiValueQueryStringParameters` attribute within the Lambda event.
+
+Without multi-value headers, the Lambda would only receive the last value for each parameter key.
+
+Given this query in which two search terms are provided:  
+
+`http://host.com?search=aria&search=james`
+
+Without multi-value headers, the Lambda function will only receive the `james` search term in the event.
+
+```json
+{
+    "queryStringParameters": {
+        "search": "james"
+    }
+}
+```
+
+With multi-value headers, both terms are represented in the `multiValueQueryStringParameters` attribute:
+
+```json
+{
+    "multiValueQueryStringParameters": {
+        "search": ["aria", "james"]
+    }
+}
+```
