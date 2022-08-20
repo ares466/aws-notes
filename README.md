@@ -51,6 +51,9 @@
 ## Infrastructure as Code
 - [CloudFormation](./infrastructure_as_code/CLOUDFORMATION.md)
 
+## Migrations & Extensions
+- [Cloud Migration](./migrations_extensions/CLOUDMIGRATION.md)
+
 ## Monitoring, Logging, and Cost Management
 - [CloudTrail](./monitoring/CLOUDTRAIL.md)
 - [CloudWatch](./monitoring/CLOUDWATCH.md)
