@@ -21,6 +21,7 @@
 - [Mechanical Turk](./appservices_containers/MECHANICALTURK.md)
 - [MediaConvert](./appservices_containers/MEDIACONVERT.md)
 - [MQ](./appservices_containers/MQ.md)
+- [SAM](./appservices_containers/SAM.md)
 - [SNS](./appservices_containers/SNS.md)
 - [SQS](./appservices_containers/SQS.md)
 
