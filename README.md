@@ -17,6 +17,7 @@
 - [EventBridge](./appservices_containers/EVENTBRIDGE.md)
 - [GreenGrass](./appservices_containers/GREENGRASS.md)
 - [Lambda](./appservices_containers/LAMBDA.md)
+- [Mechanical Turk](./appservices_containers/MECHANICALTURK.md)
 - [MQ](./appservices_containers/MQ.md)
 - [SNS](./appservices_containers/SNS.md)
 - [SQS](./appservices_containers/SQS.md)
