@@ -12,6 +12,8 @@ The `SAM CLI` is used locally to build SAM applications. Using the CLI, you can 
 
 `SAM apps` have a defined structure with a defined template format.
 
+![SAM - Quickstart Projects](../static/images/sam_quickstart.png)
+
 The `sam-package` command packages a SAM application by collecting local assets, builds a ZIP file, and uploads it to S3.
 
 The `sam-deploy` deploys a SAM package to AWS. This command will implicitly run the `sam-package` operation.
