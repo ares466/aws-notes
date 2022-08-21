@@ -50,3 +50,33 @@ SMS integrates with `AWS Migration Hub`.
 ![SMS](../static/images/sms.png)
 
 # Database Migration Service (DMS)
+
+DMS is a managed database service in which `replication tasks` run on `replication instances` on EC2.
+
+DMS connects to the `source` database via a `source endpoint`, which contains all configuration required to connect to the data store.
+
+DMS will write data to the `destination` database via the `destination endpoint`.
+
+Either the source or destination endpoint must be on AWS.
+
+The source database remains fully operational during the migration, minimizing downtime to applications that rely on that database.
+
+DMS supports the most common database engines, including MySQL, Aurora, Microsoft SQL, MariaDB, MongoDB, PostgreSQL, Oracle, Azure SQL, and more.
+
+DMS migrations are defined in terms of `jobs`. Jobs can be one of three types: full load, full load + CDC, or CDC only.
+
+During a `full load` migration, DMS will perform a one-off migration of all data. During a `full load + CDC` migration, DMS will perform a full migration of the data and migrate changes from the CDC logs. During a `CDC only` migration, DMS only performs ongoing CDC migrations.
+
+![DMS](../static/images/dms.png)
+
+The `Schema Conversion Tool` (SCT) can assign with schema conversion during data migrations. SCT is used when converting from one database engine to another, including from a database to S3. SCT is not used when migration between databases of the same engines.
+
+SCT works with OLTP database types (e.g., MySQL, MSSQL, Oracle) and OLAP (e.g., Teradata, oracle, Vertica).
+
+SCT does not migration any data. Instead, it migrates the schema from one engine to another.
+
+DMS can integrate with the Snowball family of services.
+1. Use SCT to extract data locally and move to a snowball device.
+2. Ship the device back to AWS, which is loaded into an S3 bucket.
+3. DMS migrations from S3 into the target data store.
+4. CDC can capture changes
