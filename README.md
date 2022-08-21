@@ -53,6 +53,7 @@
 
 ## Migrations & Extensions
 - [Cloud Migration](./migrations_extensions/CLOUDMIGRATION.md)
+- [Storage Gateway](./migrations_extensions/STORAGEGATEWAY.md)
 
 ## Monitoring, Logging, and Cost Management
 - [CloudTrail](./monitoring/CLOUDTRAIL.md)
