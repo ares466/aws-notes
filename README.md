@@ -77,6 +77,7 @@
 - [Miscellaneous Services](./other/OTHER.md)
 
 ## Security
+- [CloudHSM](./security/CLOUDHSM.md)
 - [Config](./security/CONFIG.md)
 - [GuardDuty](./security/GUARDDUTY.md)
 - [Inspector](./security/INSPECTOR.md)
