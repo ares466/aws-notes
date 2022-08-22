@@ -96,3 +96,29 @@ Each KMS key supports a `key policy` that define the principals and permissions 
 KMS keys can be used for up to **4KB** of data. To encrypt more than 4KB of data, a `data encryption key` is required. The `GenerateDataKey` operation can be used to generate a data key from a CMK. When generated, KMS provides the data key as `plaintext` and `ciphertext`. The plaintext version is used to encrypt the data and then immediately discarded. The ciphertext version of the data key is stored with the encrypted data. This process is called `envelope encyrption`.
 
 To decrypt data, the service must request that KMS decrypt the data key ciphertext using the CMK from which it was generated. With the plaintext, the encrypted data can be decrypted.
+
+**E.g., Cryptography Operations**
+
+*Generate data*:
+```bash
+echo "find all the doggos, distract them with the yumz" > battleplans.txt
+```
+
+*Encrypt*:
+```bash
+aws kms encrypt \
+    --key-id alias/catrobot \
+    --plaintext fileb://battleplans.txt \
+    --output text \
+    --query CiphertextBlob \
+    | base64 --decode > not_battleplans.enc
+```
+
+*Decrypt*:
+```bash
+aws kms decrypt \
+    --ciphertext-blob fileb://not_battleplans.enc \
+    --output text \
+    --query Plaintext | base64 --decode > decryptedplans.txt
+
+```
