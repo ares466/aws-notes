@@ -80,6 +80,7 @@
 - [Config](./security/CONFIG.md)
 - [GuardDuty](./security/GUARDDUTY.md)
 - [Inspector](./security/INSPECTOR.md)
+- [KMS](./security/KMS.md)
 
 ## Storage Services
 - [EFS](./storage_services/EBS.md)
