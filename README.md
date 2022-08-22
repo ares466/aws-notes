@@ -53,6 +53,7 @@
 
 ## Migrations & Extensions
 - [Cloud Migration](./migrations_extensions/CLOUDMIGRATION.md)
+- [DataSync](./migrations_extensions/DATASYNC.md)
 - [Storage Gateway](./migrations_extensions/STORAGEGATEWAY.md)
 
 ## Monitoring, Logging, and Cost Management
