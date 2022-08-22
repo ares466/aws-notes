@@ -62,4 +62,64 @@ Storage and Cached mode differ in other ways:
 
 ## Tape Gateway
 
+Tape Gateway is also known as `VTL` (Virtual Tape Library). 
+
+Organizations typically backup data periodically. Backups can be used to restore functionality or data in the event of a disaster or security incident.
+
+There are several ways to accomplish this, but one way is to backup to tape (e.g., LTO-9). Organizations write to tapes offsite.
+
+Tapes are inserted into a `tape drive` to be read from or written to. Many drives are stored in a `tape library` or a `tape shelf`. `Tape loaders` are robot arms used to swap tapes into and out of drives.
+
+Servers communicate with the tape drive using `iSCSI`.
+
+![Storage Gateway - VTL](../static/images/storagegateway_tapes.png)
+
+A `VTL Gateway` is used to act as a tape backup device using `iSCSI` to accept backups, write them to S3, and archive them into Glacier.
+
+Backup data is written and read using the public `storage gateway endpoint`.
+
+Backup data is initially written to S3, which acts an AWS-hosted tape library (i.e.,VTL). Each virtual tape can be anywhere from 100 GiB to 5 TiB.
+
+Tapes are archived into the tape shelf (VTS) within Glacier. When archived backups are required, they are restored to the VTL.
+
+![VTL Gateway](../static/images/storagegateway_vtl.png)
+
+VTL enables consumers to gain benefits from cloud storage, but still be compatible with their existing tape backup infrastructure and processes.
+
 ## File Gateway
+
+In `file mode`, Storage Gateway bridges on-prem file storage and S3. 
+
+Files are accessed via `mount points` (shares) via `EFS` (Linux) or `SMB` (Windows). Each mount point is associated with a single S3 bucket. The mount point association with an S3 bucket is called a `bucket share`. A single file gateway supports up to 10 bucket shares.
+
+When files are written to the mount point, they are visibile as objects in the S3 bucket.
+
+Storage Gateway in file mode supports `read caching` and `write caching` to ensure LAN-like performance.
+
+S3 objects are given a name based on the directory within the file share.  
+
+`/winkie.jpg` -> `s3://a4l-fileshare/winkie.jpg`  
+
+*Caption (below): Diagram shows a simple example in which on-prem servers are backed up to S3.*
+![Storage Gateway - File Gateway](../static/images/storagegateway_filemode.png)
+
+## Multiple Shares
+
+Storage Gateway in file mode can also be used for sharing data between multiple on-prem sites.
+
+By default, when data is written to S3 from one file gateway, the other file gateway is not notified. The other file gateway must perform a `listing` command to view the most recent data. 
+
+The `NotifyWhenUploaded` API can be used to notify other gateways when objects are changed.
+
+File Gateway does not support `object locking` to prevent write collisions. Instead, organizations must implement a read-only mode on other shares or tightly control file access.
+
+*Caption (below): This architecture shows multiple on-prem contributors to the same file gateway.*
+![File Gateway - Multiple Contributors](../static/images/storagegateway_file_multiple.png)
+
+File Gateway can be partnered with S3 replication to ensure backups to another region for Disaster Recovery (DR).
+
+![File Gateway - Disaster Recovery](../static/images/storagegateway_file_dr.png)
+
+To make file storage more cost effective, use lifecycle rules to transition data through different storage classes.
+
+![File Gateway - S3 Lifecycle Rules](../static/images/storagegateway_s3classes.png)
