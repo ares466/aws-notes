@@ -76,6 +76,11 @@
 ## Other
 - [Miscellaneous Services](./other/OTHER.md)
 
+## Security
+- [Config](./security/CONFIG.md)
+- [GuardDuty](./security/GUARDDUTY.md)
+- [Inspector](./security/INSPECTOR.md)
+
 ## Storage Services
 - [EFS](./storage_services/EBS.md)
 - [File Shares](./storage_services/FILESHARES.md)
