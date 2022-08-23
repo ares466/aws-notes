@@ -6,4 +6,4 @@ Secrets in Secrets Manager are encrypted using KMS keys.
 
 Secrets Manager supports `automatic secret rotation` by periodically invoking a Lambda function. It can also directly integration with some AWS services (e.g., RDS) to update authentication information after a rotation.
 
-![AWS Secrets Manager](../static/images/secretsmanager.png]
+![AWS Secrets Manager](../static/images/secretsmanager.png)
