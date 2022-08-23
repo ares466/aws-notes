@@ -85,6 +85,7 @@
 - [KMS](./security/KMS.md)
 - [Secrets Manager](./security/SECRETS_MANAGER.md)
 - [SSM Parameter Store](./security/SSM_PARAMETERS.md)
+- [VPC Flow Logs](./security/VPC_FLOW_LOGS.md)
 
 ## Storage Services
 - [EFS](./storage_services/EBS.md)
