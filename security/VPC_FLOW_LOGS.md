@@ -10,3 +10,5 @@ Flow logs are captured at specific monitoring points. Monitoring points can be p
 VPC Flow Logs are not real time.
 
 VPC Flow Logs can export data to S3 or CloudWatch Logs.
+
+![VPC Flow Logs](../static/images/vpcflowlogs.png)
