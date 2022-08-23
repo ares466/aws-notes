@@ -77,11 +77,14 @@
 - [Miscellaneous Services](./other/OTHER.md)
 
 ## Security
+- [ACM](./security/ACM.md)
 - [CloudHSM](./security/CLOUDHSM.md)
 - [Config](./security/CONFIG.md)
 - [GuardDuty](./security/GUARDDUTY.md)
 - [Inspector](./security/INSPECTOR.md)
 - [KMS](./security/KMS.md)
+- [Secrets Manager](./security/SECRETS_MANAGER.md)
+- [SSM Parameter Store](./security/SSM_PARAMETERS.md)
 
 ## Storage Services
 - [EFS](./storage_services/EBS.md)
