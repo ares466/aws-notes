@@ -2,7 +2,7 @@
 
 ## Advanced Permissions and Accounts
 - [Quotas](./advanced_permissions_and_accounts/QUOTAS.md)
-- [Resource Access Manager](./RESOURCEACCESSMANAGER.md)
+- [Resource Access Manager](./advanced_permissions_and_accounts/RESOURCEACCESSMANAGER.md)
 
 ## Advanced Identities and Federation
 - [Cognito](./advanced_identities_federation/COGNITO.md)
