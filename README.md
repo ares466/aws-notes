@@ -2,7 +2,7 @@
 
 ## Advanced Permissions and Accounts
 - [Quotas](./advanced_permissions_and_accounts/QUOTAS.md)
-- [Resource Access Manager](./RESOURCEACCESSMANAGER.md)
+- [Resource Access Manager](./advanced_permissions_and_accounts/RESOURCEACCESSMANAGER.md)
 
 ## Advanced Identities and Federation
 - [Cognito](./advanced_identities_federation/COGNITO.md)
@@ -77,12 +77,16 @@
 - [Miscellaneous Services](./other/OTHER.md)
 
 ## Security
+- [ACM](./security/ACM.md)
 - [CloudHSM](./security/CLOUDHSM.md)
 - [Config](./security/CONFIG.md)
 - [Firewalls in AWS](./security/FIREWALLS.md)
 - [GuardDuty](./security/GUARDDUTY.md)
 - [Inspector](./security/INSPECTOR.md)
 - [KMS](./security/KMS.md)
+- [Secrets Manager](./security/SECRETS_MANAGER.md)
+- [SSM Parameter Store](./security/SSM_PARAMETERS.md)
+- [VPC Flow Logs](./security/VPC_FLOW_LOGS.md)
 
 ## Storage Services
 - [EFS](./storage_services/EBS.md)
