@@ -79,6 +79,7 @@
 ## Security
 - [CloudHSM](./security/CLOUDHSM.md)
 - [Config](./security/CONFIG.md)
+- [Firewalls in AWS](./security/FIREWALLS.md)
 - [GuardDuty](./security/GUARDDUTY.md)
 - [Inspector](./security/INSPECTOR.md)
 - [KMS](./security/KMS.md)
