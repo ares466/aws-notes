@@ -25,6 +25,10 @@
 - [SNS](./appservices_containers/SNS.md)
 - [SQS](./appservices_containers/SQS.md)
 
+## Caching, Delivery, and Edge
+- [CloudFront](./caching_delivery_edge/CLOUDFRONT.md)
+- [ElastiCache](./caching_delivery_edge/ELASTICACHE.md)
+
 ## Compute, Scaling, & Load Balancing
 - [EC2](./compute/EC2.md)
 - [ELB](./compute/ELB.md)
