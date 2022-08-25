@@ -4,8 +4,6 @@ CloudFront is a `Content Delivery Network` (CDN) that distributes static resourc
 
 A CloudFront `origin` is the source location of your content. Origins can either be an `S3 Origin` or a `custom origin`.
 
-A CloudFront `distribution` is the configuration unit of CloudFront.
-
 `Edge locations` are the global points-of-presense (POP) around the globe in which your data is cached locally. Edge locations are responsible for serving content to users. A `regional edge cache` is a larger version of an edge location that provides another layer of caching.
 
 1. When a user makes a request, it is routed to the closest `edge location`. If that edge location has the requested data cached locally, it is served to the user.
@@ -19,12 +17,113 @@ CloudFront integrates with ACM to enable **custom domains**.
 
 ![CloudFront](../static/images/cloudfront.png)
 
+## Distributions
+
+You create a CloudFront **distribution** to tell CloudFront where you want content to be delivered from, and the details about how to track and manage content delivery.
+
+The following settings exist on the distribution:
+
+**Price Class**: CloudFront allows you to customize the regions in which you're distribution will be available. Lower prices classes resule in lower costs.
+- All edge locations (best performance)
+- Only use North America and Europe
+- Use North America, Europe, Asia, Middle East, and Africa
+
+**WAF**: If applying a web ACL, it is done on the distribution.
+
+**Alternate Domain Name**: Specifying an alternate domain name allows customers to distribute content from a custom domain. A distribution supports zero or more alternate domain names.
+
+If no alternate domain names are configured, users must access the content from the *cloudfront.net* domain name.
+
+When configuing an alternate domain name, users must also supply an ACM certificate (in the us-east-1 region) to enable TLS.
+
+**Supported HTTP Version**: Customers can choose between *HTTP/2* and *HTTP/3*.
+
+**Default Root Object**: When a user calls the root domain name without a path, customers can specify which object should be returned.
+
+**Logging**: Customers can configure whether viewer logs are exported to an S3 bucket. This configuration supports full distribution logging or based on a prefix.
+
+**IPv6**: Customers can choose whether IPv6 is supported by the distribution.
+
 ## Behaviors
 
-A CloudFront distribution can have one or more `cache behaviors`. 
+A **cache behavior** is an configuration object that defines how CloudFront processes requests.
 
-CloudFront distributions are not linked to origins directly. Instead, an origin is defined by a behavior and a distribution is associated with one or more cache behaviors.
+A CloudFront distribution consists of one or more cache behaviors.
 
-A cache behavior defines an origin a request pattern that identifies requests to route to the origin.
+A cache behavior is assigned a **precedence**, which determines the order in which cache behaviors should be evaluated.
+
+The following settings can be configured on a cache behavior:
+
+**Path pattern**: The path pattern determines which requests apply to this cache behavior, based on the request’s URI path.
+
+**Origin and Origin Groups**: Defines the origin that is associated with this behavior.
+
+**Compress Objects Automatically**: CloudFront can automatically compress certain files that it receives from the origin before delivering them to the viewer.
+
+**Viewer Protocol Policy**: Defines the protocol policy that should be applied for viewers (end-users).
+- HTTP and HTTPS
+- Redirect HTTP to HTTPS
+- HTTPS only
+
+**Allowed HTTP Methods**: Restricts which HTTP methods can be used for this behavior.
+- GET, HEAD
+- GET, HEAD, OPTIONS
+- GET, HEAD, OPTIONS, PUT, POST, PATCH, DELETE
+
+**Restrict Viewer Access**: If you restrict viewer access, viewers must use CloudFront signed URLs or signed cookies to access your content.
+
+**Cache configurations**: Settings related to how data should be cached; The appropriate values to be set on response headers.
 
 ![CloudFront - Cache Behaviors](../static/images/cloudfront_behavior.png)
+
+## TTL and Invalidations
+
+When a viewer makes a request to CloudFront, CloudFront will first check the edge location for any local copies of the object. If the object is in the cache, but expired, it will forward a request to the origin.
+
+If the data has not changed since it was cached, the origin will return a `304 NOT MODIFIED` response. If the data has changed, it will return the new content with a `200 OK` response.
+
+The default TTL on a behavior is **24 hours**.
+
+S3 and custom origins can direct CloudFront to use object-specific TTL settings using HTTP headers. When using S3, the headers are specified in object metadata.
+- `Cache-Control max-age` (seconds)
+- `Cache-Control s-maxage` (seconds).
+- `expires` (date & time)
+
+Engineers can set a *minimum TTL* and *maximum TTL*. These settings limit per-object TTL settings (e.g., if the origin specifies a TTL value lower than the minimum TTL, the minimum TTL is used instead).
+
+**Cache invalidation** can be performed on all edge locations within a distribution. When performing a cache invalidation, engineers specify a path (e.g., *, /images/*). Cache invalidations will result in a cost.
+
+To reduce the impact of unwanted caching, consider using *versioned file names* (e.g., catpic_v1.png, catpic.v2.png).
+
+## CloudFront and SSL
+
+Each CloudFront distribution is automatically assigned a cloudfront.net domain name (e.g., https://abcdef.cloudfront.net/).
+
+SSL is supported by default with the *.cloudfront.net certificate.
+
+Optionally, engineers can specify an **alternate domain name** (CNAME) (e.g., cdn.mydomain.com). When using an alternate domain name, you **must** add an ACM certificate (us-east-1), even if you choose not to support HTTPS.
+
+CloudFront supports three protocol settings:
+- HTTP and HTTPS
+- Redirect HTTP to HTTPS
+- HTTPS only
+
+There are two SSL connections that occur during a CloudFront request. Both of these connections require **public certificates**.
+1. Viewer to CloudFront
+2. CloudFront to Origin
+
+## SNI
+
+Imagine a server that hosts multiple applications using different domain names and TLS certificates (e.g., *example-1.com, example-2.com*).
+
+Requests that come to this server contain a *layer 7* `HOST` header that determines the destination application for this request.
+
+When an SSL request is made to this server, the encrypted connection happens at layer 4. Since this is before layer 7 processing, the server does not yet know which application this request is destined for. Because of this, it does not know which domain name or certificate to use.
+
+Historically, this has limited a server to only supporting a single TLS certificate.
+
+**SNI** (Server Name Identification) is a TLS extension that allows the host identifier to be included in layer 4 processing so the server knows which certificate should be using for encryption. The result is that a server can now support multiple TLS certificates.
+
+Note: Older browsers may not support SNI.
+
+![CloudFront - SSL](../static/images/cloudfront_ssl.png)
