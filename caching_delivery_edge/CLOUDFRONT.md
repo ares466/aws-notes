@@ -2,8 +2,6 @@
 
 CloudFront is a `Content Delivery Network` (CDN) that distributes static resources from edge locations around the world. CloudFront reduces impact on backend services and serves content faster to global locations for `better user experience`.
 
-A CloudFront `origin` is the source location of your content. Origins can either be an `S3 Origin` or a `custom origin`.
-
 `Edge locations` are the global points-of-presense (POP) around the globe in which your data is cached locally. Edge locations are responsible for serving content to users. A `regional edge cache` is a larger version of an edge location that provides another layer of caching.
 
 1. When a user makes a request, it is routed to the closest `edge location`. If that edge location has the requested data cached locally, it is served to the user.
@@ -127,3 +125,14 @@ Historically, this has limited a server to only supporting a single TLS certific
 Note: Older browsers may not support SNI.
 
 ![CloudFront - SSL](../static/images/cloudfront_ssl.png)
+
+## Origins
+
+A CloudFront `origin` is the source location of your content. 
+
+CloudFront supports several origin types:
+- S3
+- ELB
+- Mediastore
+- Mediapackage
+- Custom
