@@ -136,3 +136,25 @@ CloudFront supports several origin types:
 - Mediastore
 - Mediapackage
 - Custom
+
+## Caching and Optimization
+
+By default, **no query paramters are forwarded** to the origin and **no query parameters are cached**.
+
+`/sock.jpg?color=blue&size=large`
+
+The CloudFront distribution will not send the `color` or `size` parameters to the origin. The origin will only receive a request for `sock.jpg`.
+
+This may cause issues when parameters are important in determining which content is served to the user.
+
+CloudFront can be configured to **forward and cache all parameters**.
+
+`/sock.jpg?color=blue&size=large`
+
+Both the `color` and `size` parameters are forwarded to the origin and cached at the edge location.
+
+CloudFormation also supports configuration to forward and caching specific parameters.
+
+`/sock.jpg?color=blue&size=large`
+
+With this configuration, the `color` may be forwarded and cached, but `size` would not.
