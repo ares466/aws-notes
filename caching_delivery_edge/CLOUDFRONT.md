@@ -192,3 +192,17 @@ Alternatively, `3rd-party geolocation integrations` are completely customizable.
 > - Geo Restrictions
 > - Check licenses
 > - Check credentials
+
+## Lambda@Edge
+
+Lambda@Edge enables customers to run lightweight Lambda functions at edge locations.
+
+Lambda@Edge has some restrictions when compared to Lambda service:
+- Only supports Node.js and Python
+- Runs in default AWS VPC
+- Layers are not supported
+- Different limits (e.g., duration)
+
+Lambda@Edge functions can be used to adjust data between the viewer and the origin. Each of the stages of a CloudFront request (viewer request, origin request, origin response, and viewer response) support Lambda@Edge functions.
+
+![CloudFront - Lambda@Edge](../static/images/cloudfront_lambda%40edge.png)
