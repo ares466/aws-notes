@@ -158,3 +158,37 @@ CloudFormation also supports configuration to forward and caching specific param
 `/sock.jpg?color=blue&size=large`
 
 With this configuration, the `color` may be forwarded and cached, but `size` would not.
+
+## Private Distributions
+
+Distributions can be **public**, in which all objects are open for public access. Distributions can also be **private**, in which all requests require a signed cookie or URL.
+
+Distributions support multiple cache behaivors, some of which may be public and others private.
+
+A `CloudFront key` is created by an account root user for the account (not a specific user). Once the key exists within the account, the account can be added as a `trusted signer`.
+
+Users can access private content from a CloudFront distribution using:
+- `Signed URLs` provide access to a single object and should be used when the client doesn't support cookies.
+- `Signed cookies` provide access to groups of objects (e.g., groups of files or all types of one file).
+
+![CloudFront - Private Access](../static/images/cloudfront_private.png)
+
+## Geo Restrictions
+
+CloudFront supports the ability to limit requests from specific geographies. This can be done by using the native CloudFront geo restriction feature, or by integrating with a 3rd-party geolocation service.
+
+The `CloudFront geo restriction` feature only supports **whitelisting or blacklisting countries**. No other types of geography is supported (e.g., continent, city, state). This setting is done on the entire distribution.
+
+The CloudFront geo restriction feature is 99.8% accurate.
+
+Alternatively, `3rd-party geolocation integrations` are completely customizable.
+
+![CloudFront - Geo Location](../static/images/cloudfront_georestrictions.png)
+
+> [Exam Tip]
+>
+> Using a 3rd-party geo restriction architecture enables the ability to control access based on any visible request attribute (e.g., headers, credentials, location).
+> This can be used for a variety of use cases:
+> - Geo Restrictions
+> - Check licenses
+> - Check credentials
