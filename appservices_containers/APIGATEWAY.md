@@ -43,7 +43,7 @@ API Gateway supports multiple endpoint types:
 
 APIs are deployed to a `stage`. A stage represents a snapshot of the API, including methods, integrations, models, mapping templates, and Lambda authorizers.
 
-Each version of your API can be deployed to a different stage. In order for changes to an API to take effect, they must be deployed to an API.
+Each version of your API can be deployed to a different stage. In order for changes to an API to take effect, they must be deployed to a stage.
 
 ![API Gateway - Stages](../static/images/apigateway_stages2.png)
 

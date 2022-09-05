@@ -125,7 +125,7 @@ The `Cluster` placement group specifies that instance should be launched within 
 Notes about Cluster placement groups:
 - Because all instances are clustered, this type of deployments offers very little resilience to failures.
 - The Cluster placement group can span VPCs at the cost of reduced performance.
-- This placement group requires a support instance type.
+- This placement group requires a supported instance type.
 - It is recommended that all instances in a placement group are the same instance type, and they are all launched together.
 
 ![EC2 Placement Group - Cluster](../static/images/ec2_placementgroups_cluster.png)
@@ -146,4 +146,4 @@ The `Partition` placement group allows you define a maximum of 7 partitions per 
 
 Instances can be manually assigned to partition, or AWS can auto-distribute instances between partitions. 
 
-The partition placement group is useful for large scale applications in which you need to assign instancess to partitions (topology aware).
+The partition placement group is useful for large scale applications in which you need to assign instances to partitions (topology aware).

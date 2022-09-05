@@ -89,7 +89,7 @@ DLQs are configured via a `Redrive policy`. This policy specifies the source que
 
 The `maxReceiveCount` defines how many times a message can be received (without being deleted) before moving to the DLQ.
 
-Wen using DLQs, you can configure an alarm to alert you when a message ends on the DLQ.
+When using DLQs, you can configure an alarm to alert you when a message ends on the DLQ.
 
 When messages are written to a queue, they contain a `enqueue timestamp` that represents the time they were published. When moving a message to a DLQ, that enqueue timestamp remains unchanged so the retention period of a DLQ is generally longer than the source queue.
 

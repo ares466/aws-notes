@@ -6,6 +6,6 @@ IOT provides `device shadows` capabilitities, which are reliable and consistent 
 
 IOT enables event-driven integration with other AWS services using rules. Rules can be used to match events within the IOT Gateway bus and trigger custom actions involving other AWS services.
 
-The AWS `IOT Gatway` is a component that the sensors interact with.
+The AWS `IOT Gateway` is a component that the sensors interact with.
 
 ![AWS IOT](../static/images/iot.png)

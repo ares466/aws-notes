@@ -17,7 +17,7 @@ VPC attachments are configured with a subnet in each AZ where the service is req
 Transit gateways support up to 50 peering attachment across different regions and accounts.
 
 **VPC Peering Attachments**:
-- VPCs can be peered together using transite gateways.
+- VPCs can be peered together using transit gateways.
 - VPC peering attachments do not support route propagation. Instead, static routes must be used.
 - VPCs that are peered should use unique ASNs.
 - Public IPs do not resolve to private IPs over a peer connection.

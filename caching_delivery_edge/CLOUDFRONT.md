@@ -206,3 +206,8 @@ Lambda@Edge has some restrictions when compared to Lambda service:
 Lambda@Edge functions can be used to adjust data between the viewer and the origin. Each of the stages of a CloudFront request (viewer request, origin request, origin response, and viewer response) support Lambda@Edge functions.
 
 ![CloudFront - Lambda@Edge](../static/images/cloudfront_lambda%40edge.png)
+
+Lambda@Edge can be used for:
+- A/B testing (viewer request)
+- Migration between different S3 origins (origin request)
+- Different objects based on device (origin request)

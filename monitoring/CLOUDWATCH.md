@@ -34,7 +34,7 @@ CloudWatch `percentiles` is a calculation that show the distribution of your met
 
 ## Alarms
 
-CloudWatch `Alarms` monitor am etric over a time period and trigger one or more actions if the metric passes some threshold.
+CloudWatch `Alarms` monitor a metric over a time period and trigger one or more actions if the metric passes some threshold.
 
 CloudWatch Alarms can be in `OK` or `ALARM` status.
 
@@ -63,7 +63,7 @@ CloudWatch logs can be exported to S3 using the S3 export feature (i.e., `Create
 ![CloudWatch Logs](../static/images/cloudwatch_log.png)
 
 CloudWatch Logs also support `log subscriptions`. Log subscriptions can be attached to a log group. Subscription filters stream log events to the configured destinations.
-- *Kinesis Data Firehouse* provides near-realtime delivery
+- *Kinesis Data Firehose* provides near-realtime delivery
 - *AWS Lambda* can be used to write the log data to Amazon ElasticSearch in near-realtime.
 - *AWS Lambda* can be used to process log data or export data to any destination in near-realtime.
 - *Kinesis Data Stream* can be used to publish logs to any KCL consumers.

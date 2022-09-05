@@ -8,7 +8,7 @@ DataSync is designed to work at huge scales (e.g., 10 Gbps per agent). The servi
 
 DataSync will preserve metadata (e.g., permissions and timestamps).
 
-The DataSync agent runs on a virualization platform (e.g., VMWAre) and communicates with the `AWS DataSync Endpoint`. The DataSync agent is capable of accessing data via `NFS` (Linux) or `SMB` (Windows).
+The DataSync agent runs on a virualization platform (e.g., VMWare) and communicates with the `AWS DataSync Endpoint`. The DataSync agent is capable of accessing data via `NFS` (Linux) or `SMB` (Windows).
 
 A DataSync `task` is a job within DataSync that defines the data being synced, how quickly, from where, and to where.
 

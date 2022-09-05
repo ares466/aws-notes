@@ -44,7 +44,7 @@ Interface endpoint provides several service endpoint domain names (*e.g., vpce-1
  - The `regional domain name` can be used to access the interface in the region.
  - The `zonal domain name` can be used to point to a specific AZ.
 
-Applications can optionally use the regional zonal domain to access the endpoint, or they can use `PrivateDNS`.
+Applications can optionally use the regional/zonal domain to access the endpoint, or they can use `PrivateDNS`.
 
 `PrivateDNS` associates a Route53 private hosted zone with the VPC. This action overrides the default DNS for services like S3. As a result, applications require no code changes to use interface endpoints.
 

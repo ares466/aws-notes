@@ -12,7 +12,7 @@ Steps to create a S2S VPN Connection:
 
 2. **Create a Customer Gateway (CGW) resource in AWS**
 
-    In order to setup a S2S VPN connection, you must create a **customer gateway resource** in AWS, which provides information to AWS about yoru device, for example, its public-facing IP address.
+    In order to setup a S2S VPN connection, you must create a **customer gateway resource** in AWS, which provides information to AWS about your device, for example, its public-facing IP address.
 
 3. **Create a Virtual Private Gateway (VGW)**
 
@@ -80,7 +80,7 @@ With *Accelerated S2S VPN*, VPN Tunnel IPs are global. Connections are routed to
 
 The result of using *Accelerated S2S VPN* is lower latency, less jitter, and higher throughputs.
 
-*Accelerated S2S VPN* can be enabled when creating a TGW VPN attachment. It is not compatible with VPNS using a VGW.
+*Accelerated S2S VPN* can be enabled when creating a TGW VPN attachment. It is not compatible with VPNs using a VGW.
 
 *Accelererated S2S VPN* has a fixed cost plus a transfer fee.
 

@@ -59,7 +59,7 @@ Both automatic backups and manual snapshots stored in an AWS-managed S3 bucket (
 **Exam Powerups**:
 - When an RDS snapshot is restored, it creates a brand new RDS instance with a new endpoint.
 - Since snapshots are representation of the database at a specific point in time, restoring from a snapshot will result in some data loss.
-- Due to the automated backup of transaction logs every 5 minutes, restoring from an autaomtic backup reduces RPO. The backup is restored and transaction logs are *replayed* through the desired point in time.
+- Due to the automated backup of transaction logs every 5 minutes, restoring from an automtic backup reduces RPO. The backup is restored and transaction logs are *replayed* through the desired point in time.
 - Restores are not fast.
 
 ## Read Replicas

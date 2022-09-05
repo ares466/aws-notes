@@ -2,7 +2,7 @@
 
 AWS CloudTrail monitors and records account activity across your AWS infrastructure, giving you control over storage, analysis, and remediation actions.
 
-A `CloudTrail event` is a single API call or activity within your API call (e.g., Create S3 bucket).
+A `CloudTrail event` is a single API call or activity within your AWS account (e.g., Create S3 bucket).
 
 CloudTrail automatically stores event history for 90 days for no cost. In order to store events longer, you must create one or more `CloudTrail trail`.
 
