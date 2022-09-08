@@ -38,6 +38,10 @@ The **scan** operation is the most flexible read operation, but also the least e
 
 ## Consistency
 
+## Indexes
+
+## Streams & Triggers
+
 ## Backups
 
 DynamoDB offers on-demand and point-in-time recovery (PITR) backups.
@@ -46,3 +50,6 @@ DynamoDB offers on-demand and point-in-time recovery (PITR) backups.
 
 When **point-in-time recovery** is enabled on a DynamoDB table, the service continously records changes that can be replayed at any point (1 second interval) in the 35-day recovery window.
 
+## Global Tables
+
+## TTL
