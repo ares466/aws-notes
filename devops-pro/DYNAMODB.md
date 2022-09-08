@@ -26,6 +26,18 @@ DynamoDB capacity (throughput) is measured in RCUs (read capacity units) and WCU
 
 Each DynamoDB table has an RCU and WCU burst pool (300 seconds) that is used when additional RCU/WCUs are used.
 
+## Operations
+
+Data can be retrieved from a DynamoDB table using queries or scans.
+
+The **query** operation accepts a single PK value and an optional SK value or range. The query operation will return zero or more items with the specified primary key. 
+
+The RCUs consumed equals the size of all returned items. Conditional filtering or projects discard data *after* capacity is calculated.
+
+The **scan** operation is the most flexible read operation, but also the least efficient. The scan operation reads every item in the table, consuming the capacity of *every item*. 
+
+## Consistency
+
 ## Backups
 
 DynamoDB offers on-demand and point-in-time recovery (PITR) backups.
