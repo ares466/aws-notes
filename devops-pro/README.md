@@ -1,5 +1,6 @@
 # AWS DevOps Pro
 
+- [Advanced Identity & Permissions](./ADVANCED_IDENTITY_PERMISSIONS.md)
 - [Beanstalk](./BEANSTALK.md)
 - [CloudFormation](./CLOUDFORMATION.md)
 - [CDN](./CDN.md)
