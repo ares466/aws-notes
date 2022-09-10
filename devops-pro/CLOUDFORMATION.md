@@ -477,4 +477,6 @@ def handler(event, context):
     cfnresponse.send(event, context, result, {})
 ```
 
-## Drift Detection
+## Stack Policy
+
+The Stack Policy is the IAM style policy statement which governs which resources in the stack can be changed and who is authorized to change them.

@@ -1,31 +1,54 @@
 # OpsWorks
 
-OpsWorks is configuration management service that provides an AWS-managed version of Chef and Puppet. 
+OpsWorks is configuration management service that provides an AWS-managed version of Chef and Puppet.
+
+OpsWorks has recently been split into three separate products:
+- **OpsWorks Stacks**: Define, group, provision, deploy, and operate your applications in AWS by using Chef in local mode.
+- **OpsWorks for Puppet Enterprise**: Create Puppet servers that include Puppet Enterprise features. Inspect, deliver, update, monitor, and secure your infrastructure.
+- **OpsWorks for Chef Automate**: Create Chef servers that include Chef Automate premium features, and use the Chef DK or any Chef tooling to manage them.
 
 Chef and Puppet are tools that allow you to write code to manage server configuration.
-
-**Puppet** allows you to define the desired state and Puppet will make it happen. With Puppet, you do not have a lot of control on how the updates are accomplished.
-
-In contrast, **Chef** allows you to script out the updates in Ruby.
-
-AWS OpsWorks can be run in one of three modes:
-- **Puppet Enterprise**: AWS-manged Puppet Master Server
-- **Chef Automate**: AWS-managed Chef servers
-- **OpsWorks**: Serverless AWS-integrated Chef
 
 > [Exam Tip]
 >
 > If a question mentions recipes, cookbooks, or manifests, then the answer is likely related to OpsWorks.
 
-OpsWorks consists of stacks, layers, recipes, and cookbooks.
-- Stacks: Container of resources
-- Layers: Specific function within a stack (e.g., web)
+AWS OpsWorks Stacks is a configuration management service that helps you build and operate highly dynamic applications and propagate changes instantly. Chef and OpsWorks Stacks are declarative desired state engines in which you state what what you want to happen and Chef/Opworks Stacks handles how it happens.
+
+*Below: Example of a chef recipe that installs and configures an httpd server.*
+```chef
+package "httpd" do
+    action :install
+end
+
+service "httpd" do
+    action [:enable, :start]
+    supports :restart => :true
+end
+
+template "/var/www/html/index.html" do
+    source "index.html.erb"
+    owner "apache"
+    group "apache"
+    mode "0644"
+    notifies :restart, "service[http]"
+end
+```
+
+In Chef, a **cookbook** (*.erb*) is the primary unit of configuration and policy distsribution.
+
+OpsWorks Stacks consists of stacks, layers, recipes, and cookbooks.
+- Stacks: A set of layers, instances and related AWS resources whose configuration you want to manage together.
+- Layers: A blueprint for a set of instances. It specifies the instance's resources, installed packages, profiles and security groups.
+- Instances: An instance represents a server. It can belong to one or more layers, that determine the instance's resources and configuration.
+
+OpsWorks can be instructed to scale instances using one of several strategies:
+- 24/7: Always running
+- Time-based: Runs during the specified time
+- Load-based: Runs when needed, based on memory, CPU, or other metrics
 
 OpsWorks operates using lifecycles including setup, configure, deploy, undeploy, and shutdown.
 
-OpsWorks runs on several instance types:
-- 24/7: Always running
-- Time-based: Runs during the specified time
-- Load-based: Runs when needed, based on load
+A **bookshelf** is a feature within OpsWorks that allows you to use community cookbooks.
 
 ![OpsWorks](./static/images/opsworks.png)
