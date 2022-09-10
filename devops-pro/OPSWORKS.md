@@ -49,6 +49,8 @@ OpsWorks can be instructed to scale instances using one of several strategies:
 
 OpsWorks operates using lifecycles including setup, configure, deploy, undeploy, and shutdown.
 
+![OpsWorks Stacks - Recipes](./static/images/opsworks_chefrecipes.png)
+
 A **bookshelf** is a feature within OpsWorks that allows you to use community cookbooks.
 
 ![OpsWorks](./static/images/opsworks.png)
