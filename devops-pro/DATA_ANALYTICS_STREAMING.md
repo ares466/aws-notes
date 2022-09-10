@@ -12,7 +12,7 @@ A kinesis stream starts with a single shard. As required, additional shards are 
 
 Kinesis streams store a 24-hour moving window of data. Consumers can access any data within that 24 hours. For an additional cost, users can enable a 7-day moving window.
 
-![Kinesis](../static/images/kinesis_arch.png)
+![Kinesis](./static/images/kinesis_arch.png)
 
 > [Exam Tip]
 >
@@ -51,7 +51,7 @@ Kinesis Firehouse supports near real time delivery of data (within 60 seconds). 
 - For low throughput consumers, Kinesis Firehose will write to the destination every 60 seconds.
 - For high throughput consumers, Kinesis Firehose will write to the destination every 1 MB.
 
-![Kinesis Firehose](../static/images/kinesis_firehose.png)
+![Kinesis Firehose](./static/images/kinesis_firehose.png)
 
 ## Kinesis Data Analytics
 
@@ -71,7 +71,7 @@ The results of the processing are pushed to the `in-application output stream` a
 
 Any errors during processing are sent to the `in-application error stream`.
 
-![Kinesis Data Analytics](../static/images/kinesis_analytics.png)
+![Kinesis Data Analytics](./static/images/kinesis_analytics.png)
 
 Kinesis Data Analytics should be used on streaming data that requires real-time SQL processing (e.g., time-series analytics, real-time dashboards, real-time metrics).
 
@@ -90,7 +90,7 @@ The data can be persisted and encrypted.
 Kinesis Video Streams can integrate with other AWS services (e.g., Rekognition, Connect).
 
 *Caption (below): Example Kinesis Video Streams architecture using Rekognition to identify faces, Kinesis data streams to analyze findings, and Lambda/SNS to notify the owner
-![Kinesis Video Streams](../static/images/kinesis_videostreams.png)
+![Kinesis Video Streams](./static/images/kinesis_videostreams.png)
 
 # AWS QuickSight
 
@@ -159,7 +159,7 @@ When you use enhanced VPC routing to route traffic through your VPC, you can als
 
 Both DMS and Firehose natively support Redshift as a destination.
 
-![Redshift](../static/images/redshift.png)
+![Redshift](./static/images/redshift.png)
 
 ## Resiliency and Recovery
 
@@ -183,7 +183,7 @@ Athena supports standard formats of structured, semi-structured, and unstructure
 
 Tables are defined in advance in a data catalog and data is projected through when read.
 
-![Athena](../static/images/athena.png)
+![Athena](./static/images/athena.png)
 
 **Use Cases**:
 - Use Athena when you need to query data without loading or transforming it in advance.
@@ -215,16 +215,16 @@ In HDFS, the `name node` provides the *namespace* for the file system and contro
 A `block` is a segment of data on HDFS (generally 64 MB).
 
 *Caption (below): Input data is fed into a MapReduce job. It is split based on the split size and mapped to nodes for processing.*
-![MapReduce - Input, Split, Map](../static/images/mapreduce_step1.png)
+![MapReduce - Input, Split, Map](./static/images/mapreduce_step1.png)
 
 *Caption (below): The result of the mapper is shuffled so that results are consolidated.*
-![MapReduce - Map, Shuffle](../static/images/mapreduce_step2.png)
+![MapReduce - Map, Shuffle](./static/images/mapreduce_step2.png)
 
 *Caption (below): The result of the shuffle phase is aggregated into a meaningful result.*
-![MapReduce - Shuffle, Reduce](../static/images/mapreduce_step3.png)
+![MapReduce - Shuffle, Reduce](./static/images/mapreduce_step3.png)
 
 *Caption (below): The result of the reduce phase is transformed into some desired format and stored.*
-![MapReduce - Reduce, Output](../static/images/mapreduce_step4.png)
+![MapReduce - Reduce, Output](./static/images/mapreduce_step4.png)
 
 # EMR
 
@@ -248,4 +248,4 @@ Clusters can also have zero or more `task nodes`. Task nodes are only responsibl
 
 `EMRFS` is a resilient S3-backed file system supported natively within EMR. Unlike HDFS, it is regionally resilient. EMRFS automatically persists data past the lifetime of the cluster and is resilient to core node failures.
 
-![EMR](../static/images/emr.png)
+![EMR](./static/images/emr.png)
