@@ -13,7 +13,7 @@ CloudFront caches read requests only. It does not support **write caching**.
 
 CloudFront integrates with ACM to enable **custom domains**.
 
-![CloudFront](../static/images/cloudfront.png)
+![CloudFront](./static/images/cloudfront.png)
 
 ## Distributions
 
@@ -72,7 +72,7 @@ The following settings can be configured on a cache behavior:
 
 **Cache configurations**: Settings related to how data should be cached; The appropriate values to be set on response headers.
 
-![CloudFront - Cache Behaviors](../static/images/cloudfront_behavior.png)
+![CloudFront - Cache Behaviors](./static/images/cloudfront_behavior.png)
 
 ## TTL and Invalidations
 
@@ -124,7 +124,7 @@ Historically, this has limited a server to only supporting a single TLS certific
 
 Note: Older browsers may not support SNI.
 
-![CloudFront - SSL](../static/images/cloudfront_ssl.png)
+![CloudFront - SSL](./static/images/cloudfront_ssl.png)
 
 ## Origins
 
@@ -171,7 +171,7 @@ Users can access private content from a CloudFront distribution using:
 - `Signed URLs` provide access to a single object and should be used when the client doesn't support cookies.
 - `Signed cookies` provide access to groups of objects (e.g., groups of files or all types of one file).
 
-![CloudFront - Private Access](../static/images/cloudfront_private.png)
+![CloudFront - Private Access](./static/images/cloudfront_private.png)
 
 ## Geo Restrictions
 
@@ -183,7 +183,7 @@ The CloudFront geo restriction feature is 99.8% accurate.
 
 Alternatively, `3rd-party geolocation integrations` are completely customizable.
 
-![CloudFront - Geo Location](../static/images/cloudfront_georestrictions.png)
+![CloudFront - Geo Location](./static/images/cloudfront_georestrictions.png)
 
 > [Exam Tip]
 >
@@ -205,7 +205,7 @@ Lambda@Edge has some restrictions when compared to Lambda service:
 
 Lambda@Edge functions can be used to adjust data between the viewer and the origin. Each of the stages of a CloudFront request (viewer request, origin request, origin response, and viewer response) support Lambda@Edge functions.
 
-![CloudFront - Lambda@Edge](../static/images/cloudfront_lambda%40edge.png)
+![CloudFront - Lambda@Edge](./static/images/cloudfront_lambda%40edge.png)
 
 Lambda@Edge can be used for:
 - A/B testing (viewer request)
