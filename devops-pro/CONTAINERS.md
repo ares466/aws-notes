@@ -2,7 +2,7 @@
 
 A `container` provides an isolated environment in which an application can run. Unlike a hypervisor, the container runs as a process on the host OS with the assistance of a container image.
 
-![Containers](../static/images/containers.png)
+![Containers](./static/images/containers.png)
 
 A container `image` is simply a stopped container. In docker, images are defined using a `Dockerfile`. Images are created from a `base image` or from scratch. Each command in a Dockerfile adds a new layer to the environment using a differential architecture.
 
@@ -50,7 +50,7 @@ When using ECS in EC2 mode, the customer is responsible for managing the EC2 ins
 
 When running in EC2 mode, you pay for the entire EC2 instance regardless of whether its fully utilized.
 
-![ECS - EC2 Mode](../static/images/ecs_ec2.png)
+![ECS - EC2 Mode](./static/images/ecs_ec2.png)
 
 EC2 mode may be good for price-conscious customers that may benefit from spot instances.
 
@@ -78,7 +78,7 @@ Each node is running software to handle container operations (either `containerd
 
 The `Kubernetes API` is used for communication between the control plane and `kubelet agent`.
 
-![K8s Concepts](../static/images/k8s_objects.png)
+![K8s Concepts](./static/images/k8s_objects.png)
 
 Kubernetes `pods` are the smallest unit of compute that share storage and networking. Typically, one container has one pod. Pods are nonpermanent.
 
@@ -90,7 +90,7 @@ The `kube-scheduler` identifies any unassigned nodes within a cluster and assign
 
 `kube-proxy` is a network proxy that runs on every node to coordinate networking with the control plane.
 
-![K8s Control Plane](../static/images/k8s_controlplane.png)
+![K8s Control Plane](./static/images/k8s_controlplane.png)
 
 # EKS
 
