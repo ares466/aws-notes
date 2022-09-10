@@ -37,7 +37,7 @@ When creating a new CloudTrail trail, you can specify several parameters.
 - Enable/disable insight events and which types of insights to enable
 
 
-![CloudTrail](../static/images/cloudtrail.png)
+![CloudTrail](./static/images/cloudtrail.png)
 
 ## Pricing
 
@@ -77,7 +77,7 @@ CloudWatch `statistics` is an aggregation over a period (e.g., min, max, sum, av
 
 CloudWatch `percentiles` is a calculation that show the distribution of your metrics (e.g., p95 shows the 95th percentile of your data).
 
-![CloudWatch](../static/images/cloudwatch_metrics.png)
+![CloudWatch](./static/images/cloudwatch_metrics.png)
 
 ## Alarms
 
@@ -87,7 +87,7 @@ CloudWatch Alarms can be in `OK` or `ALARM` status.
 
 CloudWatch Alarms support resolutions of standard or high (10 seconds or 30 seconds). You can also set a regular alarm with a period of any multiple of 60 seconds.
 
-![CloudWatch Metrics and Alarms](../static/images/cloudwatch_alarms.png)
+![CloudWatch Metrics and Alarms](./static/images/cloudwatch_alarms.png)
 
 ## Logs
 
@@ -107,7 +107,7 @@ A `metric filter` can apply a regex filter against a log stream to identify impo
 
 CloudWatch logs can be exported to S3 using the S3 export feature (i.e., `Create-Export-Task`). Exports of this type can take up to 12 hours to export and only support the SSE-S3 encryption mode.
 
-![CloudWatch Logs](../static/images/cloudwatch_log.png)
+![CloudWatch Logs](./static/images/cloudwatch_log.png)
 
 CloudWatch Logs also support `log subscriptions`. Log subscriptions can be attached to a log group. Subscription filters stream log events to the configured destinations.
 - *Kinesis Data Firehose* provides near-realtime delivery
@@ -115,6 +115,6 @@ CloudWatch Logs also support `log subscriptions`. Log subscriptions can be attac
 - *AWS Lambda* can be used to process log data or export data to any destination in near-realtime.
 - *Kinesis Data Stream* can be used to publish logs to any KCL consumers.
 
-![CloudWatch Log Subscriptions](../static/images/cloudwatch_subscriptions.png)
+![CloudWatch Log Subscriptions](./static/images/cloudwatch_subscriptions.png)
 
 It is a best practice to aggregate logs across environments and applications to a single S3 bucket.
