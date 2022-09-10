@@ -16,7 +16,7 @@ When needed, the backups can be restored to a secondary site.
 
 Backup & Restore is very inexpensive, but requires a long RTO and RPO.
 
-![DR - Backup & Restore](../static/images/dr_backup_restore.png)
+![DR - Backup & Restore](./static/images/dr_backup_restore.png)
 
 ## Pilot Light
 
@@ -28,7 +28,7 @@ The secondary environment can be "powered on" when needed.
 
 Pilot light is a low cost solution that offers a bit better RTO than backup & restore.
 
-![DR - Pilot Light](../static/images/dr_pilotlight.png)
+![DR - Pilot Light](./static/images/dr_pilotlight.png)
 
 ## Warm Standby
 
@@ -36,7 +36,7 @@ All instances and infrastructure are running in a secondary "warm standby" envir
 
 When required, the instance types can be scaled up in order to handle full traffic. This process is significantly faster than creating infrastructure from scratch.
 
-![DR - Warm Standby](../static/images/dr_warmstandby.png)
+![DR - Warm Standby](./static/images/dr_warmstandby.png)
 
 ## Active/Active
 
@@ -48,7 +48,7 @@ Costs are generally 200% since a full copy is always running.
 
 In addition to DR benefits, you can load balance traffic across both environments, improving high availability and performance of your workloads.
 
-![Active/Active](../static/images/dr_activeactive.png)
+![Active/Active](./static/images/dr_activeactive.png)
 
 ## Comparing DR Architectures
 
@@ -71,7 +71,7 @@ S3 can also be used to increase data durability since data within a bucket is re
 
 EFS can also be used to increase data durability. Data in EFS is replicated across multiple AZs therefore EFS volumes are regionally-resilient by default. However, if a region becomes unavailable, the EFS volume may be lost.
 
-![DR - Data](../static/images/dr_data.png)
+![DR - Data](./static/images/dr_data.png)
 
 ## DR Compute Architecture
 
@@ -83,7 +83,7 @@ In order to account for an AZ failure, we can use an auto scaling group to provi
 
 Lambda functions are allocated in each subnet. Failure of a specific AZ will result in the function launching in a subnet in another AZ. 
 
-![DR - Compute](../static/images/dr_compute.png)
+![DR - Compute](./static/images/dr_compute.png)
 
 ## DR Database Architecture
 
@@ -111,7 +111,7 @@ Aurora supports `global databases`. When running a global Aurora database cluste
 
 `VPC Endpoints` exist within a single AZ and are therefore subject to AZ failures. You can deploy multiple VPCEs for regional high availability.
 
-![DR - Networking](../static/images/dr_networkinglocal.png)
+![DR - Networking](./static/images/dr_networkinglocal.png)
 
 `Route53` is a global service - Route53 entry points can survive multiple regional failures. Route53 Health Checks can be used to globally distribute traffic for global high availability.
 
@@ -129,7 +129,7 @@ ELBs can be `internet-facing`, which means it is accessible from the public inte
 
 ELBs require 8+ free IP addresses in a subnet in order to operate. AWS recommends a subnet with at least a /27 subnet mask.
 
-![ELB](../static/images/elb_arch.png)
+![ELB](./static/images/elb_arch.png)
 
 ELBs allow architecture teirs to scale independent of each other.
 
@@ -165,7 +165,7 @@ There are three types of load balancers on AWS:
 Classic Load Balancers are a v1 product that is deprecated. CLBs can only be used with the Classic VPC architecture.
 
 *Caption (below): CLBs do not scale efficiently because they only support 1 SSL and one domain name per load balancer.*
-![Classic Load Balancer - Limitations](../static/images/elb_clblimitations.png)
+![Classic Load Balancer - Limitations](./static/images/elb_clblimitations.png)
 
 ### Application Load Balancer
 
@@ -255,8 +255,8 @@ A transparent security appliance scans data after it leaves the application inst
 
 The `Gateway Load Balancer` helps you run and scale 3rd party security appliances (e.g., firewalls, IDS, IPS). GWLBs provide transparent inspection for both inbound and outbound traffic.
 
-![GWLB](../static/images/elb_gwlb.png)
+![GWLB](./static/images/elb_gwlb.png)
 
 GWLBs `endpoints` are used to ingress/egress traffic to/from the appliance. The GWLB load balances packets across the backend security appliances. Traffic and metadata are tunneled using the `GENEVE` protocol. Traffic is routed using `route tables`.
 
-![GWLB - Traffic Flow](../static/images/elb_gwlb_flow.png)
+![GWLB - Traffic Flow](./static/images/elb_gwlb_flow.png)
