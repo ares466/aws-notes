@@ -8,7 +8,7 @@ GuardDuty supports multiple accounts within an AWS Organization.
 
 GuardDuty supports DNS logs, VPC Flow logs, CloudTrail logs.
 
-![Amazon GuardDuty](../static/images/guardduty.png)
+![Amazon GuardDuty](./static/images/guardduty.png)
 
 # Amazon Inspector
 
