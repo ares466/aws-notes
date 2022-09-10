@@ -114,3 +114,35 @@ The following policy will only allow actions in the `ap-southeast-2` and `eu-wes
     ]
 }
 ```
+
+## IAM Permission Boundaries
+
+Permissions boundaries impact identity permissions only. Resource policies are not impacted. Boundaries can be applied to IAM users and IAM roles.
+
+Boundaries define the maximum permissions an identity can recieve. Any permissions applied outside the boundaries are ineffective.
+
+Permissions boundaries do not grant any access on their own. 
+
+Permission boundaries should be used when you need to delegate permissions granting (e.g., Bob is an account administrator who can create IAM roles and policies, but should be prevented from granting access to certain services or actions).
+
+*Caption: The cross-section of permissions that are within the permission boundary. All other permissions (those not in the boundary) are not effective.*
+![IAM Permission Boundaries](./static/images/iam_permissionsboundaries.png)
+
+### Policy Evaluation
+
+All relevant policies are considered when evaluating access to a bucket or objects including:
+- Organizational SCP
+- Bucket Policy or ACLs
+- IAM Permission Boundaries
+- Session Policies
+- Identity Policies
+
+Given an *effective policy* (the product of all relevant policy statements), access evaluation will follow these steps:
+
+| Step # | Condition | Result if condition satisfied |
+| --- | --- | --- |
+| 1 | Check for explicit deny | DENY |
+| 2 | Check for explicit allow | ALLOW |
+| 3 | Implicit Deny | DENY |
+
+When the request is coming from another AWS account, an explicit ALLOW is required from the bucket account *and* from the other AWS account.
