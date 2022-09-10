@@ -8,7 +8,7 @@ CloudFormation contains logical resources. In a CloudFormation template, you def
 
 When a CloudFormation template is deployed, the logical resources in the template are now tied to the physical resources that were created. Therefore, if the logical resources within a template are changed (deleted), the physical resources are changed (deleted) as well.
 
-![CloudFormation Stack Behaviors](../static/images/cf_behaviors.png)
+![CloudFormation Stack Behaviors](./static/images/cf_behaviors.png)
 
 ## Parameters
 
@@ -321,7 +321,7 @@ StackSets can deploy stacks using *self-managed* roles or *service-managed* role
 
 After you've defined a stack set, you can create, update, or delete stacks in the target accounts and AWS Regions you specify. 
 
-![StackSets](../static/images/cf_stacksets.png)
+![StackSets](./static/images/cf_stacksets.png)
 
 When you create, update, or delete stacks, you can also specify operation preferences. For example, include the order of Regions you want to perform the operation, the **failure tolerance threshold** before stack operations stop, and the number of accounts performing **stack operations concurrently**.
 
@@ -348,7 +348,7 @@ By default, CloudFormation uses the permissions of the principal that initiated 
 
 Alternatively, CloudFormation can assume a role to gain the necessary permissions to create and manage AWS resources. **Stack Roles** allows users to implement role separation so that the identity creating the stack does not need resource permissions - only the `PassRole` permission. 
 
-![CloudFormation Stack Roles](../static/images/cf_stackroles.png)
+![CloudFormation Stack Roles](./static/images/cf_stackroles.png)
 
 ## Init
 
@@ -408,7 +408,7 @@ These files are useful for diagnosing issues with the EC2 bootsrapping process.
 
 The `cfn-hup` helper is a daemon which can be installed to detect changes in resources metadata and run configurable actions based on those changes. When an update stack operation is performed with new metadata, the running EC2 instance is updated.
 
-![CloudFormation Hup](../static/images/cf_hup.png)
+![CloudFormation Hup](./static/images/cf_hup.png)
 *Caption (above): The `cfn-hup` utility on the EC2 service periodically checks the CF metadata provided by a CloudFormation deploy. When it detects a change, it updates the instance accordingly.*
 
 ## Change Sets
@@ -430,7 +430,7 @@ For example, custom resources will allow you to populate (or empty) an S3 bucket
 
 Custom resources are backed by Lambda functions or an SQS Queue.
 
-![CloudFormation](../static/images/cf_customresources.png)
+![CloudFormation](./static/images/cf_customresources.png)
 
 *Caption (below): You can define a custom resource that calls a Lambda function and any number of parameters.*
 ```yaml
