@@ -10,3 +10,12 @@ AWS Config is a regional service, but supports cross-region and account aggregat
 
 ![AWS Config](./static/images/config.png)
 
+# Service Catalog
+
+The AWS Service Catalog is a self-service portal for provisioning pre-defined products. Administrators define the products and permissions using CloudFormation and Service Catalog configuration.
+
+One or more products are grouped into **portfolios**.
+
+End-users can review and launch portfolios and products.
+
+AWS Service Catalog is a regional service.
