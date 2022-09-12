@@ -15,4 +15,5 @@
 - [Monitoring & Logging](./MONITORING_LOGGING.md)
 - [OpsWorks](./OPSWORKS.md)
 - [Route53](./ROUTE53.md)
+- [Storage Services](./STORAGE_SERVICES.md)
 - [Systems Manager](./SYSTEMS_MANAGER.md)
