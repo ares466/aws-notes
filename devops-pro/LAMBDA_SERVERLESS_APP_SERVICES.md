@@ -212,6 +212,22 @@ With multi-value headers, both terms are represented in the `multiValueQueryStri
 }
 ```
 
+## Monitoring, Logging, and Tracing on Lambda
+
+All Lambda metrics (e.g., invocations, errors, duration, DeadLetterErros) are available within CloudWatch for the function name, resource (alias/version), executed version (combination alias and version), and all functions dimensions.
+
+Lambda execution logs are sent to CloudWatch Logs, including stdout and stderr. The Lambda execution role must have the proper permissions to interact with CloudWatch.
+- Log group: `/aws/lambda/<fundction-name>`
+- Log stream: `YYYY/MM/DD/[$LATEST]||version]<random>`
+
+X-Ray can be used for tracing by enabling `Active Tracing` on a function. This can be done using the CLI using the `aws lambda update-function-configuration --function-name my-function --tracing-config Mode=Active`.
+
+The execution of the function must have the proper permissions to interact with the X-Ray service (e.g., `AWSXRayDaemonWriteAccess` managed policy).
+
+The X-Ray SDK is automatically available in the function and can be used to publish traces.
+
+
+
 # API Gateway
 
 Amazon API Gateway is a fully-managed service that allows you to create and manage APIs. By default, API Gateway is highly available, scalable, handles authorization, throttling,  caching, CORS, transformations, OpenAPI specification, direct integration with other AWS services, and more.
@@ -332,3 +348,11 @@ SNS offers several key features:
 **Server Side Encryption (SSE)** - SNS can be configured to encrypt data.
 
 **Topic Policy** - SNS supports resource policies to define access permissions for the topic. Using a topic policy, you can enable cross-account access.
+
+# EventBridge
+
+EventBridge is replacing CloudWatch Events for near-real time processing. Unlike CloudWatch Events, EventBridge can receive events from 3rd parties.
+
+In EventBridge, events are received by an **event bus**. Each account has a default bus. Additionally, teams can create custom buses to receive events.
+
+EventBridge rules match incoming events (or schedules) and route the event to one or more targets (e.g., Lambda function).
