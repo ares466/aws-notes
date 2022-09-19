@@ -14,7 +14,7 @@ You are billed for the duration of the function execution.
 
 At its most basic, a Lambda function is a deployment package that the Lambda service executes. The deployment package must be smaller than `50 MB zipped` or `250 MB unzipped`.
 
-![Lambda](../static/images/lambda.png)
+![Lambda](./static/images/lambda.png)
 
 > [Exam Tip]
 >
@@ -26,13 +26,13 @@ Lambda has two networking modes: public and private.
 
 By default, Lambda functions are given public networking and run within the AWS public zone. Public Lambda functions can access public AWS services and the public internet, but they cannot access private VPC resources.
 
-![Lambda - Public Networking](../static/images/lambda_public.png)
+![Lambda - Public Networking](./static/images/lambda_public.png)
 
 Alternatively, Lambda functions can be configured to be accessible within a private VPC. Private Lambda functions must obey all VPC networking rules. Private Lambda functions can access private and public resources (using a NAT).
 
 Private Lambda functions execute in the AWS Lambda Service VPC with an ENI injected into the customer VPC.
 
-![Lambda - Private Networking](../static/images/lambda_private.png)
+![Lambda - Private Networking](./static/images/lambda_private.png)
 
 ## Permissions
 
@@ -75,7 +75,7 @@ When using an event source mapping, the functions execution role must have permi
 
 SQS queues or an SNS topic can be used to handle any discarded or failed event batches.
 
-![Lambda - Event-Based](../static/images/lambda_eventbased.png)
+![Lambda - Event-Based](./static/images/lambda_eventbased.png)
 
 ## Versions
 
@@ -119,7 +119,7 @@ When a Lambda function executes within an existing execution context, this is kn
 
 `Provisioned concurrency` can be used to keep execution contexts warm and ready to use to improve startup speeds.
 
-![Lambda - Start Up Times](../static/images/lambda_startuptime.png)
+![Lambda - Start Up Times](./static/images/lambda_startuptime.png)
 
 ## Handler
 
@@ -139,7 +139,7 @@ Lambda attempts to reuse an execution environment for multiple invocations of th
 
 To improve initialization time, put as much code into the initialization code (outside the handler function) as possible.
 
-![Lambda - Invocation Stages](../static/images/lambda_invocationstages.png)
+![Lambda - Invocation Stages](./static/images/lambda_invocationstages.png)
 
 ## Environment Variables
 
@@ -162,7 +162,7 @@ Environment variables can be encrypted with KMS.
 
 Without layers, a single zip archive contains code and the dependencies to run that code. In some cases, the dependencies are very large and take a significant amount of time to download.
 
-![Lambda - No Layers](../static/images/lambda_wolayers.png)
+![Lambda - No Layers](./static/images/lambda_wolayers.png)
 
 Lambda Layers help alleviate this issue. Developers can define a layer that contains shared and reusable libraries. The libraries are extracted into the `/opt` directory of the function so they're available to the function in the same way.
 
@@ -170,19 +170,19 @@ Layers enable efficient sharing of dependencies between functions, enable new ru
 
 As a result of using layers, deployment zips are much smaller.
 
-## Containers on Lambda
+### Containers on Lambda
 
 When you create a Lambda function, you package your function code into a deployment package. Lambda supports two types of deployment packages: container images and zip file archives.
 
 The `AWS Lambda Runtime Interface Emulator` (`RIE`) is a proxy for the Lambda Runtime API that allows you to locally test your Lambda function packaged as a container image. The emulator is a lightweight web server that converts HTTP requests into JSON events to pass to the Lambda function in the container image.
 
-## Integrating Lambda with ALB
+### Integrating Lambda with ALB
 
 Lambda functions can be represented in target groups within an ALB. The ALB `synchronously` invokes the Lambda (and waits for a response) when it receives an HTTP/S request from a client.
 
 The ALB is responsible for translating the HTTP request into a Lambda-compatible JSON event. It also translates the JSON response from the function into an HTTP response.
 
-![Lambda with ASG](../static/images/lambda_asg.png)
+![Lambda with ASG](./static/images/lambda_asg.png)
 
 Using `multi-value headers`, the load balancer collects all identical parameter keys and represents them in the `multiValueQueryStringParameters` attribute within the Lambda event.
 
@@ -212,7 +212,7 @@ With multi-value headers, both terms are represented in the `multiValueQueryStri
 }
 ```
 
-## Monitoring, Logging, and Tracing on Lambda
+### Monitoring, Logging, and Tracing on Lambda
 
 All Lambda metrics (e.g., invocations, errors, duration, DeadLetterErros) are available within CloudWatch for the function name, resource (alias/version), executed version (combination alias and version), and all functions dimensions.
 
@@ -225,8 +225,6 @@ X-Ray can be used for tracing by enabling `Active Tracing` on a function. This c
 The execution of the function must have the proper permissions to interact with the X-Ray service (e.g., `AWSXRayDaemonWriteAccess` managed policy).
 
 The X-Ray SDK is automatically available in the function and can be used to publish traces.
-
-
 
 # API Gateway
 
@@ -241,13 +239,13 @@ There are three phases in most API Gateway interactions:
     - `Integration Response`
     - `Method Response`
 
-![API Gateway - Lambda Integration](../static/images/apigateway_lambda.png)
+![API Gateway - Lambda Integration](./static/images/apigateway_lambda.png)
 
 API Gateway integrations with CloudWatch Logs to store and manage full stage request and response logs. CloudWatch Metrics is used for capturing metrics.
 
 The API Gateway can handle data caching.
 
-![API Gateway](../static/images/apigateway.png)
+![API Gateway](./static/images/apigateway.png)
 
 ## Authentication
 
@@ -257,25 +255,25 @@ API Gateway can also support a `custom Lambda authorizer`. When a request is rec
 
 If authentication fails, a 403 FORBIDDEN response is returned.
 
-![API Gateway - Authentication](../static/images/apigateway_auth.png)
+![API Gateway - Authentication](./static/images/apigateway_auth.png)
 
 ## API Types
 
 
-## Endpoint Types
+### Endpoint Types
 
 API Gateway supports multiple endpoint types:
 - `Edge-optimized` endpoints route traffic to the nearest CloudFront point-of-presence. 
 - `Regional` endpoints can be used to support API clients within the same region.
 - `Private` endpoints are only accessible within a VPC through an interface endpoint.
 
-## Stages & Deployments
+### Stages & Deployments
 
 APIs are deployed to a `stage`. A stage represents a snapshot of the API, including methods, integrations, models, mapping templates, and Lambda authorizers.
 
 Each version of your API can be deployed to a different stage. In order for changes to an API to take effect, they must be deployed to a stage.
 
-![API Gateway - Stages](../static/images/apigateway_stages2.png)
+![API Gateway - Stages](./static/images/apigateway_stages2.png)
 
 It is common to use stages to represent environments (e.g., dev, test, and prod) or versions of an API (e.g., v1, v2, v3).
 
@@ -283,13 +281,13 @@ Stages are `not immutable` - they can be overwritten and rolled back.
 
 You can use `stage variables` to configure dynamic integrations with Lambda aliases.
 
-![API Gateway - Stage Variables](../static/images/apigateway_stagevariables.png)
+![API Gateway - Stage Variables](./static/images/apigateway_stagevariables.png)
 
 Stages can be enabled for `canary deployments`. Stages enabled for canary deployments can be configured so a certain percentage of traffic is sent to the canary. This can be adjusted over time - or the canary can be promoted to make it the new base stage.
 
-![API Gateway - Stages](../static/images/apigateway_stages.png)
+![API Gateway - Stages](./static/images/apigateway_stages.png)
 
-## Errors
+### Errors
 
 Error codes from API Gateway are either 400s (client errors) or 500s (server errors).
 
@@ -302,15 +300,15 @@ Error codes from API Gateway are either 400s (client errors) or 500s (server err
 | 503 SERVICE UNAVAILABLE | Major servie issue |
 | 504 GATEWAY TIMEOUT | Integration failure or timeout (29 seconds) |
 
-## Caching
+### Caching
 
 Caching is configured per stage within API Gateway.
 
 The cache `TTL` default is 300 seconds, but is configurable from 0 to 3600 seconds. Cache can be `encrypted`.
 
-![API Gateway - Caching](../static/images/apigateway_cache.png)
+![API Gateway - Caching](./static/images/apigateway_cache.png)
 
-## Integrations
+### Integrations
 
 There are several types of integrations available within the API Gateway:
 - `Mock` - used for testing with no backend involvement
@@ -319,7 +317,7 @@ There are several types of integrations available within the API Gateway:
 - `AWS` - Allows an API endpoint to integrate with another AWS service.
 - `AWS Proxy` - Low admin overhead Lambda endpoint
 
-![API Gateway - Integrations](../static/images/apigateway_integrations.png)
+![API Gateway - Integrations](./static/images/apigateway_integrations.png)
 
 `Mapping templates` are used to transform requests and responses in non-proxy integrations. Mapping templates are able to rename or modify parameters and filter out unneeded data. Mapping templates use `Apache VTL` (Velocity Template Language).
 
@@ -335,7 +333,7 @@ SNS supports messages up to 256KB payloads. Alternatively, a larger message can 
 
 In SNS, `publishers` send messages to a `topic` where it can recieved by one or more `subscribers`. SNS supports many subscriber protocols including HTTP(S), email, SQS, mobile push, SMS messages, and Lambda. 
 
-![SNS](../static/images/sns_arch.png)
+![SNS](./static/images/sns_arch.png)
 
 SNS offers several key features:
 
