@@ -354,3 +354,23 @@ EventBridge is replacing CloudWatch Events for near-real time processing. Unlike
 In EventBridge, events are received by an **event bus**. Each account has a default bus. Additionally, teams can create custom buses to receive events.
 
 EventBridge rules match incoming events (or schedules) and route the event to one or more targets (e.g., Lambda function).
+
+# Step Functions
+
+Step Functions enables developers to create long-term serverless workflows (up to 1 year).
+
+There are two Step Function workflow types:
+- *Standard*: Up to 1 year
+- *Express*: Up to 5 minutes
+
+Workflows are defined using **state machines**, which consists of a state for every processing step in the workflow.  
+States can be defined using **Amazon States Language** (ASL) which is a JSON-like definition language.
+
+There are several types of states:
+- Succeed/Fail: Terminal state that completes or fails the workflow
+- Wait: Waits a configurable amount of time.
+- Choice: State that enables branches within a state machine.
+- Parallel: State that enables parallel branches within a state machine.
+- Map: State that performs an action on a list of items
+- Task: State that represents a single unit of work. Task states support integration with lots of AWS services such as Lambda, DynamoDB, ECS, SNS, SQS, Glue, EMR, and more).
+
