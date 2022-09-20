@@ -1,3 +1,11 @@
+# HA vs FT vs DR
+
+**High availability** (HA): Aims to ensure an agreed level of operational performance (SLA), usually uptime, for a higher than normal period.
+
+**Fault tolerance** (FT): A property of a system to continue operating properly in the event of the failure of some of its components.
+
+**Disaster recovery** (DR): A set of policies, tools, and procedures to enable the recovery or continuation of vital technology infrastructure and systems following a natural or human-induced disaster.  
+
 # Disaster Recovery
 
 There are four types of DR architectures:
@@ -260,3 +268,81 @@ The `Gateway Load Balancer` helps you run and scale 3rd party security appliance
 GWLBs `endpoints` are used to ingress/egress traffic to/from the appliance. The GWLB load balances packets across the backend security appliances. Traffic and metadata are tunneled using the `GENEVE` protocol. Traffic is routed using `route tables`.
 
 ![GWLB - Traffic Flow](./static/images/elb_gwlb_flow.png)
+
+# Launch Configurations & Launch Templates
+
+Both **launch configurations** and **launch templates** allow you to define the configuration of an EC2 instance in advance, including the AMI, instance type, storage, key pair, networking, security groups, userdata, and IAM role.
+
+Both launch configurations and launch templates are immutable. Once they are created, they cannot be changed. Launch templates allow for versions.
+
+Launch templates provide newer features including T2/T3 unlimited, placement groups, capacity reservations, and elastic graphics.
+
+*Launch configurations can only be used within Auto Scaling Groups (ASG).*
+
+*Launch templates can be used within ASGs, but can also be used to launch EC2 instances manually.*
+
+> [Exam Tip]
+>
+> AWS recommend using launch templates over launch configurations since they offer a superset of features.
+
+# Auto Scaling Groups
+
+An **Auto Scaling Group** contains a collection of Amazon EC2 instances that are treated as a logical grouping for the purposes of automatic scaling and management.
+
+ASGs provide automatic scaling and self-healing for EC2 using launch templates or launch configurations. All instances launched from the ASG are based on the LC or LT.
+
+ASG define the *minimum*, *desired*, and *maximum* number of instances for an application. The ASG will ensure the cluster is running the *desired* number of instances by provisioning or terminating clusters.
+
+When instances are provisioned, the ASG makes an attempt to spread instances across AZs.
+
+Scaling policies define the criteria by which the ASG should scale a cluster up or down.
+- **Manual scaling** - manually adjusting the desired capacity
+- **Scheduled scaling** - Scaling a cluster based on a specific time
+- **Dynamic scaling** - includes simple scaling, stepped scaling, and target tracking 
+    - **Simple scaling** - Scale the cluster based on a single metric (e.g., CPU above 50% +1, CPU below 50% -1)
+    - **Stepped scaling** - Scale the cluster proportionally to a metric value (e.g., CPU above 50% +1, CPU above 80% +2, CPU above 90% +3)
+    - **Target tracking** - Scale based on the target value of a metric (e.g., Desired CPU = 40%)
+
+ASG use *cooldown periods* to reduce the cost of scaling. Once an instance scales up, that instance will not be scaled down until the cooldown period has passed.
+
+ASGs use *health checks* (EC2 status checks) to ensure instances in the target group are healthy. ASGs can also use an ELB's health check rather than EC2 status checks for application awareness.
+
+Instances created/terminated by an ASG can be automatically added/removed as a target of a load balancer.
+
+The ASG performs several stages when scaling:
+- Launch - Launch and instance
+- Terminate - Terminate an instance
+- AddToLoadBalancer - Add to ELB on launch
+- AlarmNotification - accept notification from CloudWatch
+- AZRebalance - balances instances evenly across all AZs
+- HealthCheck - Instance health checks on/off
+- ReplaceUnhealthy - Terminate unhealthy and replace
+- ScheduledActions - Schedule is on/off
+- Standby - Instances can be *inservice* or *standby*
+
+Any of these stages can be set to SUSPEND or RESUME. When suspended, the ASG will not perform the stage.
+
+## ASG Lifecycle Hooks
+
+**ASG Lifecycle Hooks** allow developers to perform custom actions on instances during the launch and terminate ASG actions.
+
+When custom actions are defined, instances are paused in the stage until (1) the configurable timeout value is reached or (2) the process is resumed from a `CompleteLifecycleAction` event. If the timeout value is reached, the instance launch/termination process can be continued or abandoned.
+
+Lifecycle hooks can be integrated with EventBridge or SNS notifications.
+
+![ASG - Lifecycle Hooks](./static/images/asg_lifecyclehooks.png)
+
+## ASG Health Checks
+
+There are three types of health checks that can be used with an ASG:
+- EC2 status (default)
+- ELB
+- Custom
+
+EC2 status checks are based on the status of an EC2 instances. If the instance is in the stopping, stopped, terminated, shutting down, or impaired status, the instance is deemed unhealthy.
+
+ELB health checks are layer-7 aware which allows developers to test the health and readiness of an application, rather than the instance itself.
+
+Custom health checks mark an instance as healthy or unhealthy by an external system.
+
+Health checks observe a **grace period** (default 300 seconds) before starting health checks. This gives the application enough time to initialize and get into a healthy state before being marked as unhealthy.
