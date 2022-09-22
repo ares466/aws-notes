@@ -1,12 +1,22 @@
 # EBS
 
-EBS (Elastic Block Storage) is a managed file storage service from AWS.
+EBS (Elastic Block Storage) is a persistent managed block storage service from AWS. EC2 instances are able to mount the block device to create a file system on the device.
 
-When provisioning an EB2 instance, you must select an instance type. There are several instance types, each with different characteristics, to choose from:
+Storage is provisioned in on AZ (resilient within that AZ only).
+
+EBS volumes can only be attached to one EC2 instance **within the same AZ** at at time, but can be detached and reattached to other instances.
+
+EBS supports snapshots in S3 that be used to create a new volume (across AZs).
+
+When provisioning an EBS instance, you must select an instance type. There are several instance types, each with different characteristics, to choose from:
 - General Purpose SSD (GP2)
 - General Purpose SSD (GP3)
 - Provisioned IOPS (IO1/IO2/BlockExpress)
 - Hard Disk Drive (HDD)-based
+
+EBS is billed based on a GB/month, plus configurable extras.
+
+<img src="./static/images/ebs_arch.png" alt="EBS - Architecture" width="400"/>
 
 ## GP2 
 
@@ -136,7 +146,7 @@ Storage gateway volume stored mode should be used for:
 
 **Stored mode does not improve database capacity.** All data is stored locally!
 
-![Volume Gateway - Stored Mode](../static/images/storagegateway_volumestored.png)
+![Volume Gateway - Stored Mode](./static/images/storagegateway_volumestored.png)
 
 ### Cached Mode
 
@@ -146,7 +156,7 @@ The only data that is stored locally (`cached`) is the frequently accessed data.
 
 Cached mode can be used for `data-center extension`, in which all data is stored in S3, but accessed as if it were on-prem.
 
-![Volume Gateway - Cached Mode](../static/images/storagegateway_volumecached.png)
+![Volume Gateway - Cached Mode](./static/images/storagegateway_volumecached.png)
 
 ### Stored vs Cached Mode
 
@@ -177,7 +187,7 @@ Tapes are inserted into a `tape drive` to be read from or written to. Many drive
 
 Servers communicate with the tape drive using `iSCSI`.
 
-![Storage Gateway - VTL](../static/images/storagegateway_tapes.png)
+![Storage Gateway - VTL](./static/images/storagegateway_tapes.png)
 
 A `VTL Gateway` is used to act as a tape backup device using `iSCSI` to accept backups, write them to S3, and archive them into Glacier.
 
@@ -187,7 +197,7 @@ Backup data is initially written to S3, which acts an AWS-hosted tape library (i
 
 Tapes are archived into the tape shelf (VTS) within Glacier. When archived backups are required, they are restored to the VTL.
 
-![VTL Gateway](../static/images/storagegateway_vtl.png)
+![VTL Gateway](./static/images/storagegateway_vtl.png)
 
 VTL enables consumers to gain benefits from cloud storage, but still be compatible with their existing tape backup infrastructure and processes.
 
@@ -206,7 +216,7 @@ S3 objects are given a name based on the directory within the file share.
 `/winkie.jpg` -> `s3://a4l-fileshare/winkie.jpg`  
 
 *Caption (below): Diagram shows a simple example in which on-prem servers are backed up to S3.*
-![Storage Gateway - File Gateway](../static/images/storagegateway_filemode.png)
+![Storage Gateway - File Gateway](./static/images/storagegateway_filemode.png)
 
 ## Multiple Shares
 
@@ -219,15 +229,15 @@ The `NotifyWhenUploaded` API can be used to notify other gateways when objects a
 File Gateway does not support `object locking` to prevent write collisions. Instead, organizations must implement a read-only mode on other shares or tightly control file access.
 
 *Caption (below): This architecture shows multiple on-prem contributors to the same file gateway.*
-![File Gateway - Multiple Contributors](../static/images/storagegateway_file_multiple.png)
+![File Gateway - Multiple Contributors](./static/images/storagegateway_file_multiple.png)
 
 File Gateway can be partnered with S3 replication to ensure backups to another region for Disaster Recovery (DR).
 
-![File Gateway - Disaster Recovery](../static/images/storagegateway_file_dr.png)
+![File Gateway - Disaster Recovery](./static/images/storagegateway_file_dr.png)
 
 To make file storage more cost effective, use lifecycle rules to transition data through different storage classes.
 
-![File Gateway - S3 Lifecycle Rules](../static/images/storagegateway_s3classes.png)
+![File Gateway - S3 Lifecycle Rules](./static/images/storagegateway_s3classes.png)
 
 # KMS
 
@@ -322,7 +332,7 @@ Each KMS key supports a `key policy` that define the principals and permissions 
 
 **Crytopraphy keys never leave the KMS service**. By default, KMS keys never leave the region in which they are generated (exception being multi-region keys).
 
-![KMS Operations](../static/images/kms_operations.png)
+![KMS Operations](./static/images/kms_operations.png)
 
 KMS keys can be used for up to **4KB** of data. To encrypt more than 4KB of data, a `data encryption key` is required. The `GenerateDataKey` operation can be used to generate a data key from a CMK. When generated, KMS provides the data key as `plaintext` and `ciphertext`. The plaintext version is used to encrypt the data and then immediately discarded. The ciphertext version of the data key is stored with the encrypted data. This process is called `envelope encyrption`.
 
@@ -397,7 +407,7 @@ The root key is used to encrypt the data key. The ciphertext of the dat key is s
 
 This process is called `envelope encryption`.
 
-![S3 SSE-S3](../static/images/s3_sses3.png)
+![S3 SSE-S3](./static/images/s3_sses3.png)
 
 Use SSE-S3 when you have the following requirements:
 - Do not need to manage keys
@@ -521,7 +531,7 @@ Lifecycle rules support `transition` actions and `expiration` actions.
 Lifecycle transitions only flow "down". Transitions cannot be used to move an object to a higher storage tier.
 
 *Caption (below): This chart shows the possible transitions of S3 object lifecycles.*
-![S3 Lifecycle Transitions](../static/images/s3_lifecycleconfig.png)
+![S3 Lifecycle Transitions](./static/images/s3_lifecycleconfig.png)
 *Note how there are some restrictions on transitions:*
 - *Transitions can only flow "down". Transitions cannot be used to move data to a higher storage class.*
 - *S3-Intelligent Tiering cannot move data to S3-One Zone-IA.*
@@ -532,7 +542,7 @@ Exam Tips:
 - Be aware that smaller objects can actually cost more when transitioned to S3-Standard-IA, S3-Intellint-Tiering, or S3-OneZone-IA due to the minimum billable size requirements (40KB per object)  of those storage classes.
 - A single rule cannot transition to Standard-IA or OneZone-IA and THEN to Glacier classes within 30 days due to the duration requirement of the Standard-IA and OneZone-IA storage classes. To transition to Glacier classes before 30 days, use a separate rule.
 
-## Replication
+## S3 Replication
 
 There are two types of S3 replication:
 - Cross Region Replication (CRR)
@@ -581,7 +591,7 @@ Bucket ACLs enable you to manage access to buckets and objects. Each bucket and 
 
 Bucket ACLs cannot be used to manage access within the same AWS account as the bucket.
 
-![S3 Bucket ACL](../static/images/s3_bucketacl.png)
+![S3 Bucket ACL](./static/images/s3_bucketacl.png)
 
 Bucket ACLs grant access based on Cononical Account IDs (a legacy account identifier). The *Account canonical user ID* can be found on the *Security Credentials* console.
 
@@ -650,7 +660,7 @@ The IAM role must grant `sts:AssumeRole` permissions to an identity in the other
 
 When S3 ACLs are enabled, bucket owners can choose the preferred object ownership strategy.
 
-![S3 Object Ownership Setting](../static/images/s3_objectownershipenabled.png).
+![S3 Object Ownership Setting](./static/images/s3_objectownershipenabled.png).
 
 - **Bucket owner preferred** - if new objects written to the bucket specify the bucket-owner-full-control canned ACL, they are owned by the bucket owner. Otherwise, they ware owned by the object writer.
 - **Object writer** - The object writer remains the object owner.
@@ -676,7 +686,7 @@ Given an *effective policy* (the product of all relevant policy statements), acc
 
 When the request is coming from another AWS account, an explicit ALLOW is required from the bucket account *and* from the other AWS account.
 
-## Presigned URLs
+## S3 Presigned URLs
 
 Object owners can share objects with others by creating a `presigned URL`, using their own security credentials, to grant time-limited permission to download the objects.
 
@@ -711,9 +721,9 @@ S3 and Glacier Select allow you to use SQL-like statements to select part of the
 
 S3 Select supports CSV, JSON, Parquet, and BZIP2 compression for JSON and CSV.
 
-![S3 Select](../static/images/s3_select.png)
+![S3 Select](./static/images/s3_select.png)
 
-## Access Points
+## S3 Access Points
 
 `S3 Access Points` simplify management of access to S3 buckets and objects.
 
@@ -728,9 +738,9 @@ Access Points can be created via the console or using the AWS CLI:
 
 The bucket policy must grant the same access as the access point, or the bucket policy can `delegate` access by allowing all actions through the access point.
 
-![S3 Access Points](../static/images/s3_accesspoints.png)
+![S3 Access Points](./static/images/s3_accesspoints.png)
 
-## Object Lock
+## S3 Object Lock
 
 `Object Lock` implements a `WORM` (write once read many) security policy in which individual versions cannot be modified or deleted.
 
@@ -763,7 +773,7 @@ When a legal hold is enabled, the object version cannot be modified or deleted.
 
 The `s3:PutObjectLegalHold` permission is required to add or remove a legal hold.
 
-![S3 Object Lock](../static/images/s3_objectlock.png)
+![S3 Object Lock](./static/images/s3_objectlock.png)
 
 ## Amazon Macie
 
@@ -783,7 +793,7 @@ Custom identifiers also support `ignore words`. If the regex contains an *ignore
 
 Macie uses a multi-account structure using AWS Organizations or by explictly inviting accounts.
 
-![Amazon Macie](../static/images/macie.png)
+![Amazon Macie](./static/images/macie.png)
 
 Macie will generate two types of findings:
 - `Policy findings` are generated when settings are discovered that reduce the security of an S3 bucket (e.g., *Policy:IAMUser/S3BlockPublicAccessDisabled*, *Policy:IAMUser/S3BucketEncryptionDisabled*).
@@ -806,10 +816,10 @@ EFS supports bursting and provisioned `throughput modes`.
 EFS supports standard and infrequent access (IA) `storage classes`. Lifecycle policies can be used to automatically move data between storage classes.
 
 *Caption (below): Screenshot showing the various configuration options available when creating an EFS instances.*
-![EFS modes](../static/images/efs_modes.png)
+![EFS modes](./static/images/efs_modes.png)
 
 *Caption (below): EFS is accessible from an on-prem network via mount targets over a VPN or DX connection.*
-![EFS](../static/images/efs.png)
+![EFS](./static/images/efs.png)
 
 # FSx for Windows
 
@@ -833,7 +843,7 @@ FSx for Windows key features and benefits:
 - FSx for Windows is fully-managed and does not require a file server admin.
 
 *Caption (below): FSx for Windows is a Windows file server.*
-![FSx for Windows](../static/images/fsx_windows.png)
+![FSx for Windows](./static/images/fsx_windows.png)
 - *FSx for Windows can integrate with AWS services such as WorkSpaces.*
 - *FSx for Windows supports integration with an AWS Directory Service or an existing on-prem AD.*
 
@@ -865,12 +875,12 @@ The baseline performance of an instance is defined by its size:
 - Persistent deployments offers baseline throughput at 50 MB/s, 100 MB/s, and 200 MB/s per TiB of storage.
 - FSx can burst up to 1,300 MB/s per TiB using a credit system.
 
-![FSx for Lustre](../static/images/fsx_lustre.png)
+![FSx for Lustre](./static/images/fsx_lustre.png)
 
 ### FSx for Lustre with an S3 Repository
 
 *Caption (below): FSx for Lustre can be configured to use S3 as a repository.*
-![FSx for Lustre with S3 as a repository](../static/images/fsx_lustre_s3.png)
+![FSx for Lustre with S3 as a repository](./static/images/fsx_lustre_s3.png)
 
 - *FSx can be configured to `lazy load` data from S3 into the file system as its needed. Data can also be exported back to S3 at any point using `hsm_archive`.*
 
