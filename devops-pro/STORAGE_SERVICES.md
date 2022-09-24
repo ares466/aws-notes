@@ -522,6 +522,22 @@ S3 Intelligent Tiering should be used for long-lived data with changing or unkno
 | S3 - Glacier Flexible | Minutes to hours | 90 Days | 40KB per object | Eleven 9s | At least 3 AZs | Archived data that is very infrequently accessed (e.g., yearly) and minutes to hour retrieval time is sufficient. |
 | S3 - Glacier Deep Archive | Hours to Days | 180 Days | 40 KB per object | Eleven 9s | At least 3 AZs | Archival data that is rarely, if ever, accessed in which hours to days retrieval time is acceptable. |
 
+## Object Versioning
+
+Objects in S3 are immutable. Without versioning, each object is solely accessed via its key. If you write an object to an S3 bucket with the same key as an existing object, the existing object is overwritten and unrecoverable.
+
+Versioning enables storage of multiple versions of objects within a bucket. Operations that would overwrite objects generate a new version.
+
+In a version-enabled bucket, each object contains a key and an id. These two fields are unique within the bucket. The most recently written version of an object is known as the `latest` version or `current` version. When requesting objects, developers can specify an id to access older versions. If no id is specified, the most recent version is assumed.
+
+In a version-enabled bucket, the delete operation creates a new version of the object called a **delete marker**. The delete marker has the effect of hiding all versions of that object. All versions are still available if accessed by a key and version id within a *GET* operation.
+
+To truly delete a specific version of an object, you must specify the key and version id in the delete command.
+
+Object versioning is a bucket-level operation. By default, versioning is disabled. Once it is enabled on a bucket, it cannot be disabled again, though it can be suspended.
+
+The **MFA Delete** feature is enabled within the versioning configuration of a bucket. When MFA is enabled on a bucket, object versions cannot be deleted, and versioning configuration cannot be changed, without providing a OTP generated from an MFA device. 
+
 ## S3 Lifecycle Configuration
 
 A `lifecycle configuration` is a set of rules that consist of actions on a bucket or group of objects.
@@ -774,6 +790,49 @@ When a legal hold is enabled, the object version cannot be modified or deleted.
 The `s3:PutObjectLegalHold` permission is required to add or remove a legal hold.
 
 ![S3 Object Lock](./static/images/s3_objectlock.png)
+
+## CORS
+
+When a browser or other client makes a connection to a server, it receives and displays an HTML page. That HTML page references other resources such as images and JS scripts. 
+
+The host that delivers the HTML response is called the *origin*. Any requests from this page back to the origin (for images or JS scripts) is allowed by default.
+
+In some cases, the HTML may need resources that are served from other *origins*. By default, cross-origin requests (requests made to a different domain than origin) are restricted, but can be allowed using **Cross-Origin Resource Sharing** (CORS).
+
+CORS is a set of HTTP response headers that instruct the browser to allow cross-origin requests for data for specific origins, or all origins.
+
+S3 static websites enable developers to provide CORS configuration so the HTML served by S3 can optionally request resources from other domains.
+
+CORS configuration is defined in JSON via multiple rules that are processes in order. The first rule that matches the requests is effective.
+
+*Caption (below): This CORS document instructs S3 to allow any PUT, POST, and DELETE requests from `anotherdomain.io`, and allow GET requests from any domain.*
+```json
+{
+    {
+        "AllowedHeaders": ["*"],
+        "AllowedMethods": ["PUT", "POST", "DELETE"],
+        "AllowedOrigins": ["http://anotherdomain.io"],
+        "ExposedHeaders": []
+    },
+    {
+        "AllowedHeaders": ["*"],
+        "AllowedMethods": ["GET"],
+        "AllowedOrigins": ["*"],
+        "ExposedHeaders": []
+    },  
+}
+```
+
+There are two types of requests:
+- Simple requests: The browser requests the content from the other domain immediately.
+- Preflight requests: The browser first sends a **preflighted** request to the domain to ensure its allowed.
+
+| Header | Description | 
+| -- | -- |
+| `Access-Control-Allow-Origin` | Defines which origins should be enabled to serve content |
+| `Access-Control-Max-Age` | Defines how long content from other origins should be cached |
+| `Access-Control-Allow-Methods` | Defines which HTTP methods can be used to interact with other domains |
+| `Access-Control-Allow-Headers` | Defines which HTTP headers are allowed to be sent in cross-origin requests |
 
 ## Amazon Macie
 
