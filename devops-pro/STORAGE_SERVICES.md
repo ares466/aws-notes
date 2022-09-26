@@ -756,6 +756,16 @@ The bucket policy must grant the same access as the access point, or the bucket 
 
 ![S3 Access Points](./static/images/s3_accesspoints.png)
 
+## S3 Inventory
+
+The S3 Inventory feature helps you manage storage within S3. The service inventories objects and various optional fields (e.g., encryption, size, last modified, storage class, version id, replication status, object lock).
+
+Inventory is analyzed daily or weekly. It cannot be run on-demand.
+
+The result of the inventory analysis is a CSV, ORC, or Parquet report.
+
+Multiple inventories can be setup to write to a destination bucket within the same account or different account.
+
 ## S3 Object Lock
 
 `Object Lock` implements a `WORM` (write once read many) security policy in which individual versions cannot be modified or deleted.
@@ -857,6 +867,18 @@ Macie uses a multi-account structure using AWS Organizations or by explictly inv
 Macie will generate two types of findings:
 - `Policy findings` are generated when settings are discovered that reduce the security of an S3 bucket (e.g., *Policy:IAMUser/S3BlockPublicAccessDisabled*, *Policy:IAMUser/S3BucketEncryptionDisabled*).
 - `Sensitive data findings` are generated when sensitive data is discovered in an S3 bucket (e.g., *SensitiveData:S3Object/Credentials*, *SensitiveData:S3Object/CustomIdentifier*).
+
+## S3 Event Notifications
+
+When enabled, S3 can create notifications as a result of S3 actions. Notifications can be in the form of SNS, SQS, EventBridge events, or Lambda Functions.
+
+S3 supports notification on object creation (Put, Post, Copy, CompleteMultiPartUpload), object deletion (Delete, DeleteMarkerCreated), object restoration from Glacier (Post, Completed), and Replication events (e.g., OperationMissedThreshold, OperationReplicationAfterThreshold).
+
+## S3 Access Logs
+
+When enabled, S3 will log all bucket or object access to another S3 bucket. Access logs are usually available within the destination bucket within a few hours. 
+
+Log files consist of log records. Log records are newline-delimited. Attributes within a log are space-delimited.
 
 # EFS (Elastic File System)
 

@@ -20,6 +20,8 @@ Stages consist of one or more **actions** (single, sequential, or parallel).
 
 <img src="./static/images/cicd_pipeline.png" alt="Code Pipeline - Conceptual" width="400"/> <img src="./static/images/codepipeline_arch.png" alt="Code Pipeline - Architecture" width="400"/>
 
+Pipelines can be outfitted with a **manual approval** stage. In order for the current pipeline to continue, manual approval is required. If manual approval is not obtained within 7 days, the pipeline execution fails.
+
 # CodeCommit
 
 **CodeCommit** is a Git repository hosted by AWS.
