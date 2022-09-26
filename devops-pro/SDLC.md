@@ -67,6 +67,8 @@ The `buildspec.yaml` file can define environment variables that are available in
 
 The `buildspec.yaml` file allows developers to customize artifact creation and storage.
 
+CodeBuild supports **triggers** which are 
+
 # Code Deploy
 
 CodeDeploy can deploy applications to EC2, Lambda, AWS Elastic Beanstalk, AWS OpsWorks, CloudFormation, ECS (blue/green), Service Catalog, Alexa Skills Kit, and S3. It can also deploy to on-prem servers.
