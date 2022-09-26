@@ -67,13 +67,13 @@ The `buildspec.yaml` file can define environment variables that are available in
 
 The `buildspec.yaml` file allows developers to customize artifact creation and storage.
 
-CodeBuild supports **triggers** which are 
+CodeBuild supports **triggers**. Triggers allow developers to schedule builds based on Cron.
 
 # Code Deploy
 
 CodeDeploy can deploy applications to EC2, Lambda, AWS Elastic Beanstalk, AWS OpsWorks, CloudFormation, ECS (blue/green), Service Catalog, Alexa Skills Kit, and S3. It can also deploy to on-prem servers.
 
-When deploying to EC2 or on-prem servers, the **CodeDeploy agent** must be installed.
+When deploying to EC2 or on-prem servers, the **CodeDeploy agent** must be installed.s
 
 The `appspec.yaml` (for json) is a file that can be used to customize deployments through CodeDeploy. `appspec.yaml` allows developers to define build configuration and lifecycle hooks for a deployment.
 
