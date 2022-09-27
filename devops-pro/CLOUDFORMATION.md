@@ -271,6 +271,7 @@ Resources:
             Parameters:
                 Param1: !Ref SomeParam1
                 Param2: !Ref SomeParam2
+            TimeoutInMinutes: 10
     AppStack:
         Type: AWS::CloudFormation::Stack
         Properties:
@@ -283,6 +284,11 @@ Use cases:
 - to make modular templates for code reuse
 - when all resources are lifecycle linked
 - when you need to overcome the 500 reource limit in a stack
+
+> [Exam Tip]
+>
+> - It is advisable to manage all nested stacks from the root stack, though nested stacks can be deleted individually.
+> - When you delete a root stack, it will delete all nested stacks as well.
 
 **Cross-stack references** serves a similar objective as nested stacks, but works differently which means its better suited for some use cases.
 
