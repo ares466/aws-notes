@@ -513,7 +513,7 @@ S3 Intelligent Tiering should be used for long-lived data with changing or unkno
 
 ### Comparing Storage Classes
 
-| | Retrieval Time | Minimum Duration Charge | Minimum Capacity Charge | Durability | Replicated AZs | Use Case |
+| PH | Retrieval Time | Minimum Duration Charge | Minimum Capacity Charge | Durability | Replicated AZs | Use Case |
 | --- | --- | --- | --- | --- | --- | --- |
 | S3 - Standard | Instant | None | None | Eleven 9s | At least 3 AZs | Default | 
 | S3 - Infrequent Access (IA) | Instant | 30 Days | 128KB per object | Eleven 9s | At least 3 AZs | Irreplacable data that is infrequently accessed. |
