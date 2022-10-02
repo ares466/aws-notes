@@ -12,6 +12,32 @@ ARNs have the following composition:
 
 ## IAM Identities & Policies
 
+**IAM service-linked roles** is an IAM role created by and linked to a specific AWS service. Service-linked roles provide the permissions required by the service to interact with AWS resources on your behalf.
+
+Service-linked roles cannot be deleted until they are no longer used by the service.
+
+*Caption: Example of a condition that defines a service-linked role.*
+```json
+"Condition": { 
+    "StringLike": {
+        "iam:AWSServiceName": "SERVICE-NAME.amazonaws.com"
+    }
+}
+```
+
+The *PassRole* permission is required in order to assign an existing role to an AWS Service.
+
+```json
+{
+    "Effect": "Allow",
+    "Action": [
+        "iam:ListRoles",
+        "iam:PassRole"
+    ],
+    "Resource": "arn:aws:iam::123456789012:role/my-role"
+}
+```
+
 **IAM identities** consist of IAM users, IAM groups, and IAM roles. 
 
 **IAM policies** can be attached to IAM identities to grant permissions to AWS services.

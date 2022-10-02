@@ -25,6 +25,8 @@ CloudTrail typically publishes events within 15 minutes of activity. There is no
 
 By default, CloudTrail is enabled on the account for management events only without any trails configured.
 
+
+
 When creating a new CloudTrail trail, you can specify several parameters.
 - Destination S3 bucket
 - Enable/disable SSE-KMS encryption

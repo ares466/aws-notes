@@ -332,7 +332,7 @@ Each KMS key supports a `key policy` that define the principals and permissions 
 
 **Crytopraphy keys never leave the KMS service**. By default, KMS keys never leave the region in which they are generated (exception being multi-region keys).
 
-![KMS Operations](./static/images/kms_operations.png)
+<img src="./static/images/kms_operations.png" alt="KMS Operations" width="600"/>
 
 KMS keys can be used for up to **4KB** of data. To encrypt more than 4KB of data, a `data encryption key` is required. The `GenerateDataKey` operation can be used to generate a data key from a CMK. When generated, KMS provides the data key as `plaintext` and `ciphertext`. The plaintext version is used to encrypt the data and then immediately discarded. The ciphertext version of the data key is stored with the encrypted data. This process is called `envelope encyrption`.
 
