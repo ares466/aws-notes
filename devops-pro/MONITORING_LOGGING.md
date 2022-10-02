@@ -25,7 +25,11 @@ CloudTrail typically publishes events within 15 minutes of activity. There is no
 
 By default, CloudTrail is enabled on the account for management events only without any trails configured.
 
+Enabling **log validation** directs CloudTrail to create and sign digest files for every hour of log delivery. The digest files are stored in a different prefix within the same S3 bucket, allowing fine-grain access controls to be applied.
 
+The digest files contain hashes of each log file for the past hour. By calculating the hash on the log files in the S3 bucket and comparing it to the hash in the digest, teams can gain confidence in the integrity of the S3 log files. 
+
+CloudTrail signs each digest file with its private key. **Each digest file can be verified using the public key and CLI** (*validate-logs*).
 
 When creating a new CloudTrail trail, you can specify several parameters.
 - Destination S3 bucket
