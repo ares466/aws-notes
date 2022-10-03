@@ -39,11 +39,11 @@ AWS Elastic Beanstalk provides several options for how deployments are processed
 
 Updates are deployed to all instances in the environment at the same time.
 
-Outage: Yes
-Capacity Reduction: N/A
-Deployment time: Quick
-Rollback: Difficult
-Extra cost: No
+Outage: Yes  
+Capacity Reduction: N/A  
+Deployment time: Quick  
+Rollback: Difficult  
+Extra cost: No  
 
 ![EB Deployment - All at Once](./static/images/eb_allatonce.png)
 
@@ -51,11 +51,11 @@ Extra cost: No
 
 Updates are deployed to each batch of instances (batch size is configurable) within an environment in turn.
 
-Outage: No
-Capacity Reduction: Yes
-Deployment time: Slow
-Rollback: Moderate
-Extra cost: No
+Outage: No  
+Capacity Reduction: Yes  
+Deployment time: Slow  
+Rollback: Moderate  
+Extra cost: No  
 
 ![EB Deployment - Rolling](./static/images/eb_rolling.png)
 
@@ -63,11 +63,11 @@ Extra cost: No
 
 Similar to rolling, but an additional batch of instances is created to maintain full capacity during the deployment.
 
-Outage: No
-Capacity Reduction: No
-Deployment time: Slow
-Rollback: Easy 
-Extra cost: Yes
+Outage: No  
+Capacity Reduction: No  
+Deployment time: Slow  
+Rollback: Easy   
+Extra cost: Yes  
 
 ![EB Deployment - Rolling with Additional Batch](./static/images/eb_rollingaddbatch.png)
 
@@ -75,11 +75,11 @@ Extra cost: Yes
 
 Beanstalk creates a new ASG with new instances using the new application version. Once complete, the existing ASG will be updated to include the new instances.
 
-Outage: No
-Capacity Reduction: No
-Deployment time: Slow
-Rollback: Easy
-Extra cost: Yes
+Outage: No  
+Capacity Reduction: No  
+Deployment time: Slow  
+Rollback: Easy  
+Extra cost: Yes  
 
 ![EB Deployment - Immutable](./static/images/eb_immutable.png)
 
@@ -87,11 +87,11 @@ Extra cost: Yes
 
 Beanstalk creates a new ASG with new instances using the new application version. Traffic is split between the old version and the new version.
 
-Outage: No
-Capacity Reduction: No
-Deployment time: Very slow
-Rollback: Easy
-Extra cost: Yes
+Outage: No  
+Capacity Reduction: No  
+Deployment time: Very slow  
+Rollback: Easy  
+Extra cost: Yes  
 
 ![EB Deployment - Traffic Splitting](./static/images/eb_trafficsplitting.png)
 
@@ -99,11 +99,11 @@ Extra cost: Yes
 
 Beanstalk creates another stack of your application with the updated application code. Once successfully validated, a CNAME can be switched to enable the new application version (i.e., green) and eliminate traffic on the old application version (i.e., blue).
 
-Outage: No
-Capacity Reduction: No
-Deployment time: Very slow
-Rollback: Easy
-Extra cost: Yes
+Outage: No. 
+Capacity Reduction: No  
+Deployment time: Very slow  
+Rollback: Easy  
+Extra cost: Yes  
 
 ![EB Deployment - Blue/Green](./static/images/eb_bluegreen.png)
 
