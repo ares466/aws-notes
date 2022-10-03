@@ -451,7 +451,7 @@ CopyS3Objects:
 
 When a CloudFormation operation is initiated, CloudFormation invokes the Lambda. It passes in a JSON object with contextual data.
 
-*Caption (below): The `ResponseURL` is used by the custom resource target to register success or failure.
+*Caption (below): The `ResponseURL` is used by the custom resource target to register success or failure.*
 ```json
 {
     "RequestType": "Create",
