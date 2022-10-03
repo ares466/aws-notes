@@ -404,7 +404,7 @@ AWS::CloudFormation::Init:
 ```
 
 The output logs of the UserData component can be found in `/var/log/cloud-init-output.log`, 
-If using CloudFormation Init, there is also a `/var/log/cfn-init-cmd.log`, `var/log/cfn-init.log.
+If using CloudFormation Init, there is also a `/var/log/cfn-init-cmd.log`, `var/log/cfn-init.log`.
 
 These files are useful for diagnosing issues with the EC2 bootsrapping process.
 
