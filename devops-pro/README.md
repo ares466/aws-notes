@@ -19,3 +19,5 @@
 - [SDLC](./SDLC.md)
 - [Storage Services](./STORAGE_SERVICES.md)
 - [Systems Manager](./SYSTEMS_MANAGER.md)
+
+- [Other](./QUICK_FACTS.md)

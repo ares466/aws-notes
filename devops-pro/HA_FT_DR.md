@@ -346,3 +346,19 @@ ELB health checks are layer-7 aware which allows developers to test the health a
 Custom health checks mark an instance as healthy or unhealthy by an external system.
 
 Health checks observe a **grace period** (default 300 seconds) before starting health checks. This gives the application enough time to initialize and get into a healthy state before being marked as unhealthy.
+
+## ASG Termination Policies
+
+Amazon EC2 Auto Scaling uses termination policies to determine which instances it terminates first during scale-in events. Termination policies define the termination criteria that is used by Amazon EC2 Auto Scaling when choosing which instances to terminate.
+
+Predefined termination policies include:
+- `AllocationStrategy` - terminate instances strategically to achieve the desired allocation strategy (e.g., on-demand vs spot).
+- `OldestLaunchTemplate` - Terminate instances that have the oldest launch template.
+- `OldestLaunchConfiguration` - Terminate instances that have the oldest launch configuration. This policy is useful when phasing out the instances from a previous configuration.
+- `ClostestToNextInstanceHour` - Terminate instances that are closest to the next billing hour.
+- `Newest Instance`
+- `Oldest Instance`
+
+EC2 Auto Scaling always balances instances across AZs first, regardless of which termination policy is used.
+
+Custom termination policies can be created using Lambda.
