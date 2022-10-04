@@ -70,11 +70,35 @@ The `buildspec.yaml` file allows developers to customize artifact creation and s
 
 CodeBuild supports **triggers**. Triggers allow developers to schedule builds based on Cron.
 
-# Code Deploy
+# CodeDeploy
 
 CodeDeploy can deploy applications to EC2, Lambda, AWS Elastic Beanstalk, AWS OpsWorks, CloudFormation, ECS (blue/green), Service Catalog, Alexa Skills Kit, and S3. It can also deploy to on-prem servers.
 
-When deploying to EC2 or on-prem servers, the **CodeDeploy agent** must be installed.s
+When deploying to EC2 or on-prem servers, the **CodeDeploy agent** must be installed.
+
+Within CodeDeploy, developers create *Applications*. You can specify one or more *deployment groups* for a CodeDeploy application. The deployment group contains settings and configurations used during the deployment.
+
+The deployment group requires a *service role* with permissions to deploy the application.
+
+The following configurations are available to a deployment group:
+- Deployment type (i.e., in-place or blue/green)
+- Optionally specify an ASG or Load Balancer
+- Deployment settings customize how the deployment operates, including:
+    - Reroute traffic immediately or choose when to reroute traffic by specifing a wait period
+    - Terminate or keep instances that have been replaced
+    - Choose a default or custom deployment strategy
+        - EC2 default deployment strategies include `CodeDeployDefault.AllAtOnce`, `CodeDeployDefault.HalfAtATime`, and `CodeDeployDefault.OneAtATime`
+        - ECS/Lambda default deployment strategies include CodeDeployDefault.[Lambda,ECS]AllAtOnce, Linear, Canary
+- Deployment triggers: CodeDeploy can publish up to 10 notifications to SNS based on lifecycle events (e.g., Deployment starts, Deployment succeeds, Deployment fails). Then, when that event occurs, all subscribers to the associated topic receive notifications through the endpoint specified in the topic, such as an SMS message or email message.
+- Alarm configuration: The CodeDeploy deployment group will monitor up to 10 CloudWatch alarms. If the Alarm enters ALARM status, the deployment is stopped.
+- Rollback configuration: The Deployment Group can be configured to roll back when a deployment fails, Roll back when alarm thresholds are met, or disable roll backs.
+- Deployment group tags
+
+If configured, CodeDeploy will install the AWS CodeDeploy agent on new instances through Systems Manager. The instances must already have the Systems Manager agent installed.
+
+Custom Deployment Configurations can be created within CodeDeploy. 
+  - When creating a new Deployment Configuration for Lambda or ECS, developers can choose between linear or canary deployments and customize the step and interval in which traffic is routed.
+  - When creating a new Deployment Configuration for EC2/On-prem, developers can specify the minimum number or percentage of healthy EC2 instances that must be available at any time during the deployment.
 
 The `appspec.yaml` (for json) is a file that can be used to customize deployments through CodeDeploy. `appspec.yaml` allows developers to define build configuration and lifecycle hooks for a deployment.
 

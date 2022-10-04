@@ -52,3 +52,8 @@ Lessons learned from practice questions or review.
 
 **SAM**
 - SAM templates can also create non-serverless infrastructure.
+
+**Service Quotas**
+- Service Quotas is an AWS service that enables you to view and manage your quotas from a central location. Quotas, also referred to as limits, are the maximum value for your resources, actions, and items in your AWS account.
+- Service Quotas can integrate with AWS Organizations, but trust must be explicitly enabled.
+- When Service Quotas is associated with AWS Organizations, you can create a quota request template to automatically request quota increases when accounts are created.
