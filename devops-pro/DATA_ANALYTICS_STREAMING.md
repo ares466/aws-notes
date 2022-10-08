@@ -1,5 +1,14 @@
 # Kinesis
 
+| Kinesis Services | |
+| --- | --- |
+| Kinesis Data Analytics | Analyze Streaming Data using SQL |
+| Kinesis Data Firehose | Deliver streaming data to another AWS service (e.g., S3) |
+| Kinesis Data Streams | Collect streaming data and process it (e.g., live dashboards) |
+| Kinesis Video Streams | Collecting streaming video dataa nd process it (e.g., traffic camera alerts) |
+
+## Data Streams
+
 Kinesis is a highly-scalable streaming service in which one or more `producers` send data in to a kinesis `stream` that can be processed by one or more `consumers`.
 
 Kinesis streams can scale from low to near infinite data rates.
@@ -24,12 +33,67 @@ Kinesis streams store a 24-hour moving window of data. Consumers can access any 
 > - Kinesis is designed for *highly-scalable* data ingestion and thus supports many producers and consumers.
 > - Kinesis data is persisted within a stream during the rolling data window.
 
-| Kinesis Services | |
-| --- | --- |
-| Kinesis Data Analytics | Analyze Streaming Data using SQL |
-| Kinesis Data Firehose | Deliver streaming data to another AWS service (e.g., S3) |
-| Kinesis Data Streams | Collect streaming data and process it (e.g., live dashboards) |
-| Kinesis Video Streams | Collecting streaming video dataa nd process it (e.g., traffic camera alerts) |
+### Using AWS Lambda with Amazon Kinesis
+
+You can map a Lambda function to a shared-throughput consumer (standard iterator), or a dedicated-throughput consumer with enhanced fan-out.
+
+For **standard iterators**, Lambda polls each shard in your Kinesis stream for records using HTTP protocol.
+
+Lambda reads records in batches from the data stream and invokes the function synchronously with an event that contains stream records.
+
+*Caption (below): Example Lambda event with multiple stream records:*
+```json
+{
+    "Records": [
+        {
+            "kinesis": {
+                "kinesisSchemaVersion": "1.0",
+                "partitionKey": "1",
+                "sequenceNumber": "49590338271490256608559692538361571095921575989136588898",
+                "data": "SGVsbG8sIHRoaXMgaXMgYSB0ZXN0Lg==",
+                "approximateArrivalTimestamp": 1545084650.987
+            },
+            "eventSource": "aws:kinesis",
+            "eventVersion": "1.0",
+            "eventID": "shardId-000000000006:49590338271490256608559692538361571095921575989136588898",
+            "eventName": "aws:kinesis:record",
+            "invokeIdentityArn": "arn:aws:iam::123456789012:role/lambda-role",
+            "awsRegion": "us-east-2",
+            "eventSourceARN": "arn:aws:kinesis:us-east-2:123456789012:stream/lambda-stream"
+        },
+        {
+            "kinesis": {
+                "kinesisSchemaVersion": "1.0",
+                "partitionKey": "1",
+                "sequenceNumber": "49590338271490256608559692540925702759324208523137515618",
+                "data": "VGhpcyBpcyBvbmx5IGEgdGVzdC4=",
+                "approximateArrivalTimestamp": 1545084711.166
+            },
+            "eventSource": "aws:kinesis",
+            "eventVersion": "1.0",
+            "eventID": "shardId-000000000006:49590338271490256608559692540925702759324208523137515618",
+            "eventName": "aws:kinesis:record",
+            "invokeIdentityArn": "arn:aws:iam::123456789012:role/lambda-role",
+            "awsRegion": "us-east-2",
+            "eventSourceARN": "arn:aws:kinesis:us-east-2:123456789012:stream/lambda-stream"
+        }
+    ]
+}
+```
+
+By default, Lambda invokes your function as soon as stream records are available. This could result in an invocation with only one stream record in it. To avoid invoking functions with a small number of records, you can configure the event source to buffer records for up to 5 minutes via a **batching window**. Before invoking the function, Lambda continutes to read records from the event source until (1) it has gathered a full batch, (2) the batching window expires, or (3) it reaches the payload limit of 6 MB.
+
+If the function returns an error, Lambda retries the batch until processing succeeds or the data expires. To avoid **stalled shards**, you can configure the event source mapping to retry with a smaller batch size, limit the number of retries, discard records that are too old, and implement a DLQ.
+
+You can increase concurrency by processing multiple batches from each shard in parallel via the `ParallelizationFactor`. Lambda can process up to 10 batches in each shard simultaneously (`ParallelizationFactor=1-10`).
+
+When using *standard iterators*, Lambda polls each shard in your Kinesis stream for records at a base rate of once per second.
+
+Lambda emits the `IteratorAge` metric when your function finishes processing a batch of records. The metric indicates how old the last record in the batch was when processing finishes. If your function is processing new events, you can use the iterator age to estimate the latency between when a record is added and when the function processes it.
+
+By default, shards in a stream provide 2 MB/sec of read throughput per shard. This throughput gets shared across all the consumers that are reading from a given shard. In other words, the default 2 MB/sec of throughput per shard is fixed, even if there are multiple consumers that are reading from the shard.
+
+When a consumer uses **enhanced fan-out**, it gets its own 2 MB/sec allotment of read throughput, allowing multiple consumers to read data from the same stream in parallel, without contending for read throughput with other consumers. This can be helpful when you have lots of applications reading the same data.
 
 ## Firehose
 
