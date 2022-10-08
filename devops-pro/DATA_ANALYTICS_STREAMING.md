@@ -24,6 +24,13 @@ Kinesis streams store a 24-hour moving window of data. Consumers can access any 
 > - Kinesis is designed for *highly-scalable* data ingestion and thus supports many producers and consumers.
 > - Kinesis data is persisted within a stream during the rolling data window.
 
+| Kinesis Services | |
+| --- | --- |
+| Kinesis Data Analytics | Analyze Streaming Data using SQL |
+| Kinesis Data Firehose | Deliver streaming data to another AWS service (e.g., S3) |
+| Kinesis Data Streams | Collect streaming data and process it (e.g., live dashboards) |
+| Kinesis Video Streams | Collecting streaming video dataa nd process it (e.g., traffic camera alerts) |
+
 ## Firehose
 
 Kinesis does not provide a way to persist data once the rolling data window expires.
