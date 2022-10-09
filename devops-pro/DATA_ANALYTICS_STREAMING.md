@@ -21,7 +21,7 @@ A kinesis stream starts with a single shard. As required, additional shards are 
 
 Kinesis streams store a 24-hour moving window of data. Consumers can access any data within that 24 hours. For an additional cost, users can enable a 7-day moving window.
 
-![Kinesis](./static/images/kinesis_arch.png)
+![Kinesis](./static/images/kinesis_data_stream.png)
 
 > [Exam Tip]
 >
