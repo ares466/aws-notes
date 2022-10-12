@@ -1,3 +1,53 @@
+- [EBS](#ebs)
+    - [GP2](#gp2)
+    - [GP3](#gp3)
+    - [IO/BlockExpress](#i01i02blockexpress)
+    - [HHD](#hhd)
+- [Instance Stores](#instance-stores)
+- [Storage Gateway](#storage-gateway)
+    - [Volume Stored](#volume-stored)
+        - [Stored Mode](#stored-mode)
+        - [Cached Mode](#cached-mode)
+    - [Tape Gateway](#tape-gateway)
+    - [File Gateway](#file-gateway)
+- [KMS](#kms)
+- [S3](#s3)
+    - [Encryption](#encryption)
+        - [SSE-C](#sse-c)
+        - [SSE-S3](#sse-s3)
+        - [SSE-KMS](#sse-kms)
+    - [Storage Classes](#storage-classes)
+        - [S3 - Standard](#s3---standard)
+        - [S3 - Infrequent Access (IA)](#s3---infrequent-access-ia)
+        - [S3 - One Zone-IA](#s3---one-zone-ia)
+        - [S3 - Glacier Instant](#s3---glacier-instant)
+        - [S3 - Glacier Flexible](#s3---glacier-flexible)
+        - [S3 - Glacier Deep Archive](#s3---glacier-deep-archive)
+        - [S3 - Intelligent Tiering](#s3---intelligent-tiering)
+    - [Object Versioning](#object-versioning)
+    - [S3 Lifecycle Configuration](#s3-lifecycle-configuration)
+    - [S3 Replication](#s3-replication)
+    - [S3 - Cross Account Access](#s3---cross-account-access)
+        - [Bucket and Object ACLs](#bucket-and-object-acls)
+        - [Bucket Policies](#bucket-policies)
+        - [Assume Role](#assume-role)
+        - [Object Ownership](#object-ownership)
+    - [S3 Presigned URLs](#s3-presigned-urls)
+    - [S3 Select & Glacier Select](#s3-select--glacier-select)
+    - [S3 Access Points](#s3-access-points)
+    - [S3 Inventory](#s3-inventory)
+    - [S3 Object Lock](#s3-object-lock)
+        - [Retention Period Object Lock](#retention-period-object-lock)
+        - [Legal Hold Object Lock](#legal-hold-object-lock)
+    - [CORS](#cors)
+    - [Amazon Macie](#amazon-macie)
+    - [S3 Event Notifications](#s3-event-notifications)
+    - [S3 Access Logs](#s3-access-logs)
+- [EFS (Elastic File System)](#efs-elastic-file-system)
+- [FSx for Windows](#fsx-for-windows)
+- [FSx for Lustre](#fsx-for-lustre)
+
+
 # EBS
 
 EBS (Elastic Block Storage) is a persistent managed block storage service from AWS. EC2 instances are able to mount the block device to create a file system on the device.
@@ -42,7 +92,7 @@ Any volumes above about 5 TB achieve the maximum IOPS - 16,000 IO credits per se
 
 GP2 is the default EBS instance type. GP2 should be used for boot volumes, low-latency interactive apps, and for dev and test environments.
 
-### GP3
+## GP3
 
 The IO credit system is not used in GP3 instance types. Instead, it is replaced with something much simpler.
 
@@ -218,7 +268,7 @@ S3 objects are given a name based on the directory within the file share.
 *Caption (below): Diagram shows a simple example in which on-prem servers are backed up to S3.*
 ![Storage Gateway - File Gateway](./static/images/storagegateway_filemode.png)
 
-## Multiple Shares
+### Multiple Shares
 
 Storage Gateway in file mode can also be used for sharing data between multiple on-prem sites.
 
@@ -683,7 +733,7 @@ When S3 ACLs are enabled, bucket owners can choose the preferred object ownershi
 
 If the assume role strategy is being used for object writers, then the objects will be owned by the bucket account.
 
-### Policy Evaluation
+## Policy Evaluation
 
 All relevant policies are considered when evaluating access to a bucket or objects including:
 - Organizational SCP
