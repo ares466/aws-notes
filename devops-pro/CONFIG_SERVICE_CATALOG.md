@@ -1,3 +1,6 @@
+- [AWS Config](#aws-config)
+- [Service Catalog](#service-catalog)
+
 # AWS Config
 
 AWS Config records configuration changes over time on AWS resources. Once enabled, the configuration of every resource is monitored. When the configuration on a resource changes, a `configuration item` is created to record what changed, who changed it, and other metadata related to the change. All configuration items are stored in S3.
