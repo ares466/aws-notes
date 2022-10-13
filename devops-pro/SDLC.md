@@ -1,3 +1,13 @@
+# Contents
+
+- [CI/CD](#cicd)
+- [CodePipeline](#codepipeline)
+  - [Troubleshooting](#codepipeline-troubleshooting)
+- [CodeCommit](#codecommit)
+- [CodeBuild](#codebuild)
+- [CodeDeploy](#codedeploy)
+- [ECR](#ecr)
+
 # CI/CD
 
 Conceptually, there are four stages for code:
@@ -22,6 +32,14 @@ Stages consist of one or more **actions** (single, sequential, or parallel).
 <img src="./static/images/codepipeline_arch.png" alt="Code Pipeline - Architecture" width="400"/>
 
 Pipelines can be outfitted with a **manual approval** stage. In order for the current pipeline to continue, manual approval is required. If manual approval is not obtained within 7 days, the pipeline execution fails.
+
+## CodePipeline Troubleshooting
+
+**CodePipeline is not able to access a GitHub repository.**
+
+CodePipeline uses GitHub OAuth tokens and personal access tokens to access your GitHub repositories.
+
+- Check that no permissioned were revoked on the OAuth token in GitHub.
 
 # CodeCommit
 
@@ -69,6 +87,10 @@ The `buildspec.yaml` file can define environment variables that are available in
 The `buildspec.yaml` file allows developers to customize artifact creation and storage.
 
 CodeBuild supports **triggers**. Triggers allow developers to schedule builds based on Cron.
+
+## CodeBuild Phases
+
+<img src="./static/images/CodeBuild_Phase_Transitions.png" alt="Code Build - Phases" width="200"/>
 
 # CodeDeploy
 

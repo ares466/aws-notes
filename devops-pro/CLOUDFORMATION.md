@@ -1,3 +1,26 @@
+# Contents
+
+- [CloudFormation](#cloudformation)
+    - [Parameters](#parameters)
+    - [Intrinsic Functions](#intrinsic-functions)
+    - [Mappings](#mappings)
+    - [Outputs](#outputs)
+    - [Conditions](#conditions)
+    - [DependsOn](#dependson)
+    - [Wait Conditions](#wait-conditions)
+    - [Cross Stack Architectures](#cross-stack-architectures)
+    - [StackSets](#stack-sets)
+    - [Deletion Policies](#deletion-policies)
+    - [Stack Roles](#stack-roles)
+    - [Init](#init)
+    - [Cfn Hup](#cfn-hup)
+    - [Change Sets](#change-sets)
+    - [Custom Resources](#custom-resources)
+    - [Stack Policy](#stack-policy)
+- [SAM](#sam)
+    - [Deployment Preference](#deployment-preference)
+
+
 # CloudFormation
 
 `CloudFormation templates` can be written in YAML or JSON.
@@ -22,7 +45,7 @@ Parameters:
     Default: '/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2'
 ```
 
-## Intrinsic Function
+## Intrinsic Functions
 
 The `!GetAZs` returns a list of AZs in the current region. The function accepts an optional parameter to specify a different region.
 
@@ -486,3 +509,18 @@ def handler(event, context):
 ## Stack Policy
 
 The Stack Policy is the IAM style policy statement which governs which resources in the stack can be changed and who is authorized to change them.
+
+# SAM
+
+The AWS Serverless Application Model (SAM) is an open-source framework for building serverless applications. It provides shorthand syntax to express functions, APIs, databases, and event source mappings. With just a few lines per resource, you can define the application you want and model it using YAML. 
+
+During deployment, SAM transforms and expands the SAM syntax into AWS CloudFormation syntax, enabling you to build serverless applications faster.
+
+SAM CLI provides a Lambda-like execution environment that lets you locally build, test, and debug applications defined by SAM templates or through the AWS Cloud Development Kit (CDK). You can also use the SAM CLI to deploy your applications to AWS, or create secure continuous integration and deployment (CI/CD) pipelines that follow best practices and integrate with AWS' native and third party CI/CD systems.
+
+## Deployment Preference
+
+The `DeploymentPreference` specifies the configuration to enable gradual Lambda deployments.
+
+- `Linear10PercentEvery10Minutes` - In the Linear deployment preference type, traffic is shifted in equal increments with an equal number of minutes between each increment.
+- `Canary10Percent10Minutes` - In the Canary deployment preference type, a percentage of traffic is shifted to the new Lambda version for the specified number of minutes. After the initial duration expires, all traffic is shifted to the new version.
