@@ -1,3 +1,18 @@
+# Contents
+- [Kinesis](#kinesis)
+    - [Data Streams](#data-streams)
+        - [Using AWS Lambda with Amazon Kinesis](#using-aws-lambda-with-amazon-kinesis)
+        - [Troubleshooting](#troubleshooting)
+    - [Firehose](#firehose)
+    - [Kinesis Data Analytics](#kinesis-data-analytics)
+    - [Kinesis Video Streams](#kinesis-video-streams)
+- [AWS Quicksight](#aws-quicksight)
+- [Reshift](#amazon-redshift)
+    - [Resiliency and Recovery](#resiliency-and-recovery)
+- [Athena](#athena)
+- [MapReduce](#mapreduce)
+- [EMR](#emr)
+
 # Kinesis
 
 | Kinesis Services | |
@@ -94,6 +109,25 @@ Lambda emits the `IteratorAge` metric when your function finishes processing a b
 By default, shards in a stream provide 2 MB/sec of read throughput per shard. This throughput gets shared across all the consumers that are reading from a given shard. In other words, the default 2 MB/sec of throughput per shard is fixed, even if there are multiple consumers that are reading from the shard.
 
 When a consumer uses **enhanced fan-out**, it gets its own 2 MB/sec allotment of read throughput, allowing multiple consumers to read data from the same stream in parallel, without contending for read throughput with other consumers. This can be helpful when you have lots of applications reading the same data.
+
+### Troubleshooting
+
+**"Cannot get the shard for this ProcessTask, so duplicate KPL user records in the event of re-sharding will not be dropped during de-aggregation of Amazon Kinesis records"**
+
+This occurs when resharding happens during an active KCL session. To resolve, start and stop the KCL application or clear the lease entries in the DynamoDB table.
+
+**Skipped Records**
+
+- Validate that `processRecords` is not throwing an unhandled exception.
+
+**Slower than expected reading from the shards**
+
+- Validate that the `maxRecords` value is not set too low. `maxRecords` defines the maximum number of records allowed in a batch read.
+- Validate inefficient code logic is not causing high CPU usage or blocking.
+
+**IteratorAge Metric is Too High**
+
+An increased `GetRecords.IteratorAgeMilliseconds` metric means that either the KCL consumers cannot keep up processing the data from the Kinesis stream or there aren't enough shards in the stream.  
 
 ## Firehose
 

@@ -54,3 +54,13 @@ OpsWorks operates using lifecycles including setup, configure, deploy, undeploy,
 A **bookshelf** is a feature within OpsWorks that allows you to use community cookbooks.
 
 ![OpsWorks](./static/images/opsworks.png)
+
+## Troubleshooting
+
+**Server creation failed with an error message similar to the following: "The following resource(s) failed to create: [EC2Instance]. Failed to receive 1 resource signal(s) within the specified duration."**
+
+Ensure the instance has outbound Internet access, and the AWS service agent is able to issue commands. Be sure that your VPC (a VPC with a single public subnet) has DNS resolution enabled, and that your subnet has the Auto-assign Public IP setting enabled.
+
+**Server creation fails with an error message that states, "Not authorized to perform sts:AssumeRole."**
+
+This can occur when the service role you are using lacks adequate permissions to create a new server. Open the OpsWorks for Puppet Enterprise console; use the console to generate a new service role and an instance profile role. If you would prefer to use your own service role, attach the AWSOpsWorksCMServiceRole policy to the role. Verify that opsworks-cm.amazonaws.com is listed among services in the role's Trust relationships. Verify that the service role that is associated with the Puppet master has the AWSOpsWorksCMServiceRole managed policy attached.

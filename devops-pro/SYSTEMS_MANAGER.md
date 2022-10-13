@@ -16,6 +16,8 @@ EC2 instances must satisfy some requirements in order to use systems manager:
 On-prem instances must also satsify these requirements, but the details differ:
 - **Activations** securely join on-prem servers to Systems Manager. The activation is assigned an IAM role that the on-prem servers will indirectly use to communicate with Systems Manager.
 
+Hybrid instance (instances running outside of AWS) IDs are prefixed with `mi-`. EC2 instance IDs are prefixed with `i-`.
+
 ## Run Command
 
 The SSM `Run command` feature enables administrators to run command documents, that contain scripts, on managed instances without using SSH/RDP.
