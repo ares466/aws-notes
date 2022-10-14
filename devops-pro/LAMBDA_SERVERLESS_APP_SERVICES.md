@@ -25,6 +25,8 @@
 - [SNS](#sns)
 - [EventBridge](#eventbridge)
 - [Step Functions](#step-functions)
+    - [Input and Output Processing](#input-and-output-processing)
+    - [Error Handling](#error-handling)
 
 # Lambda
 
@@ -404,6 +406,19 @@ There are several types of states:
 - Parallel: State that enables parallel branches within a state machine.
 - Map: State that performs an action on a list of items
 - Task: State that represents a single unit of work. Task states support integration with lots of AWS services such as Lambda, DynamoDB, ECS, SNS, SQS, Glue, EMR, and more).
+
+## Input and Output Processing
+
+A Step Functions execution receives a JSON text as input and passes that input to the first state in the workflow. Individual states receive JSON as input and usually pass JSON as output to the next state.
+
+In the Amazon States Language, these fields filter and control the flow of JSON from state to state:
+- `InputPath`: selects which parts of the JSON input to pass to the task
+- `ResultPath`: selects what combination of the state input and the task result to pass to the output
+- `OutputPath`: filters the JSON output to further limit the information that's passed to the output
+- `Parameters`: used to create a collection of key-value pairs that are passed as input
+- `ResultSelector`: manipulates a state's result before ResultPath is applied. The ResultSelector field lets you create a collection of key value pairs, where the values are static or selected from the state's result. Using the ResultSelector field, you can choose what parts of a state's result you want to pass to the ResultPath field.
+
+Each can use paths to select portions of the JSON from the input or the result. A path is a string, beginning with `$`, that identifies nodes within JSON text. Step Functions paths use [JsonPath syntax](https://github.com/json-path/JsonPath).
 
 ## Error Handling
 
