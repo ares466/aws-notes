@@ -1,3 +1,31 @@
+# Contents
+
+- [Lambda](#lambda)
+    - [Lambda Networking](#lambda-networking)
+    - [Permissions](#permissions)
+    - [Logging](#logging)
+    - [Invocations](#invocations)
+    - [Versions](#versions)
+    - [Destinations](#destinations)
+    - [Failures](#failures)
+    - [Code Starts](#cold-starts)
+    - [Handler](#handler)
+    - [Environment Variables](#environment-variables)
+    - [Layers](#layers)
+    - [Containers on Lambda](#containers-on-lambda)
+    - [Integrating Lambda with ALB](#integrating-lambda-with-alb)
+    - [Monitoring, Logging, and Tracing on Lambda](#monitoring-logging-and-tracing-on-lambda)
+- [API Gateway](#api-gateway)
+    - [Authentication](#authentication)
+    - [Endpoint Types](#endpoint-types)
+    - [Stages and Deployments](#stages--deployments)
+    - [Errors](#errors)
+    - [Caching](#caching)
+    - [Integrations](#integrations)
+- [SNS](#sns)
+- [EventBridge](#eventbridge)
+- [Step Functions](#step-functions)
+
 # Lambda
 
 Lambda is a function-as-a-service (`FaaS`) that provides the infrastructure to create short running and focused pieces of code.
@@ -20,7 +48,7 @@ At its most basic, a Lambda function is a deployment package that the Lambda ser
 >
 > For the purposes of the exam, Docker is not supported in Lambda. Lambda supports containers, but the term Docker refers to a more traditional container runtime.
 
-## Networking
+## Lambda Networking
 
 Lambda has two networking modes: public and private.
 
@@ -46,7 +74,7 @@ Lambda uses CloudWatch, CloudWatch Logs, and X-Ray. Logs are ingested into Cloud
 
 In order for Lambda to push logs to CloudWatch Logs, it must have the proper permissions in the execution role.
 
-## Invocation
+## Invocations
 
 There are three types of invocation models:
 - Syncronous
@@ -170,13 +198,13 @@ Layers enable efficient sharing of dependencies between functions, enable new ru
 
 As a result of using layers, deployment zips are much smaller.
 
-### Containers on Lambda
+## Containers on Lambda
 
 When you create a Lambda function, you package your function code into a deployment package. Lambda supports two types of deployment packages: container images and zip file archives.
 
 The `AWS Lambda Runtime Interface Emulator` (`RIE`) is a proxy for the Lambda Runtime API that allows you to locally test your Lambda function packaged as a container image. The emulator is a lightweight web server that converts HTTP requests into JSON events to pass to the Lambda function in the container image.
 
-### Integrating Lambda with ALB
+## Integrating Lambda with ALB
 
 Lambda functions can be represented in target groups within an ALB. The ALB `synchronously` invokes the Lambda (and waits for a response) when it receives an HTTP/S request from a client.
 
@@ -212,7 +240,7 @@ With multi-value headers, both terms are represented in the `multiValueQueryStri
 }
 ```
 
-### Monitoring, Logging, and Tracing on Lambda
+## Monitoring, Logging, and Tracing on Lambda
 
 All Lambda metrics (e.g., invocations, errors, duration, DeadLetterErros) are available within CloudWatch for the function name, resource (alias/version), executed version (combination alias and version), and all functions dimensions.
 
@@ -225,6 +253,12 @@ X-Ray can be used for tracing by enabling `Active Tracing` on a function. This c
 The execution of the function must have the proper permissions to interact with the X-Ray service (e.g., `AWSXRayDaemonWriteAccess` managed policy).
 
 The X-Ray SDK is automatically available in the function and can be used to publish traces.
+
+### Troubleshooting
+
+**Stopping a recursive loop in Lambda**
+
+Enable and set the *concurrency limit* on the function to 0. This will prevent the function from being invoked. Fix the recursive trigger before enabling the function again.
 
 # API Gateway
 
@@ -257,17 +291,14 @@ If authentication fails, a 403 FORBIDDEN response is returned.
 
 ![API Gateway - Authentication](./static/images/apigateway_auth.png)
 
-## API Types
-
-
-### Endpoint Types
+## Endpoint Types
 
 API Gateway supports multiple endpoint types:
 - `Edge-optimized` endpoints route traffic to the nearest CloudFront point-of-presence. 
 - `Regional` endpoints can be used to support API clients within the same region.
 - `Private` endpoints are only accessible within a VPC through an interface endpoint.
 
-### Stages & Deployments
+## Stages & Deployments
 
 APIs are deployed to a `stage`. A stage represents a snapshot of the API, including methods, integrations, models, mapping templates, and Lambda authorizers.
 
@@ -287,7 +318,7 @@ Stages can be enabled for `canary deployments`. Stages enabled for canary deploy
 
 ![API Gateway - Stages](./static/images/apigateway_stages.png)
 
-### Errors
+## Errors
 
 Error codes from API Gateway are either 400s (client errors) or 500s (server errors).
 
@@ -300,7 +331,7 @@ Error codes from API Gateway are either 400s (client errors) or 500s (server err
 | 503 SERVICE UNAVAILABLE | Major servie issue |
 | 504 GATEWAY TIMEOUT | Integration failure or timeout (29 seconds) |
 
-### Caching
+## Caching
 
 Caching is configured per stage within API Gateway.
 
@@ -308,7 +339,7 @@ The cache `TTL` default is 300 seconds, but is configurable from 0 to 3600 secon
 
 ![API Gateway - Caching](./static/images/apigateway_cache.png)
 
-### Integrations
+## Integrations
 
 There are several types of integrations available within the API Gateway:
 - `Mock` - used for testing with no backend involvement
@@ -374,3 +405,28 @@ There are several types of states:
 - Map: State that performs an action on a list of items
 - Task: State that represents a single unit of work. Task states support integration with lots of AWS services such as Lambda, DynamoDB, ECS, SNS, SQS, Glue, EMR, and more).
 
+## Error Handling
+
+Any state can encounter runtime errors. By default, when a state reports an error, AWS Step Functions causes the execution to fail entirely.
+
+Step Functions identifies errors in the Amazon States Language using case-sensitive strings, known as error names. The Amazon States Language defines a set of built-in strings that name well-known errors, all beginning with the States. prefix.
+- `States.ALL`: A wildcard that matches any known error name.
+- `States.Runtime`: An execution failed due to some exception that could not be processed.
+- `States.Timeout`: A Task state either ran longer than the `TimeoutSeconds` value, or failed to send a heartbeat for a period longer than the `HeartbeatSeconds` value.
+
+Task and Parallel states can have a field named `Retry`, whose value must be an array of objects known as **retriers**. An individual retrier represents a certain number of retries, usually at increasing time intervals.
+
+AWS Lambda can occasionally experience transient service errors. In this case, invoking Lambda results in a 500 error, such as `ServiceException`, `AWSLambdaException`, or `SdkClientException`.
+
+As a best practice, proactively handle these exceptions in your state machine to Retry invoking your Lambda function, or to Catch the error.
+
+```json
+"Retry": [ {
+   "ErrorEquals": [ "Lambda.ServiceException", "Lambda.AWSLambdaException", "Lambda.SdkClientException"],
+   "IntervalSeconds": 2,
+   "MaxAttempts": 6,
+   "BackoffRate": 2
+} ]
+```
+
+Unhandled errors in Lambda are reported as `Lambda.Unknown` in the error output. These include out-of-memory errors and function timeouts. You can match on Lambda.Unknown, States.ALL, or States.TaskFailed to handle these errors.
