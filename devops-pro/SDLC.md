@@ -60,6 +60,10 @@ CodeCommit also support SNS and Lambda triggers based on supported events.
 
 CodeCommit can integrate with **Amazon CodeGuru**. Amazon CodeGuru is a developer tool that provides intelligent recommendations to improve code quality and identify an application’s most expensive lines of code. CodeGuru Reviewer uses machine learning and automated reasoning to identify critical issues, security vulnerabilities, and hard-to-find bugs during application development and provides recommendations to improve code quality.
 
+> **Preventing passwords and other secrets from being committed to CodeCommit**     
+> `git-secrets` scans commits, commit messages, and --no-ff merges to prevent adding secrets into your git repositories. If a commit, commit message, or any commit in a --no-ff merge history matches one of your configured prohibited regular expression patterns, then the commit is rejected.
+> Setup `git-secrets` as a pre-commit hook to prevent secrets or passwords from being checked in.
+
 # CodeBuild
 
 CodeBuild is a fully-managed code build as a service product. Customers pay only for the resources consumed during the build. CodeBuild can be used to build and test code as part of a CI/CD pipeline.
