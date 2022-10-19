@@ -12,8 +12,9 @@
     - [StackSets](#stack-sets)
     - [Deletion Policies](#deletion-policies)
     - [Stack Roles](#stack-roles)
-    - [Init](#init)
-    - [Cfn Hup](#cfn-hup)
+    - [CloudFormation Helper Scripts](#cloudformation-helper-scripts)
+        - [cfn-init](#cfn-init)
+        - [cfn-hup](#cfn-hup)
     - [Change Sets](#change-sets)
     - [Custom Resources](#custom-resources)
     - [Stack Policy](#stack-policy)
@@ -379,11 +380,42 @@ Alternatively, CloudFormation can assume a role to gain the necessary permission
 
 ![CloudFormation Stack Roles](./static/images/cf_stackroles.png)
 
-## Init
+## CloudFormation Helper Scripts
+
+CloudFormation helper scripts are Python scripts that can be used to install software and manage services on EC2 instances.
+
+In order to use the CloudFormation helper scripts, the scripts must be installed on the instance. The scripts can be installed using the `yum install -y aws-cfn-boostrap` command in `UserData`. The scripts are pre-installed on all Amazon AMIs.
+
+*Caption (below): Base64 encoded userdata that installs the CloudFormation helper scripts.*
+```bash
+    UserData: !Base64 
+    'Fn::Join':
+        - ''
+        - - |
+            #!/bin/bash -xe
+        - ''
+        - yum install -y aws-cfn-bootstrap
+        - '/opt/aws/bin/cfn-init -v '
+        - '         --stack '
+        - !Ref 'AWS::StackName'
+        - '         --resource WebServerInstance '
+        - '         --configsets InstallAndRun '
+        - '         --region '
+        - !Ref 'AWS::Region'
+        - |+
+```
+
+### Cfn-Init
 
 To initiate an EC2 instance after creation, the `UserData` property within the `AWS::EC2::Instance` resource can be used to perform procedural commands.
 
-Alternatively, the **CloudFormation Init** feature allows you to boostrap an EC2 instance by defining a desired state in a `AWS::CloudFormation::Init` property within an `AWS::EC2::Instance` resource.
+Alternatively, the `Cfn-Init` feature allows you to boostrap an EC2 instance by defining a desired state in a `AWS::CloudFormation::Init` property within an `AWS::EC2::Instance` resource.
+
+`cfn-init` will perform the following actions:
+- Fetch and parse metadata from CloudFormation
+- Install packages
+- Write files to disk
+- Enable/disable or start/stop services
 
 CloudFormation Init is idempotent.
 
@@ -431,14 +463,17 @@ If using CloudFormation Init, there is also a `/var/log/cfn-init-cmd.log`, `var/
 
 These files are useful for diagnosing issues with the EC2 bootsrapping process.
 
-## Cfn Hup
+### Cfn Hup
 
 `cfn-init` is a helper tool on EC2 instances that is only run once as part of the bootstraping process. If you update `AWS::CloudFormation::Init` on a running instance, it is not rerun.
 
 The `cfn-hup` helper is a daemon which can be installed to detect changes in resources metadata and run configurable actions based on those changes. When an update stack operation is performed with new metadata, the running EC2 instance is updated.
 
-![CloudFormation Hup](./static/images/cf_hup.png)
+<img src="./static/images/cf_hup.png" alt="CloudFormation Hup" width="500"/>
+
 *Caption (above): The `cfn-hup` utility on the EC2 service periodically checks the CF metadata provided by a CloudFormation deploy. When it detects a change, it updates the instance accordingly.*
+
+By default, `cfn-hup` updates every 15 minutes. The `interval` can be configured in the `cfn-hup.conf` file on the EC2 instance.
 
 ## Change Sets
 
