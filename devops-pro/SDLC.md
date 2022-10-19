@@ -139,6 +139,9 @@ Developers can create Lambda functions to run during each of these phases.
 
 [AppSpec Documentation](https://docs.aws.amazon.com/codedeploy/latest/userguide/reference-appspec-file.html)
 
+> **Cross-Account Deployments**  
+> CodeDeploy does not support cross-account deployments (e.g., adding EC2 instances from another account to a deployment group in the CodeDeploy account). Instead, team members must assume a role in the other account to deploy resources.
+
 # ECR
 
 The Elastic Container Registry (ECR) is a managed container image registry service (similar to DockerHub). Each AWS account has a public and private registry.
