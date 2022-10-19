@@ -10,7 +10,6 @@
     - [Wait Conditions](#wait-conditions)
     - [Cross Stack Architectures](#cross-stack-architectures)
     - [StackSets](#stack-sets)
-    - [Deletion Policies](#deletion-policies)
     - [Stack Roles](#stack-roles)
     - [CloudFormation Helper Scripts](#cloudformation-helper-scripts)
         - [cfn-init](#cfn-init)
@@ -18,6 +17,9 @@
     - [Change Sets](#change-sets)
     - [Custom Resources](#custom-resources)
     - [Stack Policy](#stack-policy)
+    - [Creation Policies](#creation-policies)
+    - [Update Policies](#update-policies)
+    - [Deletion Policies](#deletion-policies)
 - [SAM](#sam)
     - [Deployment Preference](#deployment-preference)
 
@@ -357,19 +359,6 @@ When you create, update, or delete stacks, you can also specify operation prefer
 
 By default, StackSets will delete all stacks that it manages. You can configure it to retain stacks in certain accounts or regions, while deleting the rest.
 
-## Deletion Policies
-
-If you delete a logical resource from a template and deploy it, the physical resource will be deleted. This can cause data loss or a loss of service.
-
-You can optionally define a **deletion policy** on each resource. The deletion policy supports three options:
-- Delete (default)
-- Retain
-- Snapshot (supported for some AWS services such as EBS, ElastiCache, Neptune, RDS, Redshift)
-
-The **Snapshot** deletion policy will create a snapshot of the resource before deleting it. The created snapshot will continue to exist even after the stack is deleted. It must be manually cleaned up if desired. Notably, EC2 is not a supported resource for the snapshot deletion policy.
-
-Deletion policies only apply to delete operations, not replace operations.
-
 ## Stack Roles
 
 Everything that happens within AWS require permissions via IAM roles, including creating resources in CloudFormation. 
@@ -544,6 +533,56 @@ def handler(event, context):
 ## Stack Policy
 
 The Stack Policy is the IAM style policy statement which governs which resources in the stack can be changed and who is authorized to change them.
+
+## Creation Policies
+
+The `CreationPolicy` attribute can be associated with a resource to prevent its status from reaching `CREATE COMPLETE` until AWS CloudFormation receives a specified number of success signals or the timeout period is exceeded. The `cfn-signal` helper script or `SignalResource` API can be used to send success or failure signals.
+
+Only a subset of resources support creation policies:
+- `AWS::AppStream::Fleet`
+- `AWS::AutoScaling::AutoScalingGroup`
+- `AWS::EC2::Instance`
+- `AWS::CloudFormation::WaitCondition`
+
+Common use cases:
+- Before reaching `CREATE COMPLETE`, services must be installed and started
+
+## Update Policies
+
+Use the `UpdatePolicy` attribute to specify how AWS CloudFormation handles updates to the following resources:
+- `AWS::AppStream::Fleet`
+- `AWS::AutoScaling::AutoScalingGroup`
+- `AWS::ElastiCache::ReplicationGroup`
+- `AWS::OpenSearchService::Domain`
+- `AWS::Elasticsearch::Domain`
+- `AWS::Lambda::Alias`
+
+## UpdateReplace Policies
+
+Use the `UpdateReplacePolicy` attribute to retain or, in some cases, backup the existing physical instance of a resource when it's replaced during a stack update operation.
+
+```bash
+AWSTemplateFormatVersion: 2010-09-09
+Resources:
+  myDB:
+    Type: 'AWS::RDS::DBInstance'
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties: {} 
+```
+
+## Deletion Policies
+
+If you delete a logical resource from a template and deploy it, the physical resource will be deleted. This can cause data loss or a loss of service.
+
+You can optionally define a **deletion policy** on each resource. The deletion policy supports three options:
+- Delete (default)
+- Retain
+- Snapshot (supported for some AWS services such as EBS, ElastiCache, Neptune, RDS, Redshift)
+
+The **Snapshot** deletion policy will create a snapshot of the resource before deleting it. The created snapshot will continue to exist even after the stack is deleted. It must be manually cleaned up if desired. Notably, EC2 is not a supported resource for the snapshot deletion policy.
+
+Deletion policies only apply to delete operations, not replace operations.
 
 # SAM
 
