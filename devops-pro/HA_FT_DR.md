@@ -1,3 +1,34 @@
+# Contents
+
+- [HA vs FT vs DR](#ha-vs-ft-vs-dr)
+- [Disaster Recovery](#disaster-recovery)
+    - [Backup & Restore](#backup--restore)
+    - [Pilot Light](#pilot-light)
+    - [Warm Standby](#warm-standby)
+    - [Active/Active](#activeactive)
+    - [Comparing DR Architectures](#comparing-dr-architectures)
+    - [DR Storage Architecture](#dr-storage-architecture)
+    - [DR Compute Architecture](#dr-compute-architecture)
+    - [DR Database Architecture](#dr-database-architecture)
+    - [DR Networking Architecture](#dr-networking-architecture)
+- [ELB](#elastic-load-balancers-elb)
+    - [Load Balancer Types](#load-balancer-types)
+        - [Classic Load Balancers](#classic-load-balancers)
+        - [Application Load Balancers](#application-load-balancer)
+        - [Network Load Balancers](#network-load-balancer)
+    - [Session Stickiness](#session-stickiness)
+    - [Connection Draining](#connection-draining)
+    - [X-Forwarded-For & Proxy Protocol](#x-forwarded-for--proxy-protocol)
+        - [X-Forwarded-For](#x-forwarded-for)
+        - [Proxy Protocol](#proxy-protocol)
+        - [Comparing X-Forwarded-For & Proxy Protocol](#comparing-x-forwarded-for-and-proxy-protocol)
+- [Gateway Load Balancers](#gateway-load-balancers-gwlb)
+- [Launch Configurations & Launch Templates](#launch-configurations--launch-templates)
+- [Auto Scaling Groups](#auto-scaling-groups)
+    - [ASG Lifecycle Hooks](#asg-lifecycle-hooks)
+    - [ASG Health Checks](#asg-health-checks)
+    - [ASG Termination Policies](#asg-termination-policies)
+
 # HA vs FT vs DR
 
 **High availability** (HA): Aims to ensure an agreed level of operational performance (SLA), usually uptime, for a higher than normal period.
@@ -174,6 +205,9 @@ Classic Load Balancers are a v1 product that is deprecated. CLBs can only be use
 
 *Caption (below): CLBs do not scale efficiently because they only support 1 SSL and one domain name per load balancer.*
 ![Classic Load Balancer - Limitations](./static/images/elb_clblimitations.png)
+
+> **Classic Load Balancer Troubleshooting**  
+> The `SurgeQueueLength` and `SpilloverCount` metrics are useful to monitoring CLBs. The CLB queues requests if it is unsable to establish a connection with a healthy instance. The max queue size is 1024. After the queue is full, new requests are rejected. The `SurgeQueueLength` is the number of requests waiting for a connection and the `SpilloverCount` is the number of requests rejected beyond the max queue size.
 
 ### Application Load Balancer
 

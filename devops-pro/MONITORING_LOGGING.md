@@ -1,3 +1,13 @@
+# Contents
+
+- [CloudTrail](#cloudtrail)
+    - [CloudTrail Pricing](#cloudtrail-pricing)
+- [CloudWatch](#cloudwatch)
+    - [Metrics](#metrics)
+        - [Notable EC2 Metrics](#notable-ec2-metrics)
+    - [Alarms](#alarms)
+    - [Logs](#logs)
+
 # CloudTrail
 
 AWS CloudTrail monitors and records account activity across your AWS infrastructure, giving you control over storage, analysis, and remediation actions.
@@ -42,10 +52,9 @@ When creating a new CloudTrail trail, you can specify several parameters.
 - Enable/disable data events and which types of events (e.g., read, write) from which services (e.g., S3, DynamoDB) and optional selectors to limit events to a specific bucket/table.
 - Enable/disable insight events and which types of insights to enable
 
-
 ![CloudTrail](./static/images/cloudtrail.png)
 
-## Pricing
+## CloudTrail Pricing
 
 You can view, filter, and download the most recent 90 days of your account activity for all management events in supported AWS services at no cost. Additional copies of management events are charged $2.00 per 100,000 events.
 
@@ -84,6 +93,16 @@ CloudWatch `statistics` is an aggregation over a period (e.g., min, max, sum, av
 CloudWatch `percentiles` is a calculation that show the distribution of your metrics (e.g., p95 shows the 95th percentile of your data).
 
 ![CloudWatch](./static/images/cloudwatch_metrics.png)
+
+### Notable EC2 Metrics
+
+- `SurgeQueueLength` (ELB): ELBs queue requests if it is unable to establish a connection with a healthy instance. The max queue size is 1024. The `SurgeQueueLength` represents the number of requests in the queue.
+- `SpilloverCount` (ELB): After the ELB queue is full, new requests are rejected. The `SurgeQueueLength` represents the number of requests rejected when the queue is full.
+- `StatusCheckFailed` (EC2): Reports whether the instance has passed both the instance status checks and system status checks.
+- `CPUCreditUsage` (EC2): The number of CPU credits spent by the instance for CPU utilization.
+- `CPUCreditBalance` (EC2): The number of earned CPU credits that an instance has accrued since it was launched or started.
+- `HTTPCode_Backend_5xx` (ELB): The number of 500 requests being returned from a backend server.
+- `HTTPCode_ELB_4xx` (ELB): The number of 400 requests returning a 400 HTTP status code.
 
 ## Alarms
 
