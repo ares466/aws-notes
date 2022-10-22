@@ -309,6 +309,10 @@ Considerations:
 - Newly registered targets enter slow start mode only when there is at least one healthy target that is not in slow start mode.
 - You cannot enable both slow start mode and least outstanding requests.
 
+## Delete Protection
+
+To prevent your load balancer from being deleted accidentally, you can enable deletion protection. If delete portection is enabled, it must be disabled for deleting the load balancer.
+
 ## ELB Troubleshooting
 
 **A registered target is not `InService`**
