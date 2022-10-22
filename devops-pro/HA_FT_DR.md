@@ -19,9 +19,8 @@
     - [Session Stickiness](#session-stickiness)
     - [Connection Draining](#connection-draining)
     - [X-Forwarded-For & Proxy Protocol](#x-forwarded-for--proxy-protocol)
-        - [X-Forwarded-For](#x-forwarded-for)
-        - [Proxy Protocol](#proxy-protocol)
-        - [Comparing X-Forwarded-For & Proxy Protocol](#comparing-x-forwarded-for-and-proxy-protocol)
+    - [Cross Zone Load Balancing](#cross-zone-load-balancing)
+    - [Slow Start Mode](#slow-start-mode)
 - [Gateway Load Balancers](#gateway-load-balancers-gwlb)
 - [Launch Configurations & Launch Templates](#launch-configurations--launch-templates)
 - [Auto Scaling Groups](#auto-scaling-groups)
@@ -172,26 +171,6 @@ ELBs require 8+ free IP addresses in a subnet in order to operate. AWS recommend
 
 ![ELB](./static/images/elb_arch.png)
 
-ELBs allow architecture teirs to scale independent of each other.
-
-Originally, each ELB node could only distribute load to compute within the same AZ. However, ELBs now support `cross-zone load balancing`. This enhancement allows the load balancer to distribute load across zones.
-
-## Session Stickiness
-
-Session data is stored on a specific server that persists while you have a valid session with the application.
-
-If an application does not store session state, it is known as `stateless`.
-
-`Session stickiness` is a feature supported by ALBs that temporarily maps users to instances on which their session is stored. As a result, all requests from the same user will be forwarded to the same instance.
-
-Session stickiness is enabled at a `target group` level.
-
-This feature generates a `cookie` (called `AWSALB`) which temporarily locks the user to a specific backend instance. Cookies can last any duration from 1 second to 7 days.
-
-If the cookie fails or expires, a new instance will be chosen for that user.
-
-Session stickiness can result in uneven loads on backend instances.
-
 ## Load Balancer Types
 
 Load balancers are split between two versions: v1 (deprecated) and v2 (standard).
@@ -256,6 +235,22 @@ NLBs are used for private link to access many AWS services.
 | Application Load Balancer | Layer 7 | HTTP/S | HTTP/S protocols, conditional forwarding based on HTTP, advanaced health checks |
 | Network Load Balancer | Layer 4 | UDP, TCP, TLS | UDP/TCP/TLS protocols, Unbroken encryption, Static IP, Very high throughput, PrivateLink |
 
+## Session Stickiness
+
+Session data is stored on a specific server that persists while you have a valid session with the application.
+
+If an application does not store session state, it is known as `stateless`.
+
+`Session stickiness` is a feature supported by ALBs that temporarily maps users to instances on which their session is stored. As a result, all requests from the same user will be forwarded to the same instance.
+
+Session stickiness is enabled at a `target group` level.
+
+This feature generates a `cookie` (called `AWSALB`) which temporarily locks the user to a specific backend instance. Cookies can last any duration from 1 second to 7 days.
+
+If the cookie fails or expires, a new instance will be chosen for that user.
+
+Session stickiness can result in uneven loads on backend instances.
+
 ## Connection Draining
 
 When instances are deemed unhealthy or deregistered, the default action is to close all connections and prevent any new connections to the instance from being established.
@@ -272,13 +267,9 @@ The deregistration delay feature is configured on the target group (not the load
 
 When a server receives a request, it has access to the clients IP address. When a load balancer is used, the client IP address represents the LB, not the end user.
 
-### X-Forwarded-For
-
 `X-FORWARDED-FOR` is an HTTP header. As traffic passes through a LB, the LB adds or appends its IP address to the header. The application server can use this header to see the full chain of clients involved in the request, including the end user.
 
 The `X-Forwarded-For` header is supported by CLBs and ALBs, but not NLBs since it does not support Layer 7.
-
-### PROXY Protocol
 
 The `Proxy protocol` works at Layer 4 and therefore supports TCP, SMTP, HTTP, etc.
 
@@ -286,12 +277,44 @@ Similar to *X-Forwarded-For* header, the proxy protocol adds a header to track I
 
 The *proxy protocol* feature is supported by CLBs (v1) and NLBs.
 
-### Comparing X-Forwarded-For and PROXY Protocol
-
 | | OSI Layer | Support | Use Case |
 | --- | --- | --- | --- |
 | X-Forwarded-For | Layer 7 | ALB, CLB | HTTP applications that use ALBs or CLBs. |  
 | PROXY Protocol | Layer 4 | NLBs, CLB (v1) | Applications that use NLB or CLB (v1).
+
+## Cross-Zone Load Balancing
+
+When you add an Availability Zone to your load balancer, Elastic Load Balancing creates a load balancer node in the Availability Zone. Load balancer nodes accept traffic from clients and forward requests to the healthy registered instances in one or more Availability Zones.
+
+By default, the load balancer routes requests evenly across its Availability Zones. To route requests evenly across the registered instances in the Availability Zones, enable cross-zone load balancing. When cross-zone load balancing is enabled, each load balancer node distributes traffic across the registered targets in all enabled Availability Zones. 
+
+*Caption (below): With cross-zone load balancing enabled, traffic will be routed across all instances evenly, regardless of availability zone. In the example on the left, each of the ten instances will receive 10% of the traffic. When cross-zone load balancing is disabled, the load balancer will distribute the traffic evenly across AZs (not instances). As a result, as shown in the diagram on the right, the two instances in "AZ A" will evenly split 50% of the traffic (25% each) and the eight instances in "AZ B" will split the other 50% (6.25% each). This leads to uneven distribution.*
+
+<img src="./static/images/elb_xaz_enabled.png" alt="Cross Load Balancing Enabled" width="500"> <img src="./static/images/elb_xaz_disabled.png" alt="Cross Load Balancing Disabled" width="500">
+
+| Load Balancer Type | Cross-Zone Load Balancing Status | 
+| --- | --- |
+| Application Load Balancer | Always enabled |
+| Gateway Load Balancer | Disabled by default |
+| Network Load Balancer | Disabled by default |
+
+## Slow Start Mode
+
+By default, a target starts to receive its full share of requests as soon as it is registered with a target group and passes an initial health check. Using slow start mode gives targets time to warm up before the load balancer sends them a full share of requests.
+
+A target in slow start mode exits slow start mode when the configured slow start duration period elapses or the target becomes unhealthy. The load balancer linearly increases the number of requests that it can send to a target in slow start mode.
+
+Considerations:
+- When you enable slow start for a target group, the healthy targets registered with the target group do not enter slow start mode.
+- Newly registered targets enter slow start mode only when there is at least one healthy target that is not in slow start mode.
+- You cannot enable both slow start mode and least outstanding requests.
+
+## ELB Troubleshooting
+
+**A registered target is not `InService`**
+- Check that the *instance security group* allows health check port/protocol and traffic from the load balancer.
+- Check that *NACL* for the *subnet* in which the instance resides allows inbound traffic for the health check ports and allows outbound traffic on ephemeral ports (1024-65535). The NACL on the subnet in which the ELB resides must allow inbound traffic on ephemeral ports and outbound traffic for health check ports.
+- If necessary, configure which health check response statuses are considered healthy (in addition to the default 200).
 
 ## Gateway Load Balancers (GWLB)
 
