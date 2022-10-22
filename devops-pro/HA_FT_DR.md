@@ -29,6 +29,7 @@
     - [ASG Lifecycle Hooks](#asg-lifecycle-hooks)
     - [ASG Health Checks](#asg-health-checks)
     - [ASG Termination Policies](#asg-termination-policies)
+    - [ASG Troubleshooting](#asg-troubleshooting)
 
 # HA vs FT vs DR
 
@@ -434,3 +435,9 @@ Predefined termination policies include:
 EC2 Auto Scaling always balances instances across AZs first, regardless of which termination policy is used.
 
 Custom termination policies can be supported via custom Lambda functions.
+
+## ASG Troubleshooting
+
+**Instance is terminated upon failure which prevents root cause analysis**
+
+Suspend the `ReplaceUnhealthy` process so that unhealthy targets are not removed and remain for troubleshooting.
