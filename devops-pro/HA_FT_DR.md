@@ -25,6 +25,8 @@
 - [Gateway Load Balancers](#gateway-load-balancers-gwlb)
 - [Launch Configurations & Launch Templates](#launch-configurations--launch-templates)
 - [Auto Scaling Groups](#auto-scaling-groups)
+    - [Suspending an ASG process](#asg-suspending-processes)
+    - [Standby](#standby)
     - [ASG Lifecycle Hooks](#asg-lifecycle-hooks)
     - [ASG Health Checks](#asg-health-checks)
     - [ASG Termination Policies](#asg-termination-policies)
@@ -339,22 +341,31 @@ Scaling policies define the criteria by which the ASG should scale a cluster up 
 
 ASG use *cooldown periods* to reduce the cost of scaling. Once an instance scales up, that instance will not be scaled down until the cooldown period has passed.
 
-ASGs use *health checks* (EC2 status checks) to ensure instances in the target group are healthy. ASGs can also use an ELB's health check rather than EC2 status checks for application awareness.
+ASGs use *health checks* (EC2 status checks) to ensure instances in the target group are healthy. ASGs can also use an ELB's health check rather than EC2 status checks for application awareness. Instances created/terminated by an ASG can be automatically added/removed as a target of a load balancer.
 
-Instances created/terminated by an ASG can be automatically added/removed as a target of a load balancer.
+## ASG Suspending Processes
 
 The ASG performs several stages when scaling:
-- Launch - Launch and instance
-- Terminate - Terminate an instance
-- AddToLoadBalancer - Add to ELB on launch
-- AlarmNotification - accept notification from CloudWatch
-- AZRebalance - balances instances evenly across all AZs
-- HealthCheck - Instance health checks on/off
-- ReplaceUnhealthy - Terminate unhealthy and replace
-- ScheduledActions - Schedule is on/off
-- Standby - Instances can be *inservice* or *standby*
 
-Any of these stages can be set to SUSPEND or RESUME. When suspended, the ASG will not perform the stage.
+| Process | Description |
+| --- | --- |
+| Launch | Adds instances to the ASG |
+| Terminate | Removes instances from the ASG |
+| AddToLoadBalancer | Adds instances to the attached load balancer target group |
+| AlarmNotification | Acceps notifications from CloudWatch alarms that are associated with dynamic scaling policies |
+| AZRebalance | Balances the number of EC2 instances in the group evenly across all specified AZs |
+| HealthCheck | Checks the health of instances and marks and instance as unhealthy |
+| InstanceRefresh | Terminates and replaces instances using the instance refresh feature | 
+| ReplaceUnhealthy | Terminates instances that are marked as unhealthy | 
+| ScheduledActions | Performs the pre-defined scheduled scaling actions | 
+
+Any of these processes can be set to SUSPEND or RESUME. When suspended, the ASG will not perform the stage. Suspending a process affects all instances in your ASG.
+
+## Standby
+
+You can put an instance that is in the `InService` state into the `Standby` state, update or troubleshoot the instance, and then return the instance to service. Instances that are on standby are still part of the Auto Scaling group, but they do not actively handle load balancer traffic.
+
+This feature helps you stop and start the instances or reboot them without worrying about Amazon EC2 Auto Scaling terminating the instances as part of its health checks or during scale-in events.
 
 ## ASG Lifecycle Hooks
 
