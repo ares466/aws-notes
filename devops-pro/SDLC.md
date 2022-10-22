@@ -5,7 +5,10 @@
   - [Troubleshooting](#codepipeline-troubleshooting)
 - [CodeCommit](#codecommit)
 - [CodeBuild](#codebuild)
+  - [CodeBuild Phases](#codebuild-phases)
 - [CodeDeploy](#codedeploy)
+  - [CodeDeploy Lifecycle Hooks](#codedeploy-lifecycle-hooks)
+  - [CodeDeploy Across Accounts](#codedeploy-across-accounts)
 - [ECR](#ecr)
 
 # CI/CD
@@ -133,18 +136,83 @@ In the configuration section of `appspec.yaml`, there are three sections:
 - `Permissions` (applies to EC2/On-prem servers only): details any special permissions and how they should be configured for the files in the `Files` section
 - `Resources` (applies to ECS/Lambda only): defines metadata related to the Lambda function or ECS task
 
-`appspec.yaml` also allows you to define lifecycle hooks for a deployment. The supported lifecycle hooks depend on the target (e.g., EC2 vs ECS vs Lambda).
+## CodeDeploy Lifecycle Hooks
 
-Some examples of lifecycle phases include: `ApplicationStop`, `DownloadBundle`, `BeforeInstall`, `Install`, `AfterInstall`, `ApplicationStart`, and `ValidateService`.
+The `appspec.yaml` configuration file supports lifecycle hooks during a deployment. The supported lifecycle hooks depend on the target (e.g., EC2/ECS/Lambda).
 
-The `ValidateService` is the phase that CodeDeploy uses to determine if a deployment was successful.
+| Lifecycle Phase | Description | Can be scripted? |
+| --- | --- | --- |
+| ApplicationStop | This deployment lifecycle event occurs even before the application revision is downloaded. You can specify scripts for this event to gracefully stop the application or remove currently installed packages in preparation for a deployment. An AppSpec file does not exist on an instance before you deploy to it. For this reason, the ApplicationStop hook does not run the first time you deploy to the instance. | Y |
+| DownloadBundle | During this deployment lifecycle event, the CodeDeploy agent copies the application revision files to a temporary location. | Y |
+| BeforeInstall | You can use this deployment lifecycle event for preinstall tasks, such as decrypting files and creating a backup of the current version. | Y |
+| Install | During this deployment lifecycle event, the CodeDeploy agent copies the revision files from the temporary location to the final destination folder. | N |
+| AfterInstall | You can use this deployment lifecycle event for tasks such as configuring your application or changing file permissions. | Y |
+| ApplicationStart | You typically use this deployment lifecycle event to restart services that were stopped during ApplicationStop. | Y |
+| ValidateService | Can be used to verify the deployment was completed successfully. | Y |
+| BeforeBlockTraffic | You can use this deployment lifecycle event to run tasks on instances before they are deregistered from a load balancer. | Y |
+| BlockTraffic | During this deployment lifecycle event, internet traffic is blocked from accessing instances that are currently serving traffic. | N |
+| AfterBlockTraffic | You can use this deployment lifecycle event to run tasks on instances after they are deregistered from a load balancer. | Y |
+| BeforeAllowTraffic | You can use this deployment lifecycle event to run tasks on instances before they are registered with a load balancer. | Y |
+| AllowTraffic | During this deployment lifecycle event, internet traffic is allowed to access instances after a deployment. | N |
+| AfterAllowTraffic | You can use this deployment lifecycle event to run tasks on instances after they are registered with a load balancer. | Y |
 
-Developers can create Lambda functions to run during each of these phases.
+
+Use the `Hooks` section of `appspec.yaml` to specify a Lambda function that CodeDeploy can call to validate a deployment. The deployment will fail if CodeDeploy is not notified by the Lambda function within one hour.
+
+*Caption (below): Example of appspec.yaml Hooks section.*
+```yaml
+Hooks:
+  - BeforeInstall: "BeforeInstallHookFunctionName"
+  - AfterInstall: "AfterInstallHookFunctionName"
+  - AfterAllowTestTraffic: "AfterAllowTestTrafficHookFunctionName"
+  - BeforeAllowTraffic: "BeforeAllowTrafficHookFunctionName"
+  - AfterAllowTraffic: "AfterAllowTrafficHookFunctionName"
+```
+
+*Caption (below): Example of a Lambda function hook. Notice how the `putLifecycleEventHookExecutionStatus` action is used, with the `deploymentId` and `lifecycleEventHookExecutionId` to report a success or failure.*
+```Javascript
+'use strict';
+
+const aws = require('aws-sdk');
+const codedeploy = new aws.CodeDeploy({apiVersion: '2014-10-06'});
+
+exports.handler = (event, context, callback) => {
+    //Read the DeploymentId from the event payload.
+    var deploymentId = event.DeploymentId;
+
+    //Read the LifecycleEventHookExecutionId from the event payload
+    var lifecycleEventHookExecutionId = event.LifecycleEventHookExecutionId;
+
+    /*
+     Enter validation tests here.
+    */
+
+    // Prepare the validation test results with the deploymentId and
+    // the lifecycleEventHookExecutionId for CodeDeploy.
+    var params = {
+        deploymentId: deploymentId,
+        lifecycleEventHookExecutionId: lifecycleEventHookExecutionId,
+        status: 'Succeeded' // status can be 'Succeeded' or 'Failed'
+    };
+    
+    // Pass CodeDeploy the prepared validation test results.
+    codedeploy.putLifecycleEventHookExecutionStatus(params, function(err, data) {
+        if (err) {
+            // Validation failed.
+            callback('Validation test failed');
+        } else {
+            // Validation succeeded.
+            callback(null, 'Validation test succeeded');
+        }
+    });
+};
+```
 
 [AppSpec Documentation](https://docs.aws.amazon.com/codedeploy/latest/userguide/reference-appspec-file.html)
 
-> **Cross-Account Deployments**  
-> CodeDeploy does not support cross-account deployments (e.g., adding EC2 instances from another account to a deployment group in the CodeDeploy account). Instead, team members must assume a role in the other account to deploy resources.
+## CodeDeploy Across Accounts
+
+CodeDeploy does not natively support cross-account deployments. Instead, engineers must setup a CodeDeploy project in the other account and assume a role to interact with it.
 
 # ECR
 

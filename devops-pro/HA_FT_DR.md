@@ -364,7 +364,7 @@ When custom actions are defined, instances are paused in the stage until (1) the
 
 Lifecycle hooks can be integrated with EventBridge or SNS notifications.
 
-![ASG - Lifecycle Hooks](./static/images/asg_lifecyclehooks.png)
+<img src="./static/images/asg_lifecyclehooks.png" alt="ASG - Lifecycle Hooks" width="500">
 
 ## ASG Health Checks
 
@@ -395,4 +395,4 @@ Predefined termination policies include:
 
 EC2 Auto Scaling always balances instances across AZs first, regardless of which termination policy is used.
 
-Custom termination policies can be created using Lambda.
+Custom termination policies can be supported via custom Lambda functions.
