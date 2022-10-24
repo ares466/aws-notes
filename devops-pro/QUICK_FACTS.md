@@ -62,9 +62,11 @@ The buildspec defines four main phases of a build:
 
 **CodeCommit**
 - CodeCommit supports notification rules that support SNS or AWS Chatbot (Slack) based on repository actions (e.g., commits, new PRs).
+- `git-secrets` scans commits and prevents merges based on secrets in the code. Use this solution to prevent credentials from entering a repo.
 
 **CodeDeploy**
-- CodeDeploy requires the CodeDeploy agent to be installed on the target server. CodeDeploy supports EC2, ECS, Lambda, and on-prem servers.
+- CodeDeploy requires the CodeDeploy agent to be installed on the target server (EC2 and on-prem). If configured, CodeDeploy can automatically install the agent using SSM.
+- CodeDeploy supports EC2, ECS, Lambda, and on-prem servers.
 - CodeDeploy builds can be customized using the `appspec.yaml` configuraiton file.
 - CodeDeploy supports lifecycle hooks for custom install, initialization, and validation operations via Lambda. Hooks can be added to the following phases of a deployment:
    - `BeforeInstall`
@@ -72,12 +74,18 @@ The buildspec defines four main phases of a build:
    - `AfterAllowTestTraffic`
    - `BeforeAllowTraffic`
    - `AfterAllowTraffic`
+ - CodeDeploy can publish up to 10 notifications to SNS based on lifecycle events.
+ - CodeDeploy will monitor up to 10 CloudWatch alarms. If one of the alarms enter `ALARM` status, the deployment is stopped. The deployment group rollback behavior can be customized.
+ - CodeDeploy does not natively support cross-account deployments. Instead, engineers must setup a CodeDeploy project in the other account and assume a role to interact with it.
 
 **CodePipeline**
 - Pipelines can be outfitted with a manual approval stage. If manual approval is not granted within 7 days, the pipeline execution fails.
 
 **EC2**
 - EC2 instance metadata (available at *http://169.254.169.254/latest/meta-data*) contains information about when a spot instance will be terminated (*spot/termination_time*).
+
+**ECR**
+- ECR supports cross-region and cross-account replication of images.
 
 **ECS**
 - Use an EventBridge rule to create notifications for stopped ECS tasks:
