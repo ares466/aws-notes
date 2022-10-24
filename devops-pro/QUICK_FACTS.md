@@ -6,6 +6,8 @@ Lessons learned from practice questions or review.
 - CloudFormation supports the `cfn-init` and `cfn-hup` helper scripts to install and update software on EC2 instances. Helper scripts must be installed using the `yum install -y aws-cfn-bootstrap` command.
    - The `cfn-init` script runs on EC2 instance creation. It can fetch and parse metadata from CloudFormation, install packages, write files to disk, and enable/disable/start/stop services.
    - The `cfn-hup` script detects changes in resource metadata and runs user-specified actions when a change is detected. By default, updates are performed every 15 minutes, but this can be configured in the `cfn-hup.conf` file.
+- One well-known dependency that requires the `DependsOn` property within CloudFormation involves Elastic IPs. When creating Elastic IP addresses, an IGW must be attached to the VPC or else creation will fail. If you are creating the IGW and EIP within the same CloudFormation template, you must specify a `DependsOn` property on the EIP that points to the IGW.
+- The `cf-cignal` feature will wait for the specified number of signals to be received before updating the status of a resource to `CREATE_COMPLETE`. If no signals are received the stack will failure after the specified timeout value (defaults to 12 hours).
 
 **CloudTrail**
 - CloudTrail typically publishes events within 15 minutes of activity. There is no way to enable real-time logging.
