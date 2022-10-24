@@ -121,6 +121,7 @@ The buildspec defines four main phases of a build:
 
 **GuardDuty**
 - GuardDuty is an IDS service that monitors CloudTrail, VPC Flow Logs, and DNS query logs for anomolies.
+- When a finding is discovered, GuardDuty can be configured to notify via SNS or trigger an event-driven process via EventBridge.
 
 **Lambda**
 - Lambda code can be passed through CloudFormation via the `Code` attribute. The following types are supported:
