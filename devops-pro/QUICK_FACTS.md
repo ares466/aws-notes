@@ -60,15 +60,21 @@ The buildspec defines four main phases of a build:
 - `build`: commands are run during the build process
 - `post_build`: create artifacts/packages, push docker images, explicit notifications
 
+**CodeCommit**
+- CodeCommit supports notification rules that support SNS or AWS Chatbot (Slack) based on repository actions (e.g., commits, new PRs).
+
 **CodeDeploy**
 - CodeDeploy requires the CodeDeploy agent to be installed on the target server. CodeDeploy supports EC2, ECS, Lambda, and on-prem servers.
 - CodeDeploy builds can be customized using the `appspec.yaml` configuraiton file.
 - CodeDeploy supports lifecycle hooks for custom install, initialization, and validation operations via Lambda. Hooks can be added to the following phases of a deployment:
-- `BeforeInstall`
-- `AfterInstall`
-- `AfterAllowTestTraffic`
-- `BeforeAllowTraffic`
-- `AfterAllowTraffic`
+   - `BeforeInstall`
+   - `AfterInstall`
+   - `AfterAllowTestTraffic`
+   - `BeforeAllowTraffic`
+   - `AfterAllowTraffic`
+
+**CodePipeline**
+- Pipelines can be outfitted with a manual approval stage. If manual approval is not granted within 7 days, the pipeline execution fails.
 
 **EC2**
 - EC2 instance metadata (available at *http://169.254.169.254/latest/meta-data*) contains information about when a spot instance will be terminated (*spot/termination_time*).
