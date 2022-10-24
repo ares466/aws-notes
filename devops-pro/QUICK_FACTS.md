@@ -7,7 +7,32 @@ Lessons learned from practice questions or review.
    - The `cfn-init` script runs on EC2 instance creation. It can fetch and parse metadata from CloudFormation, install packages, write files to disk, and enable/disable/start/stop services.
    - The `cfn-hup` script detects changes in resource metadata and runs user-specified actions when a change is detected. By default, updates are performed every 15 minutes, but this can be configured in the `cfn-hup.conf` file.
 - One well-known dependency that requires the `DependsOn` property within CloudFormation involves Elastic IPs. When creating Elastic IP addresses, an IGW must be attached to the VPC or else creation will fail. If you are creating the IGW and EIP within the same CloudFormation template, you must specify a `DependsOn` property on the EIP that points to the IGW.
-- The `cf-cignal` feature will wait for the specified number of signals to be received before updating the status of a resource to `CREATE_COMPLETE`. If no signals are received the stack will failure after the specified timeout value (defaults to 12 hours).
+- The `CreationPolicy` property and `WaitCondition` resource will wait for the specified number of signals to be received before updating the status of a resource to `CREATE_COMPLETE`. If no `cf-signals` are received the stack will failure after the specified timeout value (defaults to 12 hours).
+   - The `WaitCondition` resource can depend on other resources and other resources can depend on it. The `WaitCondition` resource relies on a `WaitHandle` resource, which generates a pre-signed URL for resource signals. Using `!GetAtt WaitCondition.Data`, response attributes are available from the signal.
+   - It is common to use the `CreationPolicy` property to wait for a success signal from all instances in the ASG.
+
+```yaml
+AutoScalingGroup:
+    Type: AWS::AutoScaling::AutoScalingGroup
+    Properties:
+        DesiredCapacity: 3
+    CreationPolicy:
+        ResourceSignal:
+            Count: 3
+            Timeout: PT15M
+
+WaitCondition:
+    Type: AWS::CloudFormation::WaitCondition
+    DependsOn: SomeOtherResource
+    Properties:
+        Handle: !Ref WaitHandle
+        Timeout: 300
+        Count: 1
+
+WaitHandle:
+    Type: AWS::CloudFormation::WaitConditionHandle
+```
+- Nested Stacks are used to share templates. Cross-stack references are used to share resources.
 
 **CloudTrail**
 - CloudTrail typically publishes events within 15 minutes of activity. There is no way to enable real-time logging.
