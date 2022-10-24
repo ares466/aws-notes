@@ -123,6 +123,13 @@ The buildspec defines four main phases of a build:
 - GuardDuty is an IDS service that monitors CloudTrail, VPC Flow Logs, and DNS query logs for anomolies.
 - When a finding is discovered, GuardDuty can be configured to notify via SNS or trigger an event-driven process via EventBridge.
 
+**Inspector**
+- Inspector assessments can be run periodically (15 minutes, 1 hour, 1 day).
+- Inspector supports two types of assessments: network assessments and host assessments.
+   - Host assessments require the Inspector agent to be installed.
+   - Network assessments can optionally include the Inspector agent for more detailed data.
+- The [CVE](https://docs.aws.amazon.com/inspector/v1/userguide/inspector_cves.html)/[CIS](https://docs.aws.amazon.com/inspector/v1/userguide/inspector_cis.html) rules packages require an agent.
+
 **Lambda**
 - Lambda code can be passed through CloudFormation via the `Code` attribute. The following types are supported:
     - `ImageUri`
