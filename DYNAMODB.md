@@ -29,3 +29,16 @@ Item keys can be decorated to improve readability.
 
 Product Id: `pr-000001`  
 Order Id: `or-324910`  
+
+### Duplicate Attributes for Efficient Queries
+
+Data within an item can be duplicated for efficient querying.
+
+> E.g., The business would like to query orders data by quarter, month, or year.
+>
+> | PK | SK | OrderDate | Quarter | Month | Year |
+> | --- | --- | --- | --- | --- | --- |
+> | `or-000001` | `2022-11-01 12:31:00.000000` | `2022-11-01` | `Q4` | `11` | `2022` |
+>
+> The OrderDate, Quarter, Month, and Year represent different dimensions for the same year. Using GSIs that include these attributes allows for efficient querying.
+
