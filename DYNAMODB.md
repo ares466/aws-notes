@@ -1,6 +1,8 @@
 # DynamoDB
 
-## Best Practice for High-Velocity Attributes
+## Best Practices
+
+### High-Velocity Attributes
 
 Due to the way WCUs work, large items are more expensive to update than smaller items. This situtaion is particularly cost-ineffective when the updates are small relative to the overall item size.
 
@@ -21,3 +23,9 @@ Each of the items maintains the original primary key, but are suffixed with the 
 
 ![2022-11-09_16-47-54](https://user-images.githubusercontent.com/10566616/200948874-c2e5b3f2-083b-46ed-bea4-445b28de144d.png)
 
+### Key Decorators
+
+Item keys can be decorated to improve readability.
+
+Product Id: `pr-000001`  
+Order Id: `or-324910`  
