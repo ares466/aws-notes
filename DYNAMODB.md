@@ -1,5 +1,11 @@
 # DynamoDB
 
+## Architecture
+
+All DynamoDB tables are deployed across three AZs within a region for high availability. DynamoDB requests first arrive at a cluster of *request routers* that determine the shard on which the data resides.
+
+Strongly consistent reads are always handled by the primary storage nodes. Replication to secondary storage nodes is usually completed within single milliseconds, but may take up to a second.
+
 ## Best Practices
 
 ### High-Velocity Attributes
@@ -42,3 +48,16 @@ Data within an item can be duplicated for efficient querying.
 >
 > The OrderDate, Quarter, Month, and Year represent different dimensions for the same year. Using GSIs that include these attributes allows for efficient querying.
 
+### Sparse GSIs
+
+GSIs should be sparse to improve GSI scan performance, reduce cost, and improve efficiency.
+
+### Use Item Versions for Concurrency Control
+
+By defining and storing the version of an item as an attribute, developers can use conditional expressions to guarantee a change is being applied to the most recent version. This solution prevents unintended overwrites for a highly concurrent usecase.
+
+## PartiQL
+
+PartiQL is a SQL-like interface to DynamoDB. It will optimize query execution by running eligible query parts in parallel.
+  - e.g., SELECT * FROM DemoTable07 (scan)
+  - e.g., SELECT product_id, product_name, rating FROM DemoTable07
