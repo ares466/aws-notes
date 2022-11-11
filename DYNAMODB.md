@@ -56,13 +56,31 @@ Data within an item can be duplicated for efficient querying.
 >
 > The OrderDate, Quarter, Month, and Year represent different dimensions for the same year. Using GSIs that include these attributes allows for efficient querying.
 
+### Table Stretching
+
+By default, new tables will only be created across four shard nodes. The DynamoDB service will provision more shard nodes as needed.
+
+*Table stretching* is the concept of creating a table with high provisioned throughput to establish multiple nodes right away. Since DynamoDB does not consolidate, you can then reduce provisioned capacity after table creation without concern of shard node consolidation.
+
+### Adjacency List
+
+When different entities of an application have a many-to-many relationship between them, it is easier to model the relationship as an adjacency list. In this model, all top-level entities (synonymous with nodes in the graph model) are represented as the partition key. Any relationship with other entities (edges in a graph) are represented as an item within the partition by setting the value of the sort key to the target entity ID (target node).
+
+E.g., The following record represents an invoice that has a relationship to bill 2485.
+
+*Caption (below): The following record represents a bill that has a relationship to invoice 1420.*
+| PK | SK | Type |
+| --- | --- | --- |
+| I#1420 | B#2485 | Invoice |
+| B#2485 | I#1420 | Bill |
+
 ### Overload GSI Key
 
 The global secondary index key overloading design pattern is enabled by designating and reusing an attribute name (column header) across different item types and storing a value in that attribute depending on the context of the item type.
 
 ### Sparse GSIs
 
-GSIs should be sparse to improve GSI scan performance, reduce cost, and improve efficiency.
+You can use a sparse global secondary index to locate table items that have an uncommon attribute. To do this, you take advantage of the fact that table items that do not contain global secondary index attribute(s) are not indexed at all.
 
 ### Use Item Versions for Concurrency Control
 
