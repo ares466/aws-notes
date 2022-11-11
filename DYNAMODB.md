@@ -6,6 +6,14 @@ All DynamoDB tables are deployed across three AZs within a region for high avail
 
 Strongly consistent reads are always handled by the primary storage nodes. Replication to secondary storage nodes is usually completed within single milliseconds, but may take up to a second.
 
+## GSI
+
+When a DynamoDB global secondary index’s write throttles are sufficient enough to create throttled requests, the behavior is called **GSI back pressure**.
+
+Throttled requests result in `ProvisionedThroughputExceededException` errors in the AWS SDKs, generate `ThrottledRequests` metrics in CloudWatch, and appear as ’throttled write requests’ on the base table in the AWS console.
+
+When GSI back pressure occurs, all writes to the DynamoDB table are rejected until space in the buffer between the DynamoDB base table and GSI opens up, regardless of whether the new item is eligible for the back-pressured GSI.
+
 ## Best Practices
 
 ### High-Velocity Attributes
@@ -48,6 +56,10 @@ Data within an item can be duplicated for efficient querying.
 >
 > The OrderDate, Quarter, Month, and Year represent different dimensions for the same year. Using GSIs that include these attributes allows for efficient querying.
 
+### Overload GSI Key
+
+The global secondary index key overloading design pattern is enabled by designating and reusing an attribute name (column header) across different item types and storing a value in that attribute depending on the context of the item type.
+
 ### Sparse GSIs
 
 GSIs should be sparse to improve GSI scan performance, reduce cost, and improve efficiency.
@@ -55,6 +67,34 @@ GSIs should be sparse to improve GSI scan performance, reduce cost, and improve 
 ### Use Item Versions for Concurrency Control
 
 By defining and storing the version of an item as an attribute, developers can use conditional expressions to guarantee a change is being applied to the most recent version. This solution prevents unintended overwrites for a highly concurrent usecase.
+
+### Parallel Scan
+
+Even though DynamoDB distributes items across multiple physical partitions, a Scan operation can only read one partition at a time.
+
+In order to maximize the utilization of table-level provisioning, use a parallel Scan to logically divide a table (or secondary index) into multiple logical segments, and use multiple application workers to scan these logical segments in parallel.
+
+When a parallel scan is used, the application spawns three threads and each thread issues a Scan request, scans its designated segment, retrieving data 1 MB at a time, and returns the data to the main application thread.
+
+### Logical Shards
+
+If a scan is required on a large data set, logical shards can improve performance. Logically sharding the data involves saving an arbitrary shard id as an attribute on the item.
+
+The number of shards can be determined based on the size of the data set. The shard id (e.g., 1-10) is randomly assigned to each record to ensure an even split.
+
+*Caption: DynamoDB item that is assigned to logical shard #7*
+| Key | Value |
+| --- | --- |
+| PK | request#662146 | 
+| SK | shard#7 |
+
+Creating a GSI with the shard attribute as the PK enables the application to run scans on each logical partition in parallel by using a KeyConditionExpression.
+
+```python
+ke = Key('GSI_1_PK').eq("shard#{}".format(shardid))
+```
+
+Doing the scan in parallel across multiple logical shards is much more efficient than doing a single scan.
 
 ## PartiQL
 
