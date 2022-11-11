@@ -119,3 +119,11 @@ Doing the scan in parallel across multiple logical shards is much more efficient
 PartiQL is a SQL-like interface to DynamoDB. It will optimize query execution by running eligible query parts in parallel.
   - e.g., SELECT * FROM DemoTable07 (scan)
   - e.g., SELECT product_id, product_name, rating FROM DemoTable07
+
+# Resources
+
+- [DynamoDB Labs](https://amazon-dynamodb-labs.com/)
+- [Design Challenges](https://amazon-dynamodb-labs.com/scenarios.html)
+- [Cost Workshop](https://github.com/robm26/cost)
+- [DDB Viz](https://github.com/robm26/ddbviz)
+- [Efficiency Demos](https://github.com/robm26/efficiencydemos)
